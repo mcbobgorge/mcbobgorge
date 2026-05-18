@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melting Paint | natewooding.com</title>
+    <style>
+        /* CSS to ensure the canvas fills the entire screen and removes scrollbars */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #1a1a1a; /* Dark background makes colors stand out */
+        }
+        canvas {
+            display: block;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffffff;
+            font-family: sans-serif;
+            pointer-events: none; /* Allows clicking through the text onto the canvas */
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="ui-layer">
+        <h3>natewooding.com</h3>
+        <p>Click and drag to paint!</p>
+    </div>
+
+    <!-- The canvas where the JavaScript will draw the paint -->
+    <canvas id="paintCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Dynamically resize the canvas to fit the browser window
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const paintDrops = [];
+        let isPainting = false;
+        let colorHue = 0; // Starts at red (0) in the HSL spectrum
+
+        // Class defining how each drop of paint behaves
+        class PaintDrop {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 12 + 5; // Random initial size
+                this.speedY = Math.random() * 3 + 1; // Downward gravity/melting speed
+                this.color = `hsl(${colorHue}, 100%, 50%)`;
+                this.life = 150; // Controls how long the drop lasts before disappearing
+            }
+            update() {
+                this.y += this.speedY; // Move the drop downward
+                this.size *= 0.98; // Slowly shrink the drop
+                this.life -= 1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Generate multiple drops per mouse movement to create a thick paint effect
+        function addPaint(x, y) {
+            for (let i = 0; i < 4; i++) {
+                let offsetX = (Math.random() - 0.5) * 20;
+                let offsetY = (Math.random() - 0.5) * 20;
+                paintDrops.push(new PaintDrop(x + offsetX, y + offsetY));
+            }
+        }
+
+        // --- Mouse Interaction ---
+        canvas.addEventListener('mousedown', (e) => {
+            isPainting = true;
+            addPaint(e.x, e.y);
+        });
+        canvas.addEventListener('mousemove', (e) => {
+            if (isPainting) {
+                addPaint(e.x, e.y);
+                colorHue += 2; // Shifts the color rapidly as you move the mouse
+            }
+        });
+        canvas.addEventListener('mouseup', () => isPainting = false);
+        canvas.addEventListener('mouseleave', () => isPainting = false);
+
+        // --- Touch Interaction (Mobile Support) ---
+        canvas.addEventListener('touchstart', (e) => {
+            isPainting = true;
+            addPaint(e.touches[0].clientX, e.touches[0].clientY);
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            if (isPainting) {
+                addPaint(e.touches[0].clientX, e.touches[0].clientY);
+                colorHue += 2;
+            }
+        });
+        canvas.addEventListener('touchend', () => isPainting = false);
+
+        // Main animation loop
+        function animate() {
+            // Fades the background slightly every frame to create a trail/smear effect
+            ctx.fillStyle = 'rgba(26, 26, 26, 0.15)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Update and draw all active paint drops
+            for (let i = 0; i < paintDrops.length; i++) {
+                paintDrops[i].update();
+                paintDrops[i].draw();
+                
+                // Remove drops that are too small or too old to save memory
+                if (paintDrops[i].life <= 0 || paintDrops[i].size <= 0.2) {
+                    paintDrops.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // Start the animation
+        animate();
+    </script>
+</body>
+</html>
