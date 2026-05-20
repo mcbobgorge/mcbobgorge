@@ -1,142 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Melting Paint | natewooding.com</title>
-    <style>
-        /* CSS to ensure the canvas fills the entire screen and removes scrollbars */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #1a1a1a; /* Dark background makes colors stand out */
-        }
-        canvas {
-            display: block;
-        }
-        #ui-layer {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #ffffff;
-            font-family: sans-serif;
-            pointer-events: none; /* Allows clicking through the text onto the canvas */
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Descent</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      background: #0a0a0a;
+      color: #d0d0d0;
+      font-family: 'Courier New', monospace;
+      overflow-x: hidden;
+      transition: background 8s, color 8s;
+    }
+    body {
+      padding: 40px;
+      min-height: 100vh;
+    }
+    #main {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .block {
+      margin: 70px 0;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 1.5s ease forwards;
+      transition: transform 0.5s, opacity 0.5s;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .text {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      transition: all 0.5s;
+    }
+    .glitch {
+      animation: glitchAnim 0.2s infinite alternate;
+      color: #c7c7c7;
+    }
+    @keyframes glitchAnim {
+      0% { transform: translate(2px, 0) skew(0.5deg); }
+      100% { transform: translate(-2px, 0) skew(-0.5deg); }
+    }
+    .mirror {
+      transform: scaleX(-1);
+      display: inline-block;
+    }
+    .rotate {
+      transform: rotate(1deg);
+    }
+    .faint {
+      opacity: 0.35;
+    }
+    button {
+      background: #111;
+      border: 1px solid #333;
+      color: #bbb;
+      padding: 8px 16px;
+      margin: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: background 0.3s, border-color 0.3s;
+      text-transform: lowercase;
+    }
+    button:hover {
+      background: #222;
+      border-color: #555;
+    }
+    .svg-container {
+      margin: 30px 0;
+      width: 100%;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+    }
+    .hall {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.5;
+      color: #555;
+      font-size: 11px;
+      z-index: 10;
+      animation: drift 12s linear infinite;
+    }
+    @keyframes drift {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(20px, -20px); }
+      50% { transform: translate(-10px, 20px); }
+      75% { transform: translate(-20px, -10px); }
+      100% { transform: translate(0, 0); }
+    }
+    .memory-fragment {
+      position: fixed;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      max-width: 250px;
+      font-size: 0.8rem;
+      opacity: 0.4;
+      color: #999;
+      z-index: 5;
+      animation: memoryFade 15s ease-in-out infinite;
+    }
+    @keyframes memoryFade {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.6; }
+    }
+  </style>
 </head>
 <body>
-    
-    <div id="ui-layer">
-        <h3>natewooding.com</h3>
-        <p>Click and drag to paint!</p>
-    </div>
+  <div id="main"></div>
 
-    <!-- The canvas where the JavaScript will draw the paint -->
-    <canvas id="paintCanvas"></canvas>
+  <script>
+    (function() {
+      // ---------- FRAGMENT DATABASE (inspired by Godspeed, Silver Mt. Zion, etc.) ----------
+      const fragments = [
+        { text: "the streetlights leaned inward like tired trees", mood: 'dark' },
+        { text: "morning kept rehearsing beneath the pavement", mood: 'light' },
+        { text: "we are the last of the last truly lost", mood: 'dark' },
+        { text: "they don't sleep they just sway", mood: 'dark' },
+        { text: "there is weather here", mood: 'light' },
+        { text: "the sky was a wound we forgot to dress", mood: 'dark' },
+        { text: "the hallway remembers your shape", mood: 'dark' },
+        { text: "someone left hope in a paper cup", mood: 'light' },
+        { text: "the walls have started breathing", mood: 'dark' },
+        { text: "all the birds are just practicing existence", mood: 'light' },
+        { text: "every staircase leads to another staircase", mood: 'dark' },
+        { text: "the machine hums a lullaby for the end", mood: 'dark' },
+        { text: "a window opens onto a field that is still green", mood: 'light' },
+        { text: "the static is learning our names", mood: 'dark' },
+        { text: "at dawn the silence turned into a chord", mood: 'light' },
+        { text: "the emergency lights sing in C minor", mood: 'dark' },
+        { text: "we carry photographs of houses we never lived in", mood: 'dark' },
+        { text: "there is still honey in the broken hive", mood: 'light' },
+        { text: "the corridor stretched for years", mood: 'dark' },
+        { text: "you are the rain I forgot I heard", mood: 'light' },
+        { text: "the map kept folding into itself", mood: 'dark' },
+        { text: "a child’s drawing of a door that opens inward", mood: 'light' },
+        { text: "the signal repeats: we are still here", mood: 'dark' },
+        { text: "the sun is a rumor the earth keeps telling", mood: 'light' },
+        { text: "the floor number never changes", mood: 'dark' },
+        { text: "a thread of light under a door you cannot open", mood: 'light' },
+        { text: "the clock hands are just suggestions now", mood: 'dark' },
+        { text: "there is a garden that grows in the space between breaths", mood: 'light' },
+        { text: "the walls are writing their own story", mood: 'dark' },
+        { text: "somewhere a radio plays the sound of morning", mood: 'light' }
+      ];
 
-    <script>
-        const canvas = document.getElementById('paintCanvas');
-        const ctx = canvas.getContext('2d');
+      // ---------- PERSISTENCE ----------
+      const STORAGE_KEY = 'descent_v2';
+      let state = {};
+      let journal = [];          // last 25 generated texts
+      let blockCounter = 0;     // unique ID for each block
+      let densityMode = 'sparse'; // toggle for SVG generation
 
-        // Dynamically resize the canvas to fit the browser window
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (saved) {
+            state = saved.stats || { hope:0, grief:0, curiosity:0, surrender:0, depth:0, time:0, visits:0 };
+            journal = saved.journal || [];
+            blockCounter = saved.blockCounter || 0;
+            densityMode = saved.densityMode || 'sparse';
+            return;
+          }
+        } catch(e) {}
+        state = { hope:0, grief:0, curiosity:0, surrender:0, depth:0, time:0, visits:0 };
+        journal = [];
+        blockCounter = 0;
+        densityMode = 'sparse';
+      }
+      function saveState() {
+        state.visits++;
+        const data = {
+          stats: state,
+          journal: journal,
+          blockCounter: blockCounter,
+          densityMode: densityMode
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+      loadState();
+      saveState(); // save initial load
+
+      // ---------- TEXT GENERATION (spliced conflict) ----------
+      function getRandomFragment(mood) {
+        const pool = fragments.filter(f => f.mood === mood);
+        return pool[Math.floor(Math.random() * pool.length)].text;
+      }
+      function generateText() {
+        // conflict: splice a dark and a light fragment
+        const dark = getRandomFragment('dark');
+        const light = getRandomFragment('light');
+        // choose a conjunction randomly
+        const conjunctions = [
+          ", but ", ", and yet ", ", unless ", ". however, ", ". still, ",
+          "; despite that, ", ". all the same, "
+        ];
+        const conj = conjunctions[Math.floor(Math.random() * conjunctions.length)];
+        return dark + conj + light + ".";
+      }
+
+      // ---------- PROCEDURAL SVG (density evolves) ----------
+      function generateSVG(depth) {
+        // density toggle sometimes flips based on depth randomness
+        if (Math.random() < 0.25) {
+          densityMode = densityMode === 'sparse' ? 'dense' : 'sparse';
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        const paintDrops = [];
-        let isPainting = false;
-        let colorHue = 0; // Starts at red (0) in the HSL spectrum
-
-        // Class defining how each drop of paint behaves
-        class PaintDrop {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 12 + 5; // Random initial size
-                this.speedY = Math.random() * 3 + 1; // Downward gravity/melting speed
-                this.color = `hsl(${colorHue}, 100%, 50%)`;
-                this.life = 150; // Controls how long the drop lasts before disappearing
-            }
-            update() {
-                this.y += this.speedY; // Move the drop downward
-                this.size *= 0.98; // Slowly shrink the drop
-                this.life -= 1;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+        const complexity = densityMode === 'dense' ? Math.floor(depth * 0.7) + 5 : Math.floor(depth * 0.1) + 1;
+        let paths = '';
+        // recursive branching L-system-like
+        function branch(x1, y1, len, angle, level) {
+          if (level <= 0 || len < 5) return;
+          const x2 = x1 + len * Math.cos(angle);
+          const y2 = y1 + len * Math.sin(angle);
+          const opacity = 0.15 + level * 0.15;
+          paths += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(120,120,120,${opacity})" stroke-width="1"/>`;
+          branch(x2, y2, len * 0.7, angle - 0.5, level - 1);
+          branch(x2, y2, len * 0.7, angle + 0.5, level - 1);
         }
-
-        // Generate multiple drops per mouse movement to create a thick paint effect
-        function addPaint(x, y) {
-            for (let i = 0; i < 4; i++) {
-                let offsetX = (Math.random() - 0.5) * 20;
-                let offsetY = (Math.random() - 0.5) * 20;
-                paintDrops.push(new PaintDrop(x + offsetX, y + offsetY));
-            }
+        const startX = 200 + Math.random() * 200;
+        const startY = 200 + Math.random() * 50;
+        const levels = Math.min(complexity, 12);
+        branch(startX, startY, 70, -Math.PI/2, levels);
+        // add chaotic scribbles for dense mode
+        if (densityMode === 'dense') {
+          for (let i = 0; i < 20; i++) {
+            const x = Math.random() * 400;
+            const y = Math.random() * 250;
+            const r = Math.random() * 20 + 5;
+            paths += `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="rgba(90,90,90,0.2)" stroke-width="0.5"/>`;
+          }
         }
+        return `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
+      }
 
-        // --- Mouse Interaction ---
-        canvas.addEventListener('mousedown', (e) => {
-            isPainting = true;
-            addPaint(e.x, e.y);
-        });
-        canvas.addEventListener('mousemove', (e) => {
-            if (isPainting) {
-                addPaint(e.x, e.y);
-                colorHue += 2; // Shifts the color rapidly as you move the mouse
-            }
-        });
-        canvas.addEventListener('mouseup', () => isPainting = false);
-        canvas.addEventListener('mouseleave', () => isPainting = false);
+      // ---------- CHOICES (procedural, context-sensitive) ----------
+      function createChoices(parentBlockId, parentDepth) {
+        const allChoices = [
+          { text: "turn left down a corridor that smells of rain", stat: 'hope', depthChange: 1 },
+          { text: "descend the staircase that spirals into static", stat: 'grief', depthChange: 2 },
+          { text: "sit down and let the walls memorize you", stat: 'surrender', depthChange: 3 },
+          { text: "listen to the hum of the machine", stat: 'curiosity', depthChange: 2 },
+          { text: "climb through the window that opens onto morning", stat: 'hope', depthChange: 1 },
+          { text: "follow the flickering exit sign", stat: 'grief', depthChange: 1 },
+          { text: "open the door that has no handle", stat: 'curiosity', depthChange: 3 },
+          { text: "walk backwards into the room you came from", stat: 'surrender', depthChange: 2 },
+          { text: "touch the wall where the paint is wet", stat: 'grief', depthChange: 2 },
+          { text: "look up at the ceiling that isn’t there", stat: 'curiosity', depthChange: 4 },
+          { text: "do not click this", stat: 'none', depthChange: 0, special: true }
+        ];
 
-        // --- Touch Interaction (Mobile Support) ---
-        canvas.addEventListener('touchstart', (e) => {
-            isPainting = true;
-            addPaint(e.touches[0].clientX, e.touches[0].clientY);
-        });
-        canvas.addEventListener('touchmove', (e) => {
-            if (isPainting) {
-                addPaint(e.touches[0].clientX, e.touches[0].clientY);
-                colorHue += 2;
-            }
-        });
-        canvas.addEventListener('touchend', () => isPainting = false);
+        // select 3-4 random choices, plus occasionally the "do not click"
+        const shuffled = [...allChoices].sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, Math.random() < 0.3 ? 4 : 3);
+        return selected;
+      }
 
-        // Main animation loop
-        function animate() {
-            // Fades the background slightly every frame to create a trail/smear effect
-            ctx.fillStyle = 'rgba(26, 26, 26, 0.15)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Update and draw all active paint drops
-            for (let i = 0; i < paintDrops.length; i++) {
-                paintDrops[i].update();
-                paintDrops[i].draw();
-                
-                // Remove drops that are too small or too old to save memory
-                if (paintDrops[i].life <= 0 || paintDrops[i].size <= 0.2) {
-                    paintDrops.splice(i, 1);
-                    i--;
+      // ---------- MUTATIONS (glitch, mirror, rotate) ----------
+      function applyMutations(block, depth) {
+        if (depth < 15) return;
+        const roll = Math.random();
+        if (depth > 60 && roll < 0.35) {
+          block.classList.add('glitch');
+        } else if (depth > 45 && roll < 0.3) {
+          block.querySelector('.text').classList.add('mirror');
+        } else if (depth > 30 && roll < 0.25) {
+          block.querySelector('.text').classList.add('rotate');
+        } else if (depth > 20 && roll < 0.2) {
+          block.querySelector('.text').classList.add('faint');
+        }
+      }
+
+      // ---------- FLOATING HALL MESSAGES ----------
+      function spawnHall() {
+        if (state.depth < 10) return;
+        const messages = [
+          "memory leak detected",
+          "you already read this paragraph",
+          "the hallway is learning your shape",
+          "there is a door here that wasn’t there before",
+          "the page remembers you"
+        ];
+        const el = document.createElement('div');
+        el.className = 'hall';
+        el.textContent = messages[Math.floor(Math.random() * messages.length)];
+        el.style.left = (Math.random() * (window.innerWidth - 200)) + 'px';
+        el.style.top = (Math.random() * (window.innerHeight - 100)) + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 12000 + Math.random() * 6000);
+      }
+
+      // ---------- MEMORY OVERLAYS (from journal) ----------
+      function showMemories() {
+        if (journal.length < 5) return;
+        const recent = journal.slice(-10);
+        for (let i = 0; i < 3; i++) {
+          const frag = recent[Math.floor(Math.random() * recent.length)];
+          const el = document.createElement('div');
+          el.className = 'memory-fragment';
+          el.textContent = frag;
+          el.style.left = (Math.random() * (window.innerWidth - 250)) + 'px';
+          el.style.top = (Math.random() * (window.innerHeight - 100)) + 'px';
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 15000 + Math.random() * 10000);
+        }
+      }
+
+      // ---------- ADD BLOCK (core loop) ----------
+      function addBlock(triggeredBySpecial = false) {
+        // Update stats
+        state.depth++;
+        state.time++;
+        const main = document.getElementById('main');
+        const block = document.createElement('div');
+        block.className = 'block';
+        block.id = 'block-' + (++blockCounter);
+
+        // Generate text and SVG
+        const textContent = generateText();
+        const svgContent = generateSVG(state.depth);
+
+        block.innerHTML = `
+          <div class="text">${textContent}</div>
+          <div class="svg-container">${svgContent}</div>
+          <div class="choices-container"></div>
+        `;
+
+        // Add choices
+        const choices = createChoices(blockCounter, state.depth);
+        const choicesContainer = block.querySelector('.choices-container');
+        choices.forEach(choice => {
+          const btn = document.createElement('button');
+          btn.textContent = choice.text;
+          btn.addEventListener('click', () => {
+            if (choice.special) {
+              // "do not click" effect: scramble previous text
+              const allTexts = document.querySelectorAll('.text');
+              allTexts.forEach(t => {
+                if (t.parentElement !== block) {
+                  t.textContent = t.textContent.split('').reverse().join('');
                 }
+              });
+              spawnHall();
+              return;
             }
-            requestAnimationFrame(animate);
+            // update stat
+            if (choice.stat && state[choice.stat] !== undefined) {
+              state[choice.stat] += 1;
+            }
+            // depth change
+            if (choice.depthChange) {
+              for (let i = 0; i < choice.depthChange; i++) {
+                state.depth++;
+                state.time++;
+              }
+            }
+            // journal push
+            journal.push(textContent);
+            if (journal.length > 25) journal.shift();
+            saveState();
+            // dense/sparse rhythm: sometimes burst adds
+            if (Math.random() < 0.4 && state.depth > 15) {
+              // burst of 1-3 extra blocks
+              const burst = Math.floor(Math.random() * 3) + 1;
+              for (let i = 0; i < burst; i++) {
+                setTimeout(() => addBlock(), i * 400);
+              }
+            }
+            addBlock();
+            // memory fragments appear occasionally
+            if (state.depth % 15 === 0) showMemories();
+          });
+          choicesContainer.appendChild(btn);
+        });
+
+        // Apply mutations
+        applyMutations(block, state.depth);
+
+        // Append and scroll
+        main.appendChild(block);
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+
+        // Spawn hall messages
+        if (Math.random() < 0.5) spawnHall();
+        // Sparse/dense background color shift
+        if (state.depth > 70 && Math.random() < 0.3) {
+          document.body.style.background = state.hope > state.grief ? '#0f0f12' : '#080808';
+        }
+      }
+
+      // ---------- AUDIO (dissonant drone) ----------
+      let audioCtx;
+      let oscillators = [];
+      let noiseNode, noiseGain;
+      function initAudio() {
+        if (audioCtx) return;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.03;
+        masterGain.connect(audioCtx.destination);
+
+        // detuned drone oscillators
+        const baseFreq = 40;
+        const detuneValues = [0, -5, 7, -12];
+        detuneValues.forEach(det => {
+          const osc = audioCtx.createOscillator();
+          osc.type = 'sine';
+          osc.frequency.value = baseFreq * Math.pow(2, det/12);
+          const oscGain = audioCtx.createGain();
+          oscGain.gain.value = 0.15;
+          osc.connect(oscGain);
+          oscGain.connect(masterGain);
+          osc.start();
+          oscillators.push({ osc, gain: oscGain });
+        });
+
+        // noise (breath/static)
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = noiseBuffer;
+        noiseNode.loop = true;
+        const noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = 'lowpass';
+        noiseFilter.frequency.value = 200;
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = 0.01;
+        noiseNode.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(masterGain);
+        noiseNode.start();
+      }
+      function updateAudio() {
+        if (!audioCtx) return;
+        const hopeFactor = state.hope * 0.005;
+        const griefFactor = state.grief * 0.01;
+        oscillators.forEach((item, i) => {
+          const detune = (hopeFactor - griefFactor) * (i % 2 === 0 ? 1 : -1) * 5;
+          item.osc.frequency.value = 40 * Math.pow(2, detune/12) + Math.sin(Date.now()/3000) * 0.5;
+        });
+        if (noiseGain) {
+          noiseGain.gain.value = 0.005 + griefFactor * 0.05;
+        }
+      }
+
+      // ---------- INITIAL LOAD AND RETURN MESSAGES ----------
+      function startJourney() {
+        const main = document.getElementById('main');
+        // Greeting based on visits
+        const greeting = state.visits > 1 ? "you came back." : "you are here now.";
+        const titleBlock = document.createElement('h2');
+        titleBlock.textContent = greeting;
+        titleBlock.style.marginBottom = '50px';
+        main.appendChild(titleBlock);
+
+        // Show old journal entries as faded memories
+        if (journal.length > 0) {
+          const memoryBlock = document.createElement('div');
+          memoryBlock.className = 'block faint';
+          memoryBlock.innerHTML = `<div class="text">${journal.slice(-3).join('<br><br>')}</div>`;
+          main.appendChild(memoryBlock);
         }
 
-        // Start the animation
-        animate();
-    </script>
+        // Pre-populate a few blocks to start the descent
+        for (let i = 0; i < 3; i++) {
+          addBlock();
+        }
+
+        // Start audio on first interaction (click)
+        document.body.addEventListener('click', () => {
+          initAudio();
+          if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        }, { once: true });
+
+        // Audio modulation loop
+        setInterval(updateAudio, 2000);
+      }
+
+      // ---------- OCCASIONAL DENSITY BURST SCHEDULER ----------
+      // (already handled inside addBlock and button handlers)
+
+      // ---------- RUN ----------
+      startJourney();
+    })();
+  </script>
 </body>
 </html>
