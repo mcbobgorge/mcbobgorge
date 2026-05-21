@@ -3,84 +3,291 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Descent</title>
+  <title>nate wooding</title>
   <style>
+    :root {
+      --bg: #0a0a0a;
+      --text: #c8c8c8;
+      --accent: #333;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      background: #0a0a0a;
-      color: #d0d0d0;
-      font-family: 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', 'Times New Roman', serif;
       overflow-x: hidden;
-      transition: background 8s, color 8s;
-    }
-    body {
-      padding: 40px;
+      transition: background 4s, color 4s;
       min-height: 100vh;
-    }
-    #main {
-      max-width: 700px;
-      margin: 0 auto;
       position: relative;
     }
+    body {
+      padding: 60px 40px;
+      transition: padding 3s;
+    }
+    #main {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    body.layout-narrow #main { max-width: 500px; }
+    body.layout-wide #main { max-width: 90vw; }
+    body.layout-split #main { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 40px; 
+      max-width: 90vw; 
+    }
+    body.layout-split .block { break-inside: avoid; }
+    body.layout-scattered #main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 95vw;
+    }
+    body.layout-scattered .block {
+      width: 300px;
+      margin: 20px;
+      transform: rotate(calc(var(--rot, 0) * 1deg));
+    }
+    body.depth-medium { background: #0c0c0f; }
+    body.depth-deep { background: #0e0a0a; color: #b0b0b0; }
+    body.depth-verydeep { background: #050505; color: #999; }
+    body.depth-verydeep .text { text-shadow: 0 0 8px rgba(200,200,200,0.1); }
+
     .block {
-      margin: 70px 0;
+      margin: 50px 0;
       opacity: 0;
-      transform: translateY(30px);
-      animation: fadeIn 1.5s ease forwards;
-      transition: transform 0.5s, opacity 0.5s;
+      transform: translateY(40px);
+      animation: fadeIn 1.8s ease forwards;
+      transition: all 3s;
+      position: relative;
+      padding: 20px;
+      border-left: 1px solid transparent;
+      transition: border-color 2s, background 2s, transform 2s, opacity 2s;
+    }
+    .block:hover {
+      border-left-color: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.015);
+    }
+    .block.past {
+      opacity: 0.45;
+      transform: translateY(0) translateX(8px) scale(0.97);
+      filter: blur(0.8px) saturate(0.6);
+      border-left-color: rgba(100,100,100,0.15);
+    }
+    .block.overlapping {
+      position: relative;
+      z-index: 5;
+      margin-top: -30px;
+      background: rgba(5,5,5,0.8);
+      backdrop-filter: blur(4px);
+      border: 1px solid #1a1a1a;
+    }
+    .block.horizontal {
+      white-space: nowrap;
+      overflow-x: auto;
+      max-width: 85vw;
+      padding: 30px 20px;
+      border-left: 2px solid #333;
+      animation: slideRight 2.5s ease forwards;
+    }
+    .block.floating {
+      position: relative;
+      animation: floatBlock 8s ease-in-out infinite;
+    }
+    @keyframes slideRight {
+      0% { transform: translateX(120vw); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes floatBlock {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
     @keyframes fadeIn {
       to { opacity: 1; transform: translateY(0); }
     }
+
     .text {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      transition: all 0.5s;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      margin-bottom: 25px;
+      transition: all 0.8s;
+      letter-spacing: 0.02em;
     }
-    .glitch {
-      animation: glitchAnim 0.2s infinite alternate;
-      color: #c7c7c7;
+    .text.glitch {
+      animation: glitchText 0.25s infinite alternate;
+      color: #d4d4d4;
     }
-    @keyframes glitchAnim {
-      0% { transform: translate(2px, 0) skew(0.5deg); }
-      100% { transform: translate(-2px, 0) skew(-0.5deg); }
+    @keyframes glitchText {
+      0% { transform: translate(2px, 1px) skew(0.5deg); }
+      33% { transform: translate(-3px, -1px) skew(-0.8deg); }
+      66% { transform: translate(1px, 2px) skew(0.3deg); }
+      100% { transform: translate(-2px, -2px) skew(-0.5deg); }
     }
-    .mirror {
-      transform: scaleX(-1);
-      display: inline-block;
+    .text.mirror { transform: scaleX(-1); display: inline-block; }
+    .text.rotate { transform: rotate(1.5deg); display: inline-block; }
+    .text.rotate-strong { transform: rotate(-3deg); display: inline-block; }
+    .text.faint { opacity: 0.35; }
+    .text.bold { font-weight: bold; color: #fff; }
+    .text.italic { font-style: italic; color: #aaa; }
+    .text.shiver { animation: shiver 0.15s infinite; }
+    @keyframes shiver {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(1px, -1px); }
+      50% { transform: translate(-1px, 1px); }
+      75% { transform: translate(-1px, -1px); }
+      100% { transform: translate(1px, 1px); }
     }
-    .rotate {
-      transform: rotate(1deg);
+
+    .hotword {
+      cursor: pointer;
+      border-bottom: 1px dashed #666;
+      transition: all 0.3s;
+      position: relative;
     }
-    .faint {
-      opacity: 0.35;
+    .hotword:hover {
+      color: #fff;
+      border-bottom-color: #ccc;
+      text-shadow: 0 0 6px rgba(255,255,255,0.3);
+    }
+
+    .choices-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
     }
     button {
-      background: #111;
-      border: 1px solid #333;
-      color: #bbb;
-      padding: 8px 16px;
-      margin: 6px;
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      color: #aaa;
+      padding: 10px 20px;
       cursor: pointer;
       font-family: inherit;
       font-size: 0.9rem;
-      transition: background 0.3s, border-color 0.3s;
+      transition: all 0.3s;
       text-transform: lowercase;
+      letter-spacing: 0.03em;
+      border-radius: 2px;
+      position: relative;
     }
     button:hover {
-      background: #222;
+      background: #1a1a1a;
       border-color: #555;
+      color: #ddd;
     }
+    button.flight {
+      border: 2px solid #aaa;
+      box-shadow: 0 0 12px rgba(200,200,200,0.25);
+      animation: pulseFlight 1.5s infinite;
+      background: #1a1a1a;
+      color: #ddd;
+    }
+    button.flight:hover {
+      box-shadow: 0 0 24px rgba(255,255,255,0.5);
+      background: #222;
+    }
+    @keyframes pulseFlight {
+      0%, 100% { box-shadow: 0 0 8px rgba(200,200,200,0.2); }
+      50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); }
+    }
+
     .svg-container {
       margin: 30px 0;
       width: 100%;
+      overflow: hidden;
+      position: relative;
     }
-    svg {
+    .svg-container svg {
       width: 100%;
       height: auto;
-      max-height: 250px;
+      max-height: 350px;
+      opacity: 0.7;
+      transition: opacity 0.5s;
     }
+    .block:hover .svg-container svg { opacity: 0.95; }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    @keyframes writhe {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(0.5deg) scale(1.01); }
+      50% { transform: rotate(0deg) scale(1); }
+      75% { transform: rotate(-0.5deg) scale(0.99); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+    @keyframes drift-slow {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(10px, 5px); }
+    }
+    @keyframes creep {
+      0% { stroke-dashoffset: 1000; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 0.3; }
+      33% { opacity: 0.7; }
+      66% { opacity: 0.1; }
+    }
+    @keyframes expand {
+      0% { r: 1; opacity: 0.2; }
+      100% { r: 15; opacity: 0.8; }
+    }
+    @keyframes vine-grow {
+      0% { stroke-dashoffset: 500; stroke-dasharray: 500; }
+      100% { stroke-dashoffset: 0; stroke-dasharray: 500; }
+    }
+    @keyframes ghost-move {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(30px, -20px) rotate(5deg); }
+      50% { transform: translate(10px, 40px) rotate(-3deg); }
+      75% { transform: translate(-20px, 10px) rotate(2deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+    @keyframes seed-sprout {
+      0% { transform: scaleY(0); transform-origin: bottom; }
+      100% { transform: scaleY(1); transform-origin: bottom; }
+    }
+
+    #margin {
+      position: fixed;
+      right: 20px;
+      top: 80px;
+      width: 260px;
+      height: calc(100vh - 140px);
+      overflow-y: auto;
+      color: #666;
+      font-size: 0.7rem;
+      opacity: 0;
+      transition: opacity 2s;
+      border-left: 1px solid #1a1a1a;
+      padding-left: 20px;
+      z-index: 20;
+      pointer-events: none;
+    }
+    #margin.active { opacity: 0.75; }
+    #margin .annotation {
+      margin-bottom: 12px;
+      font-style: italic;
+      line-height: 1.5;
+      pointer-events: auto;
+    }
+    #margin .annotation a {
+      color: #999;
+      text-decoration: none;
+      border-bottom: 1px dashed #444;
+    }
+    #margin .annotation a:hover { color: #ccc; }
+
     .hall {
       position: fixed;
       pointer-events: none;
@@ -88,350 +295,1154 @@
       color: #555;
       font-size: 11px;
       z-index: 10;
-      animation: drift 12s linear infinite;
+      animation: drift-hall 14s linear infinite;
+      font-style: italic;
     }
-    @keyframes drift {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(20px, -20px); }
-      50% { transform: translate(-10px, 20px); }
-      75% { transform: translate(-20px, -10px); }
-      100% { transform: translate(0, 0); }
+    @keyframes drift-hall {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(30px, -25px) rotate(1deg); }
+      50% { transform: translate(-15px, 30px) rotate(-1deg); }
+      75% { transform: translate(-25px, -15px) rotate(0.5deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
     }
+
     .memory-fragment {
       position: fixed;
-      background: rgba(0,0,0,0.7);
-      padding: 10px;
-      max-width: 250px;
+      background: rgba(0,0,0,0.75);
+      padding: 12px 16px;
+      max-width: 280px;
       font-size: 0.8rem;
-      opacity: 0.4;
+      opacity: 0.35;
       color: #999;
       z-index: 5;
-      animation: memoryFade 15s ease-in-out infinite;
+      animation: memoryFade 18s ease-in-out infinite;
+      border: 1px solid rgba(255,255,255,0.05);
+      pointer-events: none;
     }
     @keyframes memoryFade {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 0.6; }
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.55; }
+    }
+
+    #glitch-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    #glitch-overlay.active {
+      opacity: 0.6;
+      animation: glitchFlash 0.15s;
+    }
+    @keyframes glitchFlash {
+      0% { opacity: 0.8; }
+      50% { opacity: 0.2; }
+      100% { opacity: 0.6; }
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @media (max-width: 1000px) {
+      body { padding: 40px 20px; }
+      #margin { display: none; }
+      body.layout-split #main { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+  <div id="glitch-overlay"></div>
+  <div id="margin"></div>
   <div id="main"></div>
 
   <script>
     (function() {
-      // ---------- FRAGMENT DATABASE (inspired by Godspeed, Silver Mt. Zion, etc.) ----------
-      const fragments = [
-        { text: "the streetlights leaned inward like tired trees", mood: 'dark' },
-        { text: "morning kept rehearsing beneath the pavement", mood: 'light' },
-        { text: "we are the last of the last truly lost", mood: 'dark' },
-        { text: "they don't sleep they just sway", mood: 'dark' },
-        { text: "there is weather here", mood: 'light' },
-        { text: "the sky was a wound we forgot to dress", mood: 'dark' },
-        { text: "the hallway remembers your shape", mood: 'dark' },
-        { text: "someone left hope in a paper cup", mood: 'light' },
-        { text: "the walls have started breathing", mood: 'dark' },
-        { text: "all the birds are just practicing existence", mood: 'light' },
-        { text: "every staircase leads to another staircase", mood: 'dark' },
-        { text: "the machine hums a lullaby for the end", mood: 'dark' },
-        { text: "a window opens onto a field that is still green", mood: 'light' },
-        { text: "the static is learning our names", mood: 'dark' },
-        { text: "at dawn the silence turned into a chord", mood: 'light' },
-        { text: "the emergency lights sing in C minor", mood: 'dark' },
-        { text: "we carry photographs of houses we never lived in", mood: 'dark' },
-        { text: "there is still honey in the broken hive", mood: 'light' },
-        { text: "the corridor stretched for years", mood: 'dark' },
-        { text: "you are the rain I forgot I heard", mood: 'light' },
-        { text: "the map kept folding into itself", mood: 'dark' },
-        { text: "a child’s drawing of a door that opens inward", mood: 'light' },
-        { text: "the signal repeats: we are still here", mood: 'dark' },
-        { text: "the sun is a rumor the earth keeps telling", mood: 'light' },
-        { text: "the floor number never changes", mood: 'dark' },
-        { text: "a thread of light under a door you cannot open", mood: 'light' },
-        { text: "the clock hands are just suggestions now", mood: 'dark' },
-        { text: "there is a garden that grows in the space between breaths", mood: 'light' },
-        { text: "the walls are writing their own story", mood: 'dark' },
-        { text: "somewhere a radio plays the sound of morning", mood: 'light' }
-      ];
+      // ============ COMPLETE NODE DATABASE ============
+      const nodes = {
+        start: {
+          defaultText: "The hallway stretches in both directions, lit by bulbs that remember only half the night. The air is damp with old rain. Somewhere ahead, a radio plays the same three notes over and over.",
+          choices: [
+            { label: "walk toward the music", next: "musicRoom", stat:'hope', statInc:1 },
+            { label: "take the staircase down", next: "staircaseDown", stat:'grief', statInc:1 },
+            { label: "sit against the wall", next: "sitWall", stat:'surrender', statInc:1 },
+            { label: "examine the door with no handle", next: "doorNoHandle", stat:'curiosity', statInc:2 }
+          ]
+        },
+        musicRoom: {
+          textVariants: {
+            start: "You follow the three notes into a dusty room. A radio sits on a windowsill that looks out onto a field of static. Under the hiss, a woman's voice repeats: 'we are still here, we are still here.'",
+            staircaseDown: "The same three notes drift up from below. You trace them to a room you've seen before: the radio, the windowsill, the static. But the voice is different now—it's your own.",
+            darkHallway: "The darkness carries the same three notes. You stumble into the music room, but the windowsill is gone. The radio floats in void, tethered by nothing."
+          },
+          defaultText: "The radio plays its three notes. The windowsill is empty. The static watches.",
+          choices: [
+            { label: "turn the dial", next: "radioDial", stat:'hope', statInc:1 },
+            { label: "look outside the window", next: "windowField", stat:'curiosity', statInc:1 },
+            { label: "shut it off", next: "silenceRoom", stat:'grief', statInc:2 },
+            { label: "leave it playing and continue", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        radioDial: {
+          defaultText: "You twist the dial and the static clears into a voice: 'don't forget the gardens.' The radio flickers, then the voice becomes a child singing a nursery rhyme about a house with too many rooms.",
+          choices: [
+            { label: "listen closer", next: "nurseryRhyme", stat:'curiosity', statInc:1 },
+            { label: "write down the words", next: "writeWords", stat:'surrender', statInc:1 },
+            { label: "turn it off", next: "silenceRoom", stat:'grief', statInc:1 }
+          ]
+        },
+        nurseryRhyme: {
+          defaultText: "'…and the hallway remembered the shape of every child who ever ran through it, laughing, and the walls grew warm with the memory.' The voice fades, leaving only the hum of the building.",
+          choices: [
+            { label: "hum along", next: "humAlong", stat:'hope', statInc:1 },
+            { label: "turn it off", next: "silenceRoom", stat:'grief', statInc:1 }
+          ]
+        },
+        humAlong: {
+          defaultText: "You hum and the radio hums with you. The bulbs brighten for a moment. The hallway feels almost like a home you've been trying to remember.",
+          choices: [
+            { label: "keep humming", next: "keepHumming", stat:'hope', statInc:1 },
+            { label: "stop", next: "silenceRoom", stat:'surrender', statInc:1 }
+          ]
+        },
+        keepHumming: {
+          defaultText: "You hum and the hallway hums with you, a harmony of one note. The bulbs glow steady for the first time. You feel the building smile.",
+          choices: [
+            { label: "continue", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        writeWords: {
+          defaultText: "You scratch the words onto a scrap of paper. As you write, the ink turns red, then clear. The words become part of your skin.",
+          choices: [
+            { label: "keep the paper", next: "keepPaper", stat:'surrender', statInc:1 },
+            { label: "drop it", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        keepPaper: {
+          defaultText: "You fold the paper and put it in your pocket. Over time, you'll forget it's there, but it will whisper to you when you sleep.",
+          choices: [
+            { label: "continue", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        windowField: {
+          defaultText: "Outside, the field is endless gray static, but in the distance you see a figure walking. It might be waving. The glass is cold under your fingers.",
+          choices: [
+            { label: "open the window", next: "openWindow", stat:'hope', statInc:2 },
+            { label: "call out", next: "callOut", stat:'hope', statInc:1 },
+            { label: "turn away", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        openWindow: {
+          defaultText: "The window opens and the static pours in, but it feels like wind, like the breath of the outside world. You smell rain and asphalt.",
+          choices: [
+            { label: "climb out", next: "outside", stat:'hope', statInc:3 },
+            { label: "just breathe", next: "breatheWindow", stat:'hope', statInc:1 }
+          ]
+        },
+        breatheWindow: {
+          defaultText: "You breathe deep. The air tastes of ozone and faraway rain. Somewhere a train horn sounds, impossibly distant. You feel a thread of light inside you.",
+          choices: [
+            { label: "turn back inside", next: "continueHall", stat:'grief', statInc:1 },
+            { label: "stay a while", next: "stayWindow", stat:'hope', statInc:1 }
+          ]
+        },
+        stayWindow: {
+          defaultText: "You stay at the window until dusk. The static sky turns purple, then navy. Stars appear—not real stars, but points of hope that you placed there yourself, long ago.",
+          choices: [
+            { label: "go back inside", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        callOut: {
+          defaultText: "Your voice disappears into the static. After a long pause, the figure in the field stops and seems to turn toward you. You can't tell if it's human.",
+          choices: [
+            { label: "call again", next: "callAgain", stat:'hope', statInc:1 },
+            { label: "close the window", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        callAgain: {
+          defaultText: "You call again and the figure raises an arm. It might be a greeting or a warning. The static between you seems to thin, and for a second you see a face—tired, kind, familiar.",
+          choices: [
+            { label: "wave back", next: "waveBack", stat:'hope', statInc:2 },
+            { label: "turn away", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        waveBack: {
+          defaultText: "You wave. The figure waves back, then turns and walks away into the static. You feel a pang of loss, but also a strange certainty you will meet again.",
+          choices: [
+            { label: "turn back to the hallway", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        outside: {
+          defaultText: "You climb through the window into the static. The ground under your feet is real, asphalt and weeds. The sky is a pale, hesitant blue. In the distance, a city skyline smokes gently.",
+          choices: [
+            { label: "walk toward the city", next: "cityWalk", stat:'hope', statInc:2 },
+            { label: "stand still", next: "outsideStill", stat:'surrender', statInc:1 }
+          ]
+        },
+        outsideStill: {
+          defaultText: "You stand still and feel the wind. After a long time, a bird lands on your shoulder. It says nothing, but its presence is a small, perfect warmth.",
+          choices: [
+            { label: "stay with the bird", next: "birdStay", stat:'hope', statInc:3 },
+            { label: "move on", next: "cityWalk", stat:'hope', statInc:1 }
+          ]
+        },
+        birdStay: {
+          defaultText: "The bird stays with you until evening, then flies away. In its place, it leaves a small feather. You tuck it into your pocket.",
+          choices: [
+            { label: "walk on", next: "cityWalk", stat:'hope', statInc:2 }
+          ]
+        },
+        cityWalk: {
+          defaultText: "You walk toward the city. The static recedes and becomes grass under your feet. The skyline resolves into familiar shapes—a church, a library, a bakery. It's morning.",
+          choices: [
+            { label: "enter the bakery", next: "bakery", stat:'hope', statInc:2 },
+            { label: "keep walking", next: "cityStreet", stat:'curiosity', statInc:1 }
+          ]
+        },
+        bakery: {
+          defaultText: "The bakery smells of fresh bread and cinnamon. The baker, an old woman with kind eyes, hands you a warm roll. 'You look like you've been walking a long time.'",
+          choices: [
+            { label: "eat the bread", next: "eatBread", stat:'hope', statInc:3 }
+          ]
+        },
+        eatBread: {
+          defaultText: "The bread is still warm. You eat it in the bakery doorway, watching the morning light turn the street gold. The baker pats your shoulder. 'You'll be okay.'",
+          choices: [
+            { label: "believe her", next: "cityStreet", stat:'hope', statInc:3 }
+          ]
+        },
+        cityStreet: {
+          defaultText: "The street is empty and quiet. A tram rumbles in the distance. You sit on a bench and watch the world wake up. You made it.",
+          choices: [
+            { label: "rest", next: "restCity", stat:'hope', statInc:4 }
+          ]
+        },
+        restCity: {
+          defaultText: "You find a small park and lie in the grass. The sun is high now. You hear children laughing somewhere. It's a good sound.",
+          choices: [
+            { label: "close your eyes", next: "restHere", stat:'hope', statInc:4 }
+          ]
+        },
+        silenceRoom: {
+          textVariants: {
+            musicRoom: "The silence that follows is heavy, like a blanket over the world. The radio is dead. You hear your own heartbeat for the first time in what feels like years.",
+            radioDial: "You click the radio off. The silence rushes in like water. The room grows darker, but you can still hear the three notes echoing in your bones."
+          },
+          defaultText: "The silence that follows is heavy. You hear your own heartbeat. The room grows darker.",
+          choices: [
+            { label: "stay in the silence", next: "sitWall", stat:'surrender', statInc:1 },
+            { label: "feel your way along the wall", next: "darkHallway", stat:'grief', statInc:1 },
+            { label: "light a match (you find one in your pocket)", next: "matchLight", stat:'hope', statInc:1 }
+          ]
+        },
+        matchLight: {
+          defaultText: "The match flares and you see you are in a small room lined with bookshelves. The books have no titles, just dates. One of them is your birthday.",
+          choices: [
+            { label: "open the book", next: "openBook", stat:'curiosity', statInc:2 },
+            { label: "blow out the match", next: "darkHallway", stat:'surrender', statInc:1 }
+          ]
+        },
+        openBook: {
+          defaultText: "The book opens to a page that says only: 'you were always going to end up here.' Handwriting crowds the margins, different colors, different hands. They all seem to be talking to you.",
+          choices: [
+            { label: "add your own note", next: "addNote", stat:'surrender', statInc:1 },
+            { label: "close the book", next: "darkHallway", stat:'hope', statInc:1 }
+          ]
+        },
+        addNote: {
+          defaultText: "You write: 'there is still honey.' The margins crowd tighter, but the book seems to sigh, satisfied. You feel a sense of completion.",
+          choices: [
+            { label: "close the book and continue", next: "darkHallway", stat:'hope', statInc:1 }
+          ]
+        },
+        darkHallway: {
+          textVariants: {
+            silenceRoom: "The darkness is complete, but you can feel the walls with your fingertips. They are warm and smooth, like the inside of a throat.",
+            matchLight: "The match dies and darkness returns, thicker than before. But you remember the way the books looked at you.",
+            continueHall: "You turn a corner and the lights fail. The darkness here is different—it has texture, like velvet."
+          },
+          defaultText: "The darkness is complete, but you can feel the walls with your fingertips. They are warm and smooth.",
+          choices: [
+            { label: "keep walking", next: "deepDark", stat:'grief', statInc:1 },
+            { label: "stop and wait", next: "waitDark", stat:'surrender', statInc:1 },
+            { label: "try to go back", next: "returnToHall", stat:'hope', statInc:1 }
+          ]
+        },
+        deepDark: {
+          defaultText: "You walk until the darkness becomes a texture. You feel carvings under your fingers: words, maps, equations. The building is writing its own story on its skin.",
+          choices: [
+            { label: "trace the carvings", next: "traceCarvings", stat:'curiosity', statInc:1 },
+            { label: "keep walking", next: "deeperDark", stat:'grief', statInc:2 }
+          ]
+        },
+        deeperDark: {
+          defaultText: "The darkness becomes so complete you can't even see your own hands. But you hear water dripping, and you feel a cool breeze. You must be near an exit.",
+          choices: [
+            { label: "follow the breeze", next: "followBreeze", stat:'hope', statInc:2 },
+            { label: "sit and wait for dawn", next: "waitDawn", stat:'surrender', statInc:2 }
+          ]
+        },
+        followBreeze: {
+          defaultText: "You follow the breeze until you see a crack of light. You push through and emerge onto a hillside overlooking a valley. It's dawn.",
+          choices: [
+            { label: "stand and watch", next: "valleyDawn", stat:'hope', statInc:3 }
+          ]
+        },
+        valleyDawn: {
+          defaultText: "You stand and watch the valley fill with light. A river glints below. You see a small cottage with smoke rising from its chimney. It looks like home.",
+          choices: [
+            { label: "go to the cottage", next: "cottage", stat:'hope', statInc:5 }
+          ]
+        },
+        cottage: {
+          defaultText: "You reach the cottage. The door is open. Inside, a fire burns, and someone has set the table for one. There's a note: 'welcome home.'",
+          choices: [
+            { label: "step inside", next: "homeAtLast", stat:'hope', statInc:10 }
+          ]
+        },
+        waitDawn: {
+          defaultText: "You wait. Slowly, the darkness thins. You realize you can see your hands again, and then the walls, and then a window you never noticed before. It's open.",
+          choices: [
+            { label: "climb through", next: "outside", stat:'hope', statInc:3 }
+          ]
+        },
+        waitDark: {
+          defaultText: "You wait. After a long time, you notice a faint phosphorescence on the walls. Shapes appear: a chair, a window, a cup. They flicker in and out of existence.",
+          choices: [
+            { label: "touch a shape", next: "touchShape", stat:'curiosity', statInc:1 },
+            { label: "close your eyes", next: "dreamSequence", stat:'surrender', statInc:2 }
+          ]
+        },
+        touchShape: {
+          defaultText: "You touch the shape of a cup. It solidifies into a small, clay vessel filled with cool water. You drink, and it tastes of mountains.",
+          choices: [
+            { label: "keep the cup", next: "keepCup", stat:'hope', statInc:1 },
+            { label: "set it down", next: "waitDark", stat:'surrender', statInc:1 }
+          ]
+        },
+        keepCup: {
+          defaultText: "You put the cup in your pocket. It will refill whenever you are thirsty. This is one of the building's small mercies.",
+          choices: [
+            { label: "continue", next: "darkHallway", stat:'hope', statInc:1 }
+          ]
+        },
+        traceCarvings: {
+          defaultText: "Under your fingers you read: 'I was here, and I was lost, and I was found, and I was lost again, and I left this mark so you would know you are not the first.'",
+          choices: [
+            { label: "add your mark", next: "addMark", stat:'surrender', statInc:1 },
+            { label: "keep walking", next: "deeperDark", stat:'grief', statInc:1 }
+          ]
+        },
+        addMark: {
+          defaultText: "You scratch your name beside the others. The wall grows warmer, and you hear a chorus of sighs, as if the building itself is relieved.",
+          choices: [
+            { label: "continue", next: "deeperDark", stat:'hope', statInc:1 }
+          ]
+        },
+        staircaseDown: {
+          textVariants: {
+            start: "The stairs are metal and they sing under your weight. Each step takes you deeper into a smell like wet earth and old photographs.",
+            continueHall: "You find the staircase again. The handwriting on the walls has changed—it now includes your own name, half-erased."
+          },
+          defaultText: "The stairs descend. Handwriting crowds the walls.",
+          choices: [
+            { label: "try to read the writing", next: "readWallWriting", stat:'curiosity', statInc:2 },
+            { label: "descend faster", next: "deepStairs", stat:'grief', statInc:1 },
+            { label: "turn back", next: "returnToHall", stat:'hope', statInc:1 },
+            { label: "sit on a step", next: "stepBreathe", stat:'surrender', statInc:1 }
+          ]
+        },
+        readWallWriting: {
+          defaultText: "The handwriting is small, frantic: 'the map folded itself again.' 'there is a garden in the space between breaths.' 'turn back before the walls learn your name.'",
+          choices: [
+            { label: "copy a phrase onto your hand", next: "phraseOnHand", stat:'surrender', statInc:1 },
+            { label: "follow the writing further down", next: "deepStairs", stat:'curiosity', statInc:1 },
+            { label: "scratch your own name beside them", next: "writeName", stat:'grief', statInc:2 }
+          ]
+        },
+        phraseOnHand: {
+          defaultText: "'the map folded itself again' is now written on your palm. The ink tingles. You feel a strange certainty that you've been here before.",
+          choices: [
+            { label: "clench your fist", next: "fistClench", stat:'hope', statInc:1 },
+            { label: "keep descending", next: "deepStairs", stat:'grief', statInc:1 }
+          ]
+        },
+        fistClench: {
+          defaultText: "You make a fist and the words on your palm press into your skin. When you open your hand, they are gone, but you can still feel them, like a promise.",
+          choices: [
+            { label: "continue", next: "deepStairs", stat:'hope', statInc:1 }
+          ]
+        },
+        writeName: {
+          defaultText: "You scratch your name beside the others. The wall grows warmer, and you hear a chorus of sighs, as if the building itself is relieved.",
+          choices: [
+            { label: "continue down", next: "deepStairs", stat:'surrender', statInc:1 },
+            { label: "turn back", next: "returnToHall", stat:'hope', statInc:1 }
+          ]
+        },
+        deepStairs: {
+          textVariants: {
+            staircaseDown: "The stairs go deeper than you thought possible. The air becomes thick, and you hear the sound of a cello playing a single sustained note.",
+            readWallWriting: "The handwriting leads you further down. The cello note is louder now, vibrating through the concrete."
+          },
+          defaultText: "The stairs go deeper. A cello note resonates from below.",
+          choices: [
+            { label: "follow the note", next: "celloRoom", stat:'curiosity', statInc:2 },
+            { label: "go back up", next: "staircaseUp", stat:'hope', statInc:1 },
+            { label: "stop and let the note wash over you", next: "celloStill", stat:'surrender', statInc:1 }
+          ]
+        },
+        celloRoom: {
+          defaultText: "You find the cello: an instrument playing itself in a dusty room. A metronome ticks beside it, set to 60 beats per minute. The note is D, endlessly sustained.",
+          choices: [
+            { label: "sit and listen", next: "celloStill", stat:'surrender', statInc:2 },
+            { label: "try to play a different note", next: "playNote", stat:'curiosity', statInc:1 }
+          ]
+        },
+        celloStill: {
+          defaultText: "Time slows. The note becomes your heartbeat. You feel the presence of everyone who has ever sat in this room, waiting. It is a vast, gentle sadness.",
+          choices: [
+            { label: "close your eyes", next: "dreamSequence", stat:'surrender', statInc:2 },
+            { label: "stand up", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        playNote: {
+          defaultText: "You draw the bow across a different string. The note is a C, high and sweet. The cello accepts it, and now both notes ring together, a chord of dissonant hope.",
+          choices: [
+            { label: "play more", next: "playMore", stat:'hope', statInc:2 },
+            { label: "let it be", next: "celloStill", stat:'surrender', statInc:1 }
+          ]
+        },
+        playMore: {
+          defaultText: "You play a melody you didn't know you knew. The cello answers, and together you build a house of sound in the dusty air.",
+          choices: [
+            { label: "stay in the music", next: "stayMusic", stat:'hope', statInc:3 }
+          ]
+        },
+        stayMusic: {
+          defaultText: "You stay in the music until you become a note yourself, suspended in the air of the room, vibrating with a gentle, endless hope.",
+          choices: [
+            { label: "let go", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        staircaseUp: {
+          defaultText: "You climb and climb, but the staircase doesn't end. The walls change from concrete to plaster, then to wallpaper, then to bare brick. You hear faint laughter.",
+          choices: [
+            { label: "keep climbing", next: "endlessUp", stat:'hope', statInc:1 },
+            { label: "step off at the next door", next: "unknownDoor", stat:'curiosity', statInc:2 }
+          ]
+        },
+        endlessUp: {
+          defaultText: "The stairs never end, but you notice the walls are covered in murals now: green hills, rivers, entire cities painted in vivid detail. Someone spent a lifetime here.",
+          choices: [
+            { label: "study the murals", next: "studyMurals", stat:'curiosity', statInc:2 },
+            { label: "keep climbing", next: "climbForever", stat:'hope', statInc:1 }
+          ]
+        },
+        studyMurals: {
+          defaultText: "The murals tell a story: a group of people built a house that kept growing, so they planted gardens in the new rooms and never stopped.",
+          choices: [
+            { label: "look for the gardens", next: "searchGardenWall", stat:'hope', statInc:2 }
+          ]
+        },
+        climbForever: {
+          defaultText: "You climb until your legs are memory, until the stairs become a ladder, until you break through a trapdoor into a room full of morning light.",
+          choices: [
+            { label: "stand in the light", next: "standLight", stat:'hope', statInc:3 }
+          ]
+        },
+        unknownDoor: {
+          defaultText: "The door opens into a library with a high ceiling and a skylight full of stars. A fire crackles in a grate. An armchair waits.",
+          choices: [
+            { label: "sit and rest", next: "libraryRest", stat:'hope', statInc:3 },
+            { label: "browse the shelves", next: "browseLibrary", stat:'curiosity', statInc:2 }
+          ]
+        },
+        libraryRest: {
+          defaultText: "You sink into the armchair. The fire crackles. A book lies open on the side table: 'A History of Lost Hallways.' You fall asleep reading.",
+          choices: [
+            { label: "wake and continue", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        browseLibrary: {
+          defaultText: "The shelves contain every book ever written about hallways. You pull one out at random: it's your own journal, written in your handwriting, detailing this very journey.",
+          choices: [
+            { label: "read it", next: "readJournal", stat:'curiosity', statInc:2 }
+          ]
+        },
+        readJournal: {
+          defaultText: "The journal describes your journey so far, but the handwriting changes near the end: 'you are almost at the garden. keep going.'",
+          choices: [
+            { label: "follow the advice", next: "searchGardenWall", stat:'hope', statInc:2 }
+          ]
+        },
+        stepBreathe: {
+          defaultText: "You sit on a cold step. After a long moment, you notice a tiny plant growing through a crack in the concrete, pale green and trembling.",
+          choices: [
+            { label: "touch the plant", next: "touchPlant", stat:'hope', statInc:2 },
+            { label: "keep sitting", next: "sitLonger", stat:'surrender', statInc:1 },
+            { label: "stand and continue", next: "deepStairs", stat:'grief', statInc:1 }
+          ]
+        },
+        touchPlant: {
+          defaultText: "The plant's leaves curl around your finger. It whispers in a voice like wind: 'there is still honey in the broken hive.'",
+          choices: [
+            { label: "believe it", next: "believePlant", stat:'hope', statInc:2 },
+            { label: "pull away", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        believePlant: {
+          defaultText: "You believe it. The plant straightens, and a tiny flower opens, white and impossibly bright. The staircase fills with the scent of jasmine.",
+          choices: [
+            { label: "continue down, carrying the scent", next: "deepStairs", stat:'hope', statInc:1 }
+          ]
+        },
+        sitLonger: {
+          defaultText: "You sit until your legs go numb. The step becomes softer, and you notice you are no longer on a staircase but on a mossy slope. The ceiling above is a canopy of leaves.",
+          choices: [
+            { label: "stand in this new place", next: "forestRoom", stat:'hope', statInc:2 },
+            { label: "lie down", next: "lieDown", stat:'surrender', statInc:2 }
+          ]
+        },
+        forestRoom: {
+          defaultText: "You stand in a room that is also a forest. Trees grow through the floor, their branches pushing against the ceiling. Birds sing, and you see a path leading deeper.",
+          choices: [
+            { label: "follow the path", next: "forestPath", stat:'hope', statInc:2 },
+            { label: "climb a tree", next: "climbTree", stat:'curiosity', statInc:1 }
+          ]
+        },
+        forestPath: {
+          defaultText: "The path leads to a clearing where a picnic is laid out. Sandwiches, a thermos of soup, a note that says 'for the one who kept walking.'",
+          choices: [
+            { label: "eat", next: "eatPicnic", stat:'hope', statInc:2 },
+            { label: "leave it for someone else", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        eatPicnic: {
+          defaultText: "The food is simple and good. The soup is still warm. You eat slowly, savoring each bite. When you finish, you feel ready to go on.",
+          choices: [
+            { label: "continue", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        climbTree: {
+          defaultText: "You climb and break through the canopy into a twilight sky full of constellations you don't recognize. You are no longer in the building.",
+          choices: [
+            { label: "climb back down", next: "forestRoom", stat:'hope', statInc:1 }
+          ]
+        },
+        lieDown: {
+          defaultText: "You lie down on the mossy slope. The ground holds you like a cupped hand. You feel roots growing beneath you, connecting you to something vast and alive.",
+          choices: [
+            { label: "rest here a while", next: "restForest", stat:'surrender', statInc:2 },
+            { label: "get up eventually", next: "forestRoom", stat:'hope', statInc:1 }
+          ]
+        },
+        restForest: {
+          defaultText: "You rest. The forest holds you. When you wake, a rabbit is watching you, unafraid. It hops away slowly, as if inviting you to follow.",
+          choices: [
+            { label: "follow the rabbit", next: "followRabbit", stat:'curiosity', statInc:2 }
+          ]
+        },
+        followRabbit: {
+          defaultText: "The rabbit leads you to a small hollow under a tree. Inside, a nest of baby rabbits. You watch them breathe, tiny and perfect.",
+          choices: [
+            { label: "stay and watch", next: "stayWatchRabbits", stat:'hope', statInc:2 }
+          ]
+        },
+        stayWatchRabbits: {
+          defaultText: "You watch the rabbits until the light fades. They sleep, trusting. You feel a peace you thought you'd forgotten.",
+          choices: [
+            { label: "continue when ready", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        sitWall: {
+          textVariants: {
+            start: "You press your back against the wall and the plaster gives slightly, warm like skin. You close your eyes and see a child's drawing of a door.",
+            silenceRoom: "You sit in the silence, back to the wall. The plaster is warmer now. You feel a pulse beneath the surface."
+          },
+          defaultText: "You press your back against the wall. The plaster gives slightly, warm like skin.",
+          choices: [
+            { label: "press harder", next: "wallOpens", stat:'surrender', statInc:2 },
+            { label: "open your eyes", next: "hallwayChanged", stat:'curiosity', statInc:1 },
+            { label: "whisper to the wall", next: "wallWhisper", stat:'grief', statInc:1 }
+          ]
+        },
+        wallOpens: {
+          defaultText: "The plaster gives way and your hand slips through into a void. You feel a breeze and hear birdsong, impossibly clear. The wall is not a wall anymore.",
+          choices: [
+            { label: "step through", next: "voidGarden", stat:'hope', statInc:3 },
+            { label: "pull your hand back", next: "hallwayChanged", stat:'grief', statInc:1 }
+          ]
+        },
+        voidGarden: {
+          textVariants: {
+            wallOpens: "You step through and find yourself in a garden surrounded by impossible architecture. Flowers grow out of brickwork. The sky is a soft, perpetual twilight.",
+            searchGardenWall: "You find the garden at last. Flowers nod in a breeze that shouldn't exist. The walls here are made of light."
+          },
+          defaultText: "You are in a garden where flowers grow from brickwork and the sky is perpetual twilight.",
+          choices: [
+            { label: "explore the garden", next: "exploreGarden", stat:'hope', statInc:2 },
+            { label: "look back", next: "lookBackVoid", stat:'grief', statInc:1 }
+          ]
+        },
+        exploreGarden: {
+          defaultText: "The garden unfolds in impossible geometries. Paths loop back on themselves. You find a bench with a plaque: 'for those who kept walking.' You sit.",
+          choices: [
+            { label: "rest", next: "gardenRest", stat:'hope', statInc:2 },
+            { label: "look for an exit", next: "gardenExit", stat:'curiosity', statInc:1 }
+          ]
+        },
+        gardenRest: {
+          defaultText: "You rest on the bench. Time passes, but you don't age. The garden hums a low, contented note. You realize you could stay here forever.",
+          choices: [
+            { label: "stay a while longer", next: "stayGarden", stat:'hope', statInc:2 },
+            { label: "get up eventually", next: "gardenExit", stat:'hope', statInc:0 }
+          ]
+        },
+        stayGarden: {
+          defaultText: "You stay. Days pass. Flowers bloom and die and bloom again. You plant a seed of your own and water it with a cup you found in the dark.",
+          choices: [
+            { label: "when it blooms, you know what to do", next: "dirtRoad", stat:'hope', statInc:4 }
+          ]
+        },
+        gardenExit: {
+          defaultText: "You look for an exit and find one: a small wooden gate covered in ivy. Beyond it, a dirt road. You can smell rain on the wind.",
+          choices: [
+            { label: "go through", next: "dirtRoad", stat:'hope', statInc:3 }
+          ]
+        },
+        lookBackVoid: {
+          defaultText: "You look back and the wall is gone. Only the garden remains, stretching forever. You realize you are no longer in the building. You are somewhere else entirely.",
+          choices: [
+            { label: "accept this", next: "gardenAccept", stat:'hope', statInc:3 },
+            { label: "search for the way back", next: "searchBack", stat:'grief', statInc:1 }
+          ]
+        },
+        gardenAccept: {
+          defaultText: "You accept this new place. The garden widens, and you see other wanderers tending flowers. They wave. One of them is you, from a long time ago.",
+          choices: [
+            { label: "join them", next: "joinGarden", stat:'hope', statInc:4 }
+          ]
+        },
+        joinGarden: {
+          defaultText: "You join your other selves in the garden. Together, you tend the flowers and tell stories of the hallways you walked. The sun never sets, but you don't mind.",
+          choices: [
+            { label: "rest", next: "restForever", stat:'hope', statInc:5 }
+          ]
+        },
+        searchBack: {
+          defaultText: "You search for the wall but it's gone. A voice says: 'you can't go back, but you can go forward.' You see a path leading out of the garden.",
+          choices: [
+            { label: "take the path", next: "gardenExit", stat:'hope', statInc:1 }
+          ]
+        },
+        hallwayChanged: {
+          defaultText: "When you open your eyes, the hallway is longer, narrower. The ceiling is lower. You notice that the floor has a slight tilt to the left, as if the whole building is listing.",
+          choices: [
+            { label: "follow the tilt", next: "tiltingHall", stat:'curiosity', statInc:1 },
+            { label: "try to straighten yourself", next: "sitWall", stat:'surrender', statInc:1 }
+          ]
+        },
+        tiltingHall: {
+          defaultText: "The tilt increases until you are walking on the wall as much as the floor. Gravity becomes a suggestion. You see doorways above you, upside down.",
+          choices: [
+            { label: "climb toward a doorway", next: "upsidedownRoom", stat:'curiosity', statInc:2 },
+            { label: "let yourself fall", next: "fallDirection", stat:'surrender', statInc:2 }
+          ]
+        },
+        upsidedownRoom: {
+          defaultText: "You pull yourself into an upside‑down room. Furniture clings to the ceiling. A window looks down onto the hallway you just left, far below. It feels like flying.",
+          choices: [
+            { label: "open the upside‑down window", next: "openUpsideWindow", stat:'hope', statInc:2 },
+            { label: "sit on the ceiling", next: "sitCeiling", stat:'surrender', statInc:1 }
+          ]
+        },
+        openUpsideWindow: {
+          defaultText: "You open the window and fall upward into a sky full of paper birds. They carry you gently toward a floating island with a single tree.",
+          choices: [
+            { label: "land on the island", next: "floatingIsland", stat:'hope', statInc:3 }
+          ]
+        },
+        floatingIsland: {
+          defaultText: "The tree on the island is covered in paper birds. They rustle in the breeze, and each one is a letter from someone who got lost and was found. One is addressed to you.",
+          choices: [
+            { label: "read it", next: "readLetter", stat:'hope', statInc:3 }
+          ]
+        },
+        readLetter: {
+          defaultText: "The letter says: 'we were lost, but we built gardens. we were scared, but we sang. we were alone, but we found each other. you will too.'",
+          choices: [
+            { label: "tuck the letter away", next: "floatingIslandStay", stat:'hope', statInc:3 }
+          ]
+        },
+        floatingIslandStay: {
+          defaultText: "You stay on the island, watching the paper birds circle. The world below is a map of places you've been. You can see the whole labyrinth from here.",
+          choices: [
+            { label: "descend gently", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        sitCeiling: {
+          defaultText: "You sit cross-legged on the ceiling. The room below you is a perfect mirror of itself. You feel suspended between two worlds, perfectly balanced.",
+          choices: [
+            { label: "stay", next: "balanceStay", stat:'surrender', statInc:2 }
+          ]
+        },
+        balanceStay: {
+          defaultText: "You stay suspended between the two rooms. The balance becomes a peace. You realize you can be both lost and found at the same time.",
+          choices: [
+            { label: "descend gently", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        fallDirection: {
+          defaultText: "You let go and fall, but it's slow, like sinking through water. The hallway twists around you. You land softly in a room with a large, circular rug.",
+          choices: [
+            { label: "stand up", next: "circularRugRoom", stat:'curiosity', statInc:2 }
+          ]
+        },
+        circularRugRoom: {
+          defaultText: "The rug is a map of the world, but the continents are wrong—they spell out a sentence: 'we built this place so the lost would have somewhere to go.'",
+          choices: [
+            { label: "step on the rug", next: "rugActivate", stat:'curiosity', statInc:2 }
+          ]
+        },
+        rugActivate: {
+          defaultText: "You step onto the rug and the world shifts. You are standing in a vast hall with a map on the floor. All the lost hallways connect here.",
+          choices: [
+            { label: "explore the hub", next: "hubExploration", stat:'curiosity', statInc:2 }
+          ]
+        },
+        hubExploration: {
+          defaultText: "The hub connects all hallways. You see doorways labeled with emotions: Nostalgia, Longing, Quiet Joy, Gentle Grief. You can go anywhere now.",
+          choices: [
+            { label: "choose a door", next: "chooseDoor", stat:'hope', statInc:3 }
+          ]
+        },
+        chooseDoor: {
+          defaultText: "You step through a door at random and find yourself... back in the hallway. But it's different now. The walls are the color of dawn.",
+          choices: [
+            { label: "continue", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        wallWhisper: {
+          defaultText: "You lean close and whisper a name. The wall whispers it back, but stretched into a long, low sigh. You feel something shift deep within the building.",
+          choices: [
+            { label: "whisper again", next: "whisperAgain", stat:'surrender', statInc:2 },
+            { label: "press your ear to it", next: "wallHeartbeat", stat:'curiosity', statInc:1 },
+            { label: "pull away", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        whisperAgain: {
+          defaultText: "You whisper again, and this time the wall answers in a language you don't understand but feel in your bones. It tells you the history of every lost thing in the building.",
+          choices: [
+            { label: "ask about the gardens", next: "gardenStory", stat:'hope', statInc:1 },
+            { label: "ask about yourself", next: "selfStory", stat:'curiosity', statInc:2 }
+          ]
+        },
+        gardenStory: {
+          defaultText: "The wall tells you the gardens were planted by people who got lost and decided to stay. They grew flowers from their memories and watered them with hope.",
+          choices: [
+            { label: "ask to see them", next: "wallOpens", stat:'hope', statInc:3 }
+          ]
+        },
+        selfStory: {
+          defaultText: "The wall tells you that you have been here before, many times, in many forms. You always leave something behind. This time, you left a question.",
+          choices: [
+            { label: "ask what the question was", next: "questionAsked", stat:'curiosity', statInc:2 },
+            { label: "thank it and move on", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        questionAsked: {
+          defaultText: "The wall says you asked: 'is there still honey in the broken hive?' The answer is yes. There always was.",
+          choices: [
+            { label: "smile", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        wallHeartbeat: {
+          defaultText: "You press your ear to the wall and hear a slow, rhythmic beating. It's not your heart. It's the building's. You realise it has been beating this whole time.",
+          choices: [
+            { label: "stay with the heartbeat", next: "heartbeatStay", stat:'surrender', statInc:2 },
+            { label: "move on", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        heartbeatStay: {
+          defaultText: "You sit with the heartbeat. It slows until it matches your own. You feel the building breathe with you, and for a moment you are not alone.",
+          choices: [
+            { label: "whisper thank you", next: "whisperThanks", stat:'hope', statInc:1 },
+            { label: "stand up", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        whisperThanks: {
+          defaultText: "You whisper 'thank you.' The building seems to hold its breath, then a warm draft sweeps through the hallway, carrying the scent of jasmine.",
+          choices: [
+            { label: "continue", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        doorNoHandle: {
+          defaultText: "The door is smooth and cold. No handle, no keyhole. But you notice a thin crack at the bottom, and through it comes a light that smells like morning.",
+          choices: [
+            { label: "push it", next: "pushDoor", stat:'hope', statInc:2 },
+            { label: "speak to it", next: "speakDoor", stat:'grief', statInc:1 },
+            { label: "search for a hidden mechanism", next: "searchDoor", stat:'curiosity', statInc:1 },
+            { label: "leave it and walk on", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        pushDoor: {
+          defaultText: "The door swings open onto a room full of morning light. The windows are open and a breeze stirs dust motes. In the corner, a record player spins silently.",
+          choices: [
+            { label: "put the needle down", next: "recordPlay", stat:'hope', statInc:2 },
+            { label: "stand in the light", next: "standLight", stat:'hope', statInc:1 },
+            { label: "close the door", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        recordPlay: {
+          defaultText: "The needle drops and a voice speaks: 'this is the sound of the place where we kept all the mornings we never used.' Music swells, a slow, trembling orchestral piece.",
+          choices: [
+            { label: "listen until the end", next: "listenEnd", stat:'hope', statInc:2 },
+            { label: "dance", next: "danceRoom", stat:'hope', statInc:1 }
+          ]
+        },
+        listenEnd: {
+          defaultText: "The music ends with a single, sustained piano note. Then silence, but it's a full silence, like the pause after a lover says your name.",
+          choices: [
+            { label: "sit in the silence", next: "sitSilence", stat:'surrender', statInc:2 },
+            { label: "leave the room", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        sitSilence: {
+          defaultText: "The silence is a blanket, and you pull it around yourself. For the first time in a long while, you feel safe.",
+          choices: [
+            { label: "rest", next: "restHere", stat:'hope', statInc:2 }
+          ]
+        },
+        danceRoom: {
+          defaultText: "You dance, slowly, in the dusty sunlight. The room seems to widen to accommodate you. The record player skips, but you keep moving.",
+          choices: [
+            { label: "dance until you're tired", next: "tiredDance", stat:'hope', statInc:2 }
+          ]
+        },
+        tiredDance: {
+          defaultText: "You stop, breathless. The room is still. The dust has settled in new patterns on the floor, like a map of your joy.",
+          choices: [
+            { label: "leave the room", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        standLight: {
+          defaultText: "You stand in the light until your shadow disappears. For a few seconds you are completely weightless, full of a hope so pure it hurts.",
+          choices: [
+            { label: "step back into the hallway", next: "continueHall", stat:'grief', statInc:1 },
+            { label: "try to stay", next: "stayLight", stat:'hope', statInc:3 }
+          ]
+        },
+        stayLight: {
+          defaultText: "You try to stay, but the light fades as the sun moves behind a cloud. Still, the warmth lingers on your skin. You carry it with you.",
+          choices: [
+            { label: "go back to the hallway", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        speakDoor: {
+          defaultText: "You ask the door where it leads. A voice answers, not from the door but from inside your own head: 'where all the gardens are.'",
+          choices: [
+            { label: "push the door", next: "pushDoor", stat:'hope', statInc:2 },
+            { label: "ask more", next: "askMore", stat:'curiosity', statInc:1 }
+          ]
+        },
+        askMore: {
+          defaultText: "You ask where the gardens are. The voice replies: 'wherever two walls meet in a way they shouldn't.' You feel the building shift again.",
+          choices: [
+            { label: "search for such a wall", next: "searchGardenWall", stat:'curiosity', statInc:2 },
+            { label: "keep walking", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        searchGardenWall: {
+          defaultText: "You search until you find two walls meeting at an impossible angle. A crack of light shows through. You press your hand to it and the wall begins to open.",
+          choices: [
+            { label: "enter", next: "voidGarden", stat:'hope', statInc:3 }
+          ]
+        },
+        searchDoor: {
+          defaultText: "You run your fingers over the frame and find a tiny inscription: 'built for those who forgot how to leave.' Below it, a small switch.",
+          choices: [
+            { label: "flip the switch", next: "pushDoor", stat:'hope', statInc:2 },
+            { label: "leave it", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        returnToHall: {
+          defaultText: "You climb back up. The hallway looks the same, but now there's a chair in the middle that wasn't there before. On it rests a cup of water.",
+          choices: [
+            { label: "drink the water", next: "drinkWater", stat:'hope', statInc:1 },
+            { label: "sit in the chair", next: "sitWall", stat:'surrender', statInc:1 },
+            { label: "ignore it and move on", next: "continueHall", stat:'curiosity', statInc:1 }
+          ]
+        },
+        drinkWater: {
+          defaultText: "The water is cold and clean. For a moment you are not in a hallway but in a meadow at dawn. The memory is so vivid you can smell the wet grass.",
+          choices: [
+            { label: "hold onto the memory", next: "memoryMeadow", stat:'hope', statInc:2 },
+            { label: "set the cup down and continue", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        memoryMeadow: {
+          defaultText: "You hold the memory and it grows: the meadow, the smell of wet grass, a voice singing in another language. You realize it's not a memory—it's a promise. Somewhere, this place still exists.",
+          choices: [
+            { label: "hold onto it", next: "holdPromise", stat:'hope', statInc:3 },
+            { label: "let it fade", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        holdPromise: {
+          defaultText: "You hold the promise tight. It becomes a compass in your chest, pointing toward something you can't name but know is true.",
+          choices: [
+            { label: "follow the compass", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        continueHall: {
+          textVariants: {
+            musicRoom: "You leave the music behind, but the three notes follow you, softer now, like a lullaby.",
+            pushDoor: "You step back into the hallway. The morning light from the room clings to your clothes.",
+            voidGarden: "You emerge from the garden, but the scent of flowers follows you into the corridor.",
+            silenceRoom: "You walk on. The silence fades, replaced by the distant hum of the building.",
+            darkHallway: "You find a lit stretch of hallway. The bulbs flicker their relief."
+          },
+          defaultText: "You continue down the corridor. The bulbs flicker, one by one, marking your progress.",
+          choices: [
+            { label: "enter the lit room", next: "litRoom", stat:'hope', statInc:1 },
+            { label: "pass by it", next: "darkHallway", stat:'grief', statInc:1 },
+            { label: "stop and listen", next: "listenAhead", stat:'curiosity', statInc:1 }
+          ]
+        },
+        litRoom: {
+          defaultText: "The room is a kitchen. A kettle is on the stove, steaming. Two cups are set on the table, one for you. A radio plays a song you almost remember.",
+          choices: [
+            { label: "sit at the table", next: "sitTable", stat:'hope', statInc:1 },
+            { label: "pour the tea", next: "pourTea", stat:'hope', statInc:1 },
+            { label: "leave the kitchen", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        sitTable: {
+          defaultText: "You sit. The chair is exactly your size. The table's grain reminds you of a place you think you went as a child. The kettle whistles.",
+          choices: [
+            { label: "stay for tea", next: "stayTea", stat:'hope', statInc:2 },
+            { label: "leave the memory", next: "continueHall", stat:'grief', statInc:1 }
+          ]
+        },
+        stayTea: {
+          defaultText: "You stay for tea. The kettle sings and the kitchen fills with steam. You realize you're humming that old song from the radio. It's a good day.",
+          choices: [
+            { label: "leave eventually", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        pourTea: {
+          defaultText: "The tea is chamomile and honey. As you drink, you feel the warmth spread through your chest, loosening something that has been clenched for a long time.",
+          choices: [
+            { label: "drink it all", next: "drinkAllTea", stat:'hope', statInc:2 },
+            { label: "leave the cup half full", next: "halfCup", stat:'surrender', statInc:1 }
+          ]
+        },
+        drinkAllTea: {
+          defaultText: "You drink every drop. The warmth settles in your stomach, and you feel a small, stubborn seed of hope take root there.",
+          choices: [
+            { label: "continue", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        halfCup: {
+          defaultText: "You leave the cup half full, a gift for the next wanderer. As you stand, you see the letters S O R R Y written in the tea leaves.",
+          choices: [
+            { label: "smile and move on", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        listenAhead: {
+          defaultText: "You strain to hear. There's a low murmur, like many voices whispering at once. Occasionally a word floats up: 'again,' 'garden,' 'always.'",
+          choices: [
+            { label: "move toward the voices", next: "deepDark", stat:'curiosity', statInc:1 },
+            { label: "stay and listen", next: "listenLong", stat:'surrender', statInc:1 }
+          ]
+        },
+        listenLong: {
+          defaultText: "You stay still and the voices become clearer. They are telling stories about the building: how it grew one night out of a single brick, how it feeds on echoes, how it loves the people who wander it.",
+          choices: [
+            { label: "listen more", next: "listenMore", stat:'curiosity', statInc:2 },
+            { label: "move on", next: "deepDark", stat:'hope', statInc:1 }
+          ]
+        },
+        listenMore: {
+          defaultText: "The stories go on forever, but you only catch fragments: a wedding held in the void, a child born in the garden, a library that grew out of a single book. You are part of the story now.",
+          choices: [
+            { label: "join the story", next: "joinStory", stat:'hope', statInc:3 }
+          ]
+        },
+        joinStory: {
+          defaultText: "You step into the story, and the hallway becomes a library where all the lost are gathered. They look up and smile. They've been waiting for you.",
+          choices: [
+            { label: "stay", next: "libraryRest", stat:'hope', statInc:3 }
+          ]
+        },
+        dreamSequence: {
+          defaultText: "You dream you are walking through the hallway, but you are also the hallway, and the people who walk you are warm and sad and beautiful. You wake with a start, still against the wall.",
+          choices: [
+            { label: "continue the descent", next: "continueHall", stat:'hope', statInc:1 },
+            { label: "try to go back to the dream", next: "backToDream", stat:'surrender', statInc:2 }
+          ]
+        },
+        backToDream: {
+          defaultText: "You close your eyes and try to return. Instead, you dream of a field of static where a figure is waving. You wave back.",
+          choices: [
+            { label: "wake", next: "continueHall", stat:'hope', statInc:1 }
+          ]
+        },
+        dirtRoad: {
+          defaultText: "The dirt road winds through fields. A signpost reads: 'home.' You follow it, and as you walk, the static begins to clear, and you hear a voice, your own voice, singing a song you'd forgotten.",
+          choices: [
+            { label: "sing along", next: "singAlong", stat:'hope', statInc:5 }
+          ]
+        },
+        singAlong: {
+          defaultText: "You sing and the static clears completely. You are on a hillside under a blue sky. The dirt road leads to a village. You walk home.",
+          choices: [
+            { label: "arrive", next: "arriveHome", stat:'hope', statInc:10 }
+          ]
+        },
+        arriveHome: {
+          defaultText: "You arrive. It's not a place you remember, but it's a place that remembers you. The door opens before you even knock.",
+          choices: [
+            { label: "enter", next: "homeAtLast", stat:'hope', statInc:10 }
+          ]
+        },
+        homeAtLast: {
+          defaultText: "You step inside. The kettle is on. The radio plays a song you half-remember. The walls are warm. You sit down, and for the first time, the descent is over.",
+          choices: []
+        },
+        restForever: {
+          defaultText: "You lie down in the garden among the flowers. The other yous gather around and sing a lullaby. The melody is the same one the radio played, all that time ago.",
+          choices: [
+            { label: "close your eyes", next: "theEnd", stat:'hope', statInc:10 }
+          ]
+        },
+        theEnd: {
+          defaultText: "You close your eyes and the garden closes around you. The flowers nod. The air is sweet. You are home. You were always home.",
+          choices: []
+        },
+        restHere: {
+          defaultText: "You rest. The world softens around you. Someone places a blanket over you. You don't see who, but you feel kindness like a physical warmth.",
+          choices: [
+            { label: "sleep", next: "sleep", stat:'hope', statInc:5 }
+          ]
+        },
+        sleep: {
+          defaultText: "You sleep deeply, dreamlessly. When you wake, the world is still kind. You get up and continue, knowing you can always return here.",
+          choices: [
+            { label: "move forward", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        },
+        whiteSpace: {
+          defaultText: "You are not supposed to be here. The page is white and silent. You feel the building watching you. You feel the building is the page. You feel the page is reading you.",
+          choices: [
+            { label: "return", next: "start", stat:'hope', statInc:0 }
+          ]
+        },
+        metacommentary: {
+          defaultText: "You have been here for many steps. The building wonders if you are still there. It wonders if you ever left. It wonders if the page is reading you, or if you are reading the page.",
+          choices: [
+            { label: "continue the descent", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        mapRoom: {
+          defaultText: "You find a room covered in maps. They are all wrong, but they are all beautiful. A red dot marks your position, but it moves every time you look away.",
+          choices: [
+            { label: "study the map", next: "mapRoom", stat:'curiosity', statInc:1 },
+            { label: "leave", next: "continueHall", stat:'hope', statInc:0 }
+          ]
+        },
+        secretGarden: {
+          defaultText: "A hidden door opens into a garden so small it fits in the palm of your hand. You peer inside and see entire civilizations of flowers living out their tiny lives.",
+          choices: [
+            { label: "close it gently", next: "continueHall", stat:'hope', statInc:2 }
+          ]
+        }
+      };
 
-      // ---------- PERSISTENCE ----------
-      const STORAGE_KEY = 'descent_v2';
-      let state = {};
-      let journal = [];          // last 25 generated texts
-      let blockCounter = 0;     // unique ID for each block
-      let densityMode = 'sparse'; // toggle for SVG generation
+      // ============ STATE MANAGEMENT ============
+      const STORAGE_KEY = 'descent_rhizome_final';
+      let stats = { hope:0, grief:0, curiosity:0, surrender:0, depth:0, time:0, visits:0 };
+      let journal = [];
+      let currentNodeId = 'start';
+      let lastNodeId = null;
+      let blockCounter = 0;
+      let visitedNodes = new Set();
+      let densityMode = 'sparse';
+      let audioCtx, oscillators=[], noiseNode, noiseGain;
+      let ambientProfile = 'default';
 
       function loadState() {
         try {
           const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
           if (saved) {
-            state = saved.stats || { hope:0, grief:0, curiosity:0, surrender:0, depth:0, time:0, visits:0 };
+            stats = saved.stats;
             journal = saved.journal || [];
+            currentNodeId = saved.currentNode || 'start';
+            lastNodeId = saved.lastNodeId || null;
             blockCounter = saved.blockCounter || 0;
+            visitedNodes = new Set(saved.visitedNodes || []);
             densityMode = saved.densityMode || 'sparse';
             return;
           }
         } catch(e) {}
-        state = { hope:0, grief:0, curiosity:0, surrender:0, depth:0, time:0, visits:0 };
+        stats = { hope:0, grief:0, curiosity:0, surrender:0, depth:0, time:0, visits:0 };
         journal = [];
+        currentNodeId = 'start';
+        lastNodeId = null;
         blockCounter = 0;
+        visitedNodes = new Set();
         densityMode = 'sparse';
       }
       function saveState() {
-        state.visits++;
+        stats.visits++;
         const data = {
-          stats: state,
-          journal: journal,
-          blockCounter: blockCounter,
-          densityMode: densityMode
+          stats, journal, currentNode: currentNodeId, lastNodeId,
+          blockCounter, visitedNodes: Array.from(visitedNodes), densityMode
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       }
       loadState();
-      saveState(); // save initial load
+      saveState();
 
-      // ---------- TEXT GENERATION (spliced conflict) ----------
-      function getRandomFragment(mood) {
-        const pool = fragments.filter(f => f.mood === mood);
-        return pool[Math.floor(Math.random() * pool.length)].text;
-      }
-      function generateText() {
-        // conflict: splice a dark and a light fragment
-        const dark = getRandomFragment('dark');
-        const light = getRandomFragment('light');
-        // choose a conjunction randomly
-        const conjunctions = [
-          ", but ", ", and yet ", ", unless ", ". however, ", ". still, ",
-          "; despite that, ", ". all the same, "
-        ];
-        const conj = conjunctions[Math.floor(Math.random() * conjunctions.length)];
-        return dark + conj + light + ".";
-      }
-
-      // ---------- PROCEDURAL SVG (density evolves) ----------
-      function generateSVG(depth) {
-        // density toggle sometimes flips based on depth randomness
-        if (Math.random() < 0.25) {
-          densityMode = densityMode === 'sparse' ? 'dense' : 'sparse';
-        }
-        const complexity = densityMode === 'dense' ? Math.floor(depth * 0.7) + 5 : Math.floor(depth * 0.1) + 1;
-        let paths = '';
-        // recursive branching L-system-like
-        function branch(x1, y1, len, angle, level) {
-          if (level <= 0 || len < 5) return;
-          const x2 = x1 + len * Math.cos(angle);
-          const y2 = y1 + len * Math.sin(angle);
-          const opacity = 0.15 + level * 0.15;
-          paths += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(120,120,120,${opacity})" stroke-width="1"/>`;
-          branch(x2, y2, len * 0.7, angle - 0.5, level - 1);
-          branch(x2, y2, len * 0.7, angle + 0.5, level - 1);
-        }
-        const startX = 200 + Math.random() * 200;
-        const startY = 200 + Math.random() * 50;
-        const levels = Math.min(complexity, 12);
-        branch(startX, startY, 70, -Math.PI/2, levels);
-        // add chaotic scribbles for dense mode
-        if (densityMode === 'dense') {
-          for (let i = 0; i < 20; i++) {
-            const x = Math.random() * 400;
-            const y = Math.random() * 250;
-            const r = Math.random() * 20 + 5;
-            paths += `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="rgba(90,90,90,0.2)" stroke-width="0.5"/>`;
-          }
-        }
-        return `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">${paths}</svg>`;
-      }
-
-      // ---------- CHOICES (procedural, context-sensitive) ----------
-      function createChoices(parentBlockId, parentDepth) {
-        const allChoices = [
-          { text: "turn left down a corridor that smells of rain", stat: 'hope', depthChange: 1 },
-          { text: "descend the staircase that spirals into static", stat: 'grief', depthChange: 2 },
-          { text: "sit down and let the walls memorize you", stat: 'surrender', depthChange: 3 },
-          { text: "listen to the hum of the machine", stat: 'curiosity', depthChange: 2 },
-          { text: "climb through the window that opens onto morning", stat: 'hope', depthChange: 1 },
-          { text: "follow the flickering exit sign", stat: 'grief', depthChange: 1 },
-          { text: "open the door that has no handle", stat: 'curiosity', depthChange: 3 },
-          { text: "walk backwards into the room you came from", stat: 'surrender', depthChange: 2 },
-          { text: "touch the wall where the paint is wet", stat: 'grief', depthChange: 2 },
-          { text: "look up at the ceiling that isn’t there", stat: 'curiosity', depthChange: 4 },
-          { text: "do not click this", stat: 'none', depthChange: 0, special: true }
-        ];
-
-        // select 3-4 random choices, plus occasionally the "do not click"
-        const shuffled = [...allChoices].sort(() => Math.random() - 0.5);
-        const selected = shuffled.slice(0, Math.random() < 0.3 ? 4 : 3);
-        return selected;
-      }
-
-      // ---------- MUTATIONS (glitch, mirror, rotate) ----------
-      function applyMutations(block, depth) {
-        if (depth < 15) return;
-        const roll = Math.random();
-        if (depth > 60 && roll < 0.35) {
-          block.classList.add('glitch');
-        } else if (depth > 45 && roll < 0.3) {
-          block.querySelector('.text').classList.add('mirror');
-        } else if (depth > 30 && roll < 0.25) {
-          block.querySelector('.text').classList.add('rotate');
-        } else if (depth > 20 && roll < 0.2) {
-          block.querySelector('.text').classList.add('faint');
-        }
-      }
-
-      // ---------- FLOATING HALL MESSAGES ----------
-      function spawnHall() {
-        if (state.depth < 10) return;
-        const messages = [
-          "memory leak detected",
-          "you already read this paragraph",
-          "the hallway is learning your shape",
-          "there is a door here that wasn’t there before",
-          "the page remembers you"
-        ];
-        const el = document.createElement('div');
-        el.className = 'hall';
-        el.textContent = messages[Math.floor(Math.random() * messages.length)];
-        el.style.left = (Math.random() * (window.innerWidth - 200)) + 'px';
-        el.style.top = (Math.random() * (window.innerHeight - 100)) + 'px';
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 12000 + Math.random() * 6000);
-      }
-
-      // ---------- MEMORY OVERLAYS (from journal) ----------
-      function showMemories() {
-        if (journal.length < 5) return;
-        const recent = journal.slice(-10);
-        for (let i = 0; i < 3; i++) {
-          const frag = recent[Math.floor(Math.random() * recent.length)];
-          const el = document.createElement('div');
-          el.className = 'memory-fragment';
-          el.textContent = frag;
-          el.style.left = (Math.random() * (window.innerWidth - 250)) + 'px';
-          el.style.top = (Math.random() * (window.innerHeight - 100)) + 'px';
-          document.body.appendChild(el);
-          setTimeout(() => el.remove(), 15000 + Math.random() * 10000);
-        }
-      }
-
-      // ---------- ADD BLOCK (core loop) ----------
-      function addBlock(triggeredBySpecial = false) {
-        // Update stats
-        state.depth++;
-        state.time++;
-        const main = document.getElementById('main');
-        const block = document.createElement('div');
-        block.className = 'block';
-        block.id = 'block-' + (++blockCounter);
-
-        // Generate text and SVG
-        const textContent = generateText();
-        const svgContent = generateSVG(state.depth);
-
-        block.innerHTML = `
-          <div class="text">${textContent}</div>
-          <div class="svg-container">${svgContent}</div>
-          <div class="choices-container"></div>
-        `;
-
-        // Add choices
-        const choices = createChoices(blockCounter, state.depth);
-        const choicesContainer = block.querySelector('.choices-container');
-        choices.forEach(choice => {
-          const btn = document.createElement('button');
-          btn.textContent = choice.text;
-          btn.addEventListener('click', () => {
-            if (choice.special) {
-              // "do not click" effect: scramble previous text
-              const allTexts = document.querySelectorAll('.text');
-              allTexts.forEach(t => {
-                if (t.parentElement !== block) {
-                  t.textContent = t.textContent.split('').reverse().join('');
-                }
-              });
-              spawnHall();
-              return;
-            }
-            // update stat
-            if (choice.stat && state[choice.stat] !== undefined) {
-              state[choice.stat] += 1;
-            }
-            // depth change
-            if (choice.depthChange) {
-              for (let i = 0; i < choice.depthChange; i++) {
-                state.depth++;
-                state.time++;
-              }
-            }
-            // journal push
-            journal.push(textContent);
-            if (journal.length > 25) journal.shift();
-            saveState();
-            // dense/sparse rhythm: sometimes burst adds
-            if (Math.random() < 0.4 && state.depth > 15) {
-              // burst of 1-3 extra blocks
-              const burst = Math.floor(Math.random() * 3) + 1;
-              for (let i = 0; i < burst; i++) {
-                setTimeout(() => addBlock(), i * 400);
-              }
-            }
-            addBlock();
-            // memory fragments appear occasionally
-            if (state.depth % 15 === 0) showMemories();
-          });
-          choicesContainer.appendChild(btn);
-        });
-
-        // Apply mutations
-        applyMutations(block, state.depth);
-
-        // Append and scroll
-        main.appendChild(block);
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: 'smooth'
-        });
-
-        // Spawn hall messages
-        if (Math.random() < 0.5) spawnHall();
-        // Sparse/dense background color shift
-        if (state.depth > 70 && Math.random() < 0.3) {
-          document.body.style.background = state.hope > state.grief ? '#0f0f12' : '#080808';
-        }
-      }
-
-      // ---------- AUDIO (dissonant drone) ----------
-      let audioCtx;
-      let oscillators = [];
-      let noiseNode, noiseGain;
+      // ============ AUDIO SYSTEM ============
       function initAudio() {
         if (audioCtx) return;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const masterGain = audioCtx.createGain();
-        masterGain.gain.value = 0.03;
+        masterGain.gain.value = 0.04;
         masterGain.connect(audioCtx.destination);
-
-        // detuned drone oscillators
         const baseFreq = 40;
-        const detuneValues = [0, -5, 7, -12];
-        detuneValues.forEach(det => {
+        [0, -5, 7, -12].forEach(det => {
           const osc = audioCtx.createOscillator();
           osc.type = 'sine';
           osc.frequency.value = baseFreq * Math.pow(2, det/12);
           const oscGain = audioCtx.createGain();
-          oscGain.gain.value = 0.15;
+          oscGain.gain.value = 0.2;
           osc.connect(oscGain);
           oscGain.connect(masterGain);
           osc.start();
           oscillators.push({ osc, gain: oscGain });
         });
-
-        // noise (breath/static)
-        const bufferSize = 2 * audioCtx.sampleRate;
+        const bufferSize = 4 * audioCtx.sampleRate;
         const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const data = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
         noiseNode = audioCtx.createBufferSource();
         noiseNode.buffer = noiseBuffer;
         noiseNode.loop = true;
@@ -445,56 +1456,491 @@
         noiseGain.connect(masterGain);
         noiseNode.start();
       }
+      function setAmbient(nodeId) {
+        switch(nodeId) {
+          case 'musicRoom': case 'radioDial': ambientProfile = 'melodic'; break;
+          case 'deepStairs': case 'deeperDark': ambientProfile = 'subbass'; break;
+          case 'voidGarden': case 'exploreGarden': ambientProfile = 'birds'; break;
+          case 'whiteSpace': ambientProfile = 'silence'; break;
+          default: ambientProfile = 'default';
+        }
+      }
       function updateAudio() {
         if (!audioCtx) return;
-        const hopeFactor = state.hope * 0.005;
-        const griefFactor = state.grief * 0.01;
+        const hopeFactor = stats.hope * 0.005;
+        const griefFactor = stats.grief * 0.01;
         oscillators.forEach((item, i) => {
-          const detune = (hopeFactor - griefFactor) * (i % 2 === 0 ? 1 : -1) * 5;
-          item.osc.frequency.value = 40 * Math.pow(2, detune/12) + Math.sin(Date.now()/3000) * 0.5;
+          const detune = (hopeFactor - griefFactor) * (i%2===0?1:-1) * 5;
+          item.osc.frequency.value = 40 * Math.pow(2, detune/12) + Math.sin(Date.now()/3000)*0.5;
         });
         if (noiseGain) {
-          noiseGain.gain.value = 0.005 + griefFactor * 0.05;
+          let nv = 0.005 + griefFactor*0.05;
+          if (ambientProfile === 'subbass') nv += 0.03;
+          if (ambientProfile === 'silence') nv = 0;
+          noiseGain.gain.value = nv;
         }
       }
 
-      // ---------- INITIAL LOAD AND RETURN MESSAGES ----------
+      // ============ LIVING SVG SYSTEM ============
+      function seededRandom(seed) {
+        let s = seed;
+        return function() {
+          s = (s * 16807 + 0) % 2147483647;
+          return (s - 1) / 2147483646;
+        };
+      }
+
+      function generateSVG(depth) {
+        const seed = Date.now() + depth * 1000 + Math.random() * 1000;
+        const rand = seededRandom(seed);
+        const style = selectStyle(depth, rand);
+        let svgContent = '';
+        
+        switch(style.type) {
+          case 'organic-branches': svgContent = generateOrganicBranches(depth, rand); break;
+          case 'pulsing-circles': svgContent = generatePulsingCircles(depth, rand); break;
+          case 'creeping-vines': svgContent = generateCreepingVines(depth, rand); break;
+          case 'ghost-geometry': svgContent = generateGhostGeometry(depth, rand); break;
+          case 'seed-sprouts': svgContent = generateSeedSprouts(depth, rand); break;
+          case 'neural-mesh': svgContent = generateNeuralMesh(depth, rand); break;
+          case 'floating-fragments': svgContent = generateFloatingFragments(depth, rand); break;
+          case 'breathing-lattice': svgContent = generateBreathingLattice(depth, rand); break;
+          default: svgContent = generateOrganicBranches(depth, rand);
+        }
+        
+        return `<svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" style="animation: ${style.animation} ${style.animDuration}s ease-in-out infinite;">
+          <defs>
+            <filter id="glow-${seed}">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <radialGradient id="grad-${seed}" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(180,180,180,0.15)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+            </radialGradient>
+          </defs>
+          <rect width="500" height="350" fill="url(#grad-${seed})" opacity="0.3"/>
+          <g style="animation: ${style.innerAnimation || 'breathe'} ${style.innerDuration || 8}s ease-in-out infinite;">
+            ${svgContent}
+          </g>
+        </svg>`;
+      }
+
+      function selectStyle(depth, rand) {
+        const roll = rand();
+        const styles = [];
+        if (depth < 15) {
+          styles.push(
+            { type: 'seed-sprouts', animation: 'breathe', animDuration: 6, innerAnimation: 'seed-sprout', innerDuration: 12 },
+            { type: 'floating-fragments', animation: 'drift-slow', animDuration: 10, innerAnimation: 'ghost-move', innerDuration: 15 },
+            { type: 'organic-branches', animation: 'breathe', animDuration: 8, innerAnimation: 'writhe', innerDuration: 12 }
+          );
+        } else if (depth < 30) {
+          styles.push(
+            { type: 'organic-branches', animation: 'writhe', animDuration: 10, innerAnimation: 'breathe', innerDuration: 8 },
+            { type: 'pulsing-circles', animation: 'pulse', animDuration: 6, innerAnimation: 'flicker', innerDuration: 4 },
+            { type: 'creeping-vines', animation: 'breathe', animDuration: 10, innerAnimation: 'vine-grow', innerDuration: 20 },
+            { type: 'breathing-lattice', animation: 'breathe', animDuration: 8, innerAnimation: 'pulse', innerDuration: 6 }
+          );
+        } else if (depth < 50) {
+          styles.push(
+            { type: 'ghost-geometry', animation: 'ghost-move', animDuration: 15, innerAnimation: 'writhe', innerDuration: 10 },
+            { type: 'neural-mesh', animation: 'pulse', animDuration: 7, innerAnimation: 'breathe', innerDuration: 9 },
+            { type: 'creeping-vines', animation: 'writhe', animDuration: 12, innerAnimation: 'vine-grow', innerDuration: 25 },
+            { type: 'organic-branches', animation: 'writhe', animDuration: 10, innerAnimation: 'creep', innerDuration: 30 }
+          );
+        } else {
+          styles.push(
+            { type: 'ghost-geometry', animation: 'ghost-move', animDuration: 12, innerAnimation: 'flicker', innerDuration: 3 },
+            { type: 'neural-mesh', animation: 'pulse', animDuration: 5, innerAnimation: 'writhe', innerDuration: 8 },
+            { type: 'breathing-lattice', animation: 'breathe', animDuration: 6, innerAnimation: 'pulse', innerDuration: 4 },
+            { type: 'pulsing-circles', animation: 'flicker', animDuration: 3, innerAnimation: 'expand', innerDuration: 8 }
+          );
+        }
+        return styles[Math.floor(roll * styles.length)];
+      }
+
+      function generateOrganicBranches(depth, rand) {
+        let paths = '';
+        const branches = Math.floor(5 + depth * 0.3 + rand() * 8);
+        const colors = ['rgba(140,140,150,0.4)','rgba(160,150,140,0.35)','rgba(130,160,150,0.3)','rgba(150,140,160,0.38)'];
+        function branch(x, y, len, angle, level, maxLevel, color) {
+          if (level > maxLevel || len < 3) return;
+          const x2 = x + len * Math.cos(angle);
+          const y2 = y + len * Math.sin(angle);
+          const strokeWidth = Math.max(0.3, (maxLevel - level) * 0.4);
+          const opacity = 0.15 + (level / maxLevel) * 0.35;
+          paths += `<line x1="${x}" y1="${y}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${strokeWidth}" opacity="${opacity}" style="animation: creep ${15 + rand()*20}s linear infinite; stroke-dasharray: ${len*2}; stroke-dashoffset: ${rand()*1000};"/>`;
+          if (rand() < 0.8 && level < maxLevel) branch(x2, y2, len * (0.65 + rand() * 0.15), angle - (0.3 + rand() * 0.6), level + 1, maxLevel, color);
+          if (rand() < 0.7 && level < maxLevel) branch(x2, y2, len * (0.6 + rand() * 0.2), angle + (0.3 + rand() * 0.6), level + 1, maxLevel, color);
+          if (rand() < 0.2 && level < maxLevel - 1) branch(x2, y2, len * 0.5, angle + (rand() - 0.5) * 1.5, level + 2, maxLevel, color);
+        }
+        for (let i = 0; i < branches; i++) {
+          const x = 100 + rand() * 300, y = 250 + rand() * 80, len = 30 + rand() * 80;
+          const angle = -Math.PI/2 + (rand() - 0.5) * 0.8;
+          const maxLevel = 3 + Math.floor(rand() * (5 + depth * 0.05));
+          branch(x, y, len, angle, 0, maxLevel, colors[Math.floor(rand() * colors.length)]);
+        }
+        for (let i = 0; i < depth * 0.3; i++) {
+          if (rand() < 0.3) paths += `<circle cx="${rand()*500}" cy="${rand()*350}" r="${1 + rand()*3}" fill="rgba(180,180,180,0.3)" style="animation: flicker ${2 + rand()*5}s ease-in-out infinite;"/>`;
+        }
+        return paths;
+      }
+
+      function generatePulsingCircles(depth, rand) {
+        let circles = '';
+        const count = Math.floor(8 + depth * 0.4 + rand() * 15);
+        for (let i = 0; i < count; i++) {
+          const cx = rand() * 500, cy = rand() * 350, r = 3 + rand() * 40;
+          const opacity = 0.1 + rand() * 0.4, delay = rand() * 5, duration = 3 + rand() * 10;
+          circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(160,160,170,${opacity})" stroke-width="${0.3 + rand() * 1.5}" style="animation: pulse ${duration}s ease-in-out ${delay}s infinite, expand ${duration*2}s ease-in-out ${delay}s infinite;"/>`;
+          if (rand() < 0.4) circles += `<circle cx="${cx}" cy="${cy}" r="${r * 0.3}" fill="rgba(200,200,210,${opacity * 0.6})" style="animation: flicker ${3 + rand()*4}s ease-in-out ${delay}s infinite;"/>`;
+        }
+        return circles;
+      }
+
+      function generateCreepingVines(depth, rand) {
+        let vines = '';
+        const vineCount = 3 + Math.floor(rand() * 5);
+        for (let v = 0; v < vineCount; v++) {
+          let path = '', cx = rand() * 400 + 50, cy = 300 + rand() * 50;
+          const segments = 5 + Math.floor(rand() * 15);
+          const color = ['rgba(140,160,140,0.5)','rgba(160,150,130,0.45)','rgba(130,170,150,0.4)'][Math.floor(rand() * 3)];
+          path += `M ${cx} ${cy}`;
+          for (let s = 0; s < segments; s++) {
+            cx += (rand() - 0.5) * 60; cy -= 15 + rand() * 30;
+            path += ` Q ${cx + (rand()-0.5)*30} ${cy + (rand()-0.5)*20} ${cx} ${cy}`;
+          }
+          vines += `<path d="${path}" fill="none" stroke="${color}" stroke-width="${0.5 + rand() * 2}" style="animation: vine-grow ${15 + rand()*20}s ease-in-out ${rand()*5}s infinite; stroke-dasharray: ${300 + rand()*500};"/>`;
+          for (let s = 0; s < segments; s++) {
+            if (rand() < 0.4) vines += `<circle cx="${cx + (rand()-0.5)*20}" cy="${cy + (rand()-0.5)*15}" r="${1 + rand()*3}" fill="rgba(180,200,180,0.4)" style="animation: flicker ${4 + rand()*6}s ease-in-out infinite;"/>`;
+          }
+        }
+        return vines;
+      }
+
+      function generateGhostGeometry(depth, rand) {
+        let shapes = '';
+        const count = 4 + Math.floor(rand() * 8);
+        const polygonPoints = (sides, cx, cy, r) => {
+          let points = '';
+          for (let i = 0; i < sides; i++) {
+            const angle = (i / sides) * Math.PI * 2 - Math.PI/2;
+            points += `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)} `;
+          }
+          return points;
+        };
+        for (let i = 0; i < count; i++) {
+          const cx = 100 + rand() * 300, cy = 50 + rand() * 250;
+          const sides = 3 + Math.floor(rand() * 6), r = 10 + rand() * 60;
+          const opacity = 0.15 + rand() * 0.35, delay = rand() * 4;
+          shapes += `<polygon points="${polygonPoints(sides, cx, cy, r)}" fill="none" stroke="rgba(170,170,180,${opacity})" stroke-width="${0.3 + rand() * 1}" style="animation: ghost-move ${8 + rand()*15}s ease-in-out ${delay}s infinite, flicker ${3 + rand()*5}s ease-in-out ${delay}s infinite;"/>`;
+          if (rand() < 0.6) shapes += `<polygon points="${polygonPoints(sides, cx, cy, r * 0.6)}" fill="none" stroke="rgba(200,200,200,${opacity * 0.5})" stroke-width="0.3" style="animation: ghost-move ${6 + rand()*10}s ease-in-out ${delay + 1}s infinite;"/>`;
+        }
+        return shapes;
+      }
+
+      function generateSeedSprouts(depth, rand) {
+        let sprouts = '';
+        const count = 5 + Math.floor(rand() * 12);
+        for (let i = 0; i < count; i++) {
+          const x = 80 + rand() * 340, baseY = 280 + rand() * 60;
+          const height = 20 + rand() * 120, width = 3 + rand() * 8, delay = rand() * 6;
+          const color = ['rgba(150,180,150,0.5)','rgba(180,160,140,0.45)','rgba(140,180,160,0.5)'][Math.floor(rand() * 3)];
+          sprouts += `<rect x="${x - width/2}" y="${baseY - height}" width="${width}" height="${height}" fill="${color}" rx="2" style="animation: seed-sprout ${8 + rand()*12}s ease-out ${delay}s infinite; transform-origin: ${x}px ${baseY}px;"/>`;
+          sprouts += `<circle cx="${x}" cy="${baseY - height}" r="${width * 0.8}" fill="rgba(200,200,210,0.5)" style="animation: pulse ${3 + rand()*5}s ease-in-out ${delay}s infinite;"/>`;
+          if (rand() < 0.5) {
+            const leafY = baseY - height * (0.3 + rand() * 0.5);
+            sprouts += `<ellipse cx="${x + width}" cy="${leafY}" rx="${width*1.5}" ry="${width*0.6}" fill="rgba(170,200,170,0.35)" style="animation: flicker ${4 + rand()*4}s ease-in-out infinite;"/>`;
+            sprouts += `<ellipse cx="${x - width}" cy="${leafY}" rx="${width*1.5}" ry="${width*0.6}" fill="rgba(170,200,170,0.35)" style="animation: flicker ${4 + rand()*4}s ease-in-out ${delay + 1}s infinite;"/>`;
+          }
+        }
+        return sprouts;
+      }
+
+      function generateNeuralMesh(depth, rand) {
+        let mesh = '';
+        const nodes = [];
+        const nodeCount = 8 + Math.floor(depth * 0.3 + rand() * 10);
+        for (let i = 0; i < nodeCount; i++) nodes.push({ x: 80 + rand() * 340, y: 30 + rand() * 290, r: 1 + rand() * 4, pulse: 2 + rand() * 6 });
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            if (rand() < 0.35) mesh += `<line x1="${nodes[i].x}" y1="${nodes[i].y}" x2="${nodes[j].x}" y2="${nodes[j].y}" stroke="rgba(150,150,170,${0.1 + rand()*0.2})" stroke-width="0.3" style="animation: flicker ${4 + rand()*8}s ease-in-out ${rand()*3}s infinite;"/>`;
+          }
+        }
+        nodes.forEach(node => { mesh += `<circle cx="${node.x}" cy="${node.y}" r="${node.r}" fill="rgba(180,180,190,0.5)" style="animation: pulse ${node.pulse}s ease-in-out ${rand()*3}s infinite;"/>`; });
+        return mesh;
+      }
+
+      function generateFloatingFragments(depth, rand) {
+        let fragments = '';
+        const count = 10 + Math.floor(rand() * 20);
+        for (let i = 0; i < count; i++) {
+          const x = rand() * 500, y = rand() * 350, w = 2 + rand() * 15, h = 0.5 + rand() * 3;
+          const angle = rand() * 360, opacity = 0.2 + rand() * 0.4, delay = rand() * 5;
+          fragments += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(180,180,190,${opacity})" transform="rotate(${angle} ${x} ${y})" style="animation: ghost-move ${6 + rand()*12}s ease-in-out ${delay}s infinite, flicker ${2 + rand()*4}s ease-in-out ${delay}s infinite;"/>`;
+          if (rand() < 0.3) fragments += `<circle cx="${x + w/2}" cy="${y}" r="${h * 2}" fill="rgba(200,200,200,${opacity * 0.6})" style="animation: pulse ${3 + rand()*5}s ease-in-out ${delay}s infinite;"/>`;
+        }
+        return fragments;
+      }
+
+      function generateBreathingLattice(depth, rand) {
+        let lattice = '';
+        const spacing = 20 + rand() * 40;
+        const rows = 3 + Math.floor(350 / spacing);
+        const cols = 3 + Math.floor(500 / spacing);
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = c * spacing + rand() * 10, y = r * spacing + rand() * 10;
+            const opacity = 0.15 + rand() * 0.3, delay = (r + c) * 0.2, d = spacing * 0.3;
+            lattice += `<polygon points="${x},${y-d} ${x+d},${y} ${x},${y+d} ${x-d},${y}" fill="none" stroke="rgba(160,160,180,${opacity})" stroke-width="0.4" style="animation: pulse ${4 + rand()*4}s ease-in-out ${delay}s infinite;"/>`;
+            if (rand() < 0.3) lattice += `<circle cx="${x}" cy="${y}" r="${d * 0.3}" fill="rgba(190,190,200,${opacity * 0.8})" style="animation: flicker ${3 + rand()*3}s ease-in-out ${delay}s infinite;"/>`;
+          }
+        }
+        return lattice;
+      }
+
+      function generateMapSVG() {
+        let paths = '';
+        const allNodes = Array.from(visitedNodes);
+        const positions = {};
+        allNodes.forEach((id, i) => { positions[id] = { x: 80 + Math.random() * 340, y: 40 + Math.random() * 270 }; });
+        allNodes.forEach((id, i) => {
+          if (i > 0) {
+            const prev = allNodes[i-1];
+            paths += `<line x1="${positions[prev].x}" y1="${positions[prev].y}" x2="${positions[id].x}" y2="${positions[id].y}" stroke="rgba(200,200,200,0.3)" stroke-width="0.5" style="animation: creep ${10 + Math.random()*15}s linear infinite; stroke-dasharray: 200;"/>`;
+          }
+        });
+        allNodes.forEach(id => {
+          const p = positions[id];
+          paths += `<circle cx="${p.x}" cy="${p.y}" r="3" fill="#888" style="animation: pulse ${3 + Math.random()*4}s ease-in-out infinite;"/>`;
+          paths += `<text x="${p.x+5}" y="${p.y+5}" fill="#aaa" font-size="6" style="animation: flicker 4s ease-in-out infinite;">${id.substring(0,8)}</text>`;
+        });
+        return `<svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" style="animation: breathe 8s ease-in-out infinite;">${paths}</svg>`;
+      }
+
+      // ============ VISUAL EFFECTS ============
+      function updateBodyDepthClass() {
+        document.body.classList.remove('depth-medium','depth-deep','depth-verydeep');
+        if (stats.depth > 70) document.body.classList.add('depth-verydeep');
+        else if (stats.depth > 40) document.body.classList.add('depth-deep');
+        else if (stats.depth > 15) document.body.classList.add('depth-medium');
+        document.body.classList.remove('layout-narrow','layout-wide','layout-split','layout-scattered');
+        if (stats.depth > 50 && Math.random()<0.2) document.body.classList.add('layout-scattered');
+        else if (stats.depth > 30 && Math.random()<0.15) document.body.classList.add('layout-split');
+        else if (stats.depth > 20 && Math.random()<0.1) document.body.classList.add('layout-wide');
+      }
+      function glitchOverlay() {
+        const overlay = document.getElementById('glitch-overlay');
+        overlay.classList.add('active');
+        setTimeout(()=> overlay.classList.remove('active'), 200);
+      }
+      function applyMutations(block, depth) {
+        const textEl = block.querySelector('.text');
+        if (!textEl) return;
+        if (depth < 15) return;
+        const roll = Math.random();
+        if (depth > 60 && roll < 0.4) { textEl.classList.add('glitch'); glitchOverlay(); }
+        else if (depth > 45 && roll < 0.35) textEl.classList.add('mirror');
+        else if (depth > 30 && roll < 0.3) textEl.classList.add('rotate');
+        else if (depth > 20 && roll < 0.25) textEl.classList.add('faint');
+        else if (depth > 55 && roll < 0.15) textEl.classList.add('shiver');
+        else if (depth > 65 && roll < 0.2) textEl.classList.add('rotate-strong');
+        if (depth > 40 && Math.random()<0.12) block.classList.add('horizontal');
+        if (depth > 35 && Math.random()<0.1) block.classList.add('floating');
+        if (depth > 25 && Math.random()<0.08) block.classList.add('overlapping');
+        if (Math.random() < 0.2) {
+          const svg = block.querySelector('.svg-container svg');
+          if (svg) {
+            const animations = ['breathe','writhe','pulse','ghost-move','drift-slow'];
+            const anim = animations[Math.floor(Math.random() * animations.length)];
+            svg.style.animation = `${anim} ${6 + Math.random()*15}s ease-in-out infinite`;
+          }
+        }
+      }
+
+      // ============ OVERLAYS ============
+      function spawnHall() {
+        if(stats.depth<10)return;
+        const msgs = ["memory leak detected","you already read this paragraph","the hallway is learning your shape","there is a door here that wasn't there before","the page remembers you","the building is breathing"];
+        const el = document.createElement('div'); el.className='hall';
+        el.textContent=msgs[Math.floor(Math.random()*msgs.length)];
+        el.style.left=(Math.random()*(window.innerWidth-200))+'px';
+        el.style.top=(Math.random()*(window.innerHeight-100))+'px';
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),14000+Math.random()*6000);
+      }
+      function showMemories() {
+        if(journal.length<5)return;
+        const recent=journal.slice(-10);
+        for(let i=0;i<3;i++){
+          const frag=recent[Math.floor(Math.random()*recent.length)];
+          const el=document.createElement('div'); el.className='memory-fragment';
+          el.textContent=frag;
+          el.style.left=(Math.random()*(window.innerWidth-280))+'px';
+          el.style.top=(Math.random()*(window.innerHeight-120))+'px';
+          document.body.appendChild(el);
+          setTimeout(()=>el.remove(),18000+Math.random()*10000);
+        }
+      }
+      function updateMargin() {
+        const marginDiv = document.getElementById('margin');
+        if (!marginDiv) return;
+        if (stats.depth > 5 && !marginDiv.classList.contains('active')) marginDiv.classList.add('active');
+        const annotations = marginDiv.querySelectorAll('.annotation');
+        if (annotations.length > 8) annotations[0].remove();
+        const entry = journal[journal.length-1];
+        if (entry) {
+          const ann = document.createElement('div'); ann.className='annotation';
+          const snippet = entry.substring(0, 80) + '...';
+          if (Math.random() < 0.35) {
+            ann.innerHTML = `<a href="#" class="margin-link">${snippet}</a>`;
+            ann.querySelector('.margin-link').addEventListener('click', (e)=>{ e.preventDefault(); goToNode('metacommentary'); });
+          } else {
+            ann.textContent = snippet;
+          }
+          marginDiv.appendChild(ann);
+          marginDiv.scrollTop = marginDiv.scrollHeight;
+        }
+      }
+
+      // ============ HOTWORDS ============
+      function addHotwords(block) {
+        const textEl = block.querySelector('.text');
+        if (!textEl) return;
+        const hotwords = {
+          'garden': 'secretGarden', 'static': 'whiteSpace', 'morning': 'pushDoor',
+          'honey': 'secretGarden', 'hallway': 'mapRoom', 'darkness': 'darkHallway',
+          'stairs': 'staircaseDown', 'window': 'windowField', 'door': 'doorNoHandle',
+          'silence': 'silenceRoom', 'library': 'unknownDoor'
+        };
+        let html = textEl.innerHTML;
+        for (let [word, nodeId] of Object.entries(hotwords)) {
+          const regex = new RegExp(`\\b${word}\\b`, 'gi');
+          html = html.replace(regex, `<span class="hotword" data-goto="${nodeId}">${word}</span>`);
+        }
+        textEl.innerHTML = html;
+        textEl.querySelectorAll('.hotword').forEach(span => {
+          span.addEventListener('click', (e) => { e.stopPropagation(); goToNode(span.dataset.goto); });
+        });
+      }
+
+      // ============ THRESHOLD-BASED CHOICES ============
+      function getChoicesForNode(node) {
+        let choices = JSON.parse(JSON.stringify(node.choices || []));
+        if (stats.grief > 25) choices = choices.filter(c => c.stat !== 'hope');
+        if (stats.hope > 30 && Math.random() < 0.35) {
+          choices.push({ label: 'a door of light appears', next: 'voidGarden', stat:'hope', statInc:3, flight:true });
+        }
+        if (stats.surrender > 20 && Math.random() < 0.3) {
+          choices.push({ label: 'the floor opens beneath you', next: 'fallDirection', stat:'surrender', statInc:2, flight:true });
+        }
+        if (Math.random() < 0.12) {
+          choices.push({ label: 'do not click this', next: 'metacommentary', special:true });
+        }
+        return choices;
+      }
+
+      // ============ CORE NAVIGATION ============
+      function goToNode(nodeId) {
+        const node = nodes[nodeId];
+        if (!node) { console.warn('missing node:', nodeId); return; }
+        let text = node.defaultText || '';
+        if (node.textVariants && lastNodeId && node.textVariants[lastNodeId]) text = node.textVariants[lastNodeId];
+        if (nodeId === 'metacommentary') text = `You have been here for ${stats.depth} steps. Your hope is ${stats.hope} and your grief is ${stats.grief}. The building wonders if you are still there. It wonders if you ever left. It wonders if the page is reading you.`;
+        lastNodeId = currentNodeId;
+        currentNodeId = nodeId;
+        stats.depth++; stats.time++;
+        journal.push(text);
+        if (journal.length > 25) journal.shift();
+        visitedNodes.add(nodeId);
+        saveState();
+        setAmbient(nodeId);
+        updateBodyDepthClass();
+
+        const main = document.getElementById('main');
+        const block = document.createElement('div');
+        block.className = 'block';
+        block.id = 'block-' + (++blockCounter);
+        const isMap = (nodeId === 'mapRoom');
+        block.innerHTML = `<div class="text">${text}</div><div class="svg-container">${isMap ? generateMapSVG() : generateSVG(stats.depth)}</div><div class="choices-container"></div>`;
+        applyMutations(block, stats.depth);
+        document.querySelectorAll('.block').forEach(b => {
+          const bId = parseInt(b.id.split('-')[1]);
+          if (b.id !== block.id && stats.depth - bId > 6) b.classList.add('past');
+        });
+        addHotwords(block);
+        const choicesContainer = block.querySelector('.choices-container');
+        const choices = getChoicesForNode(node);
+        if (choices.length > 0) {
+          choices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.textContent = choice.label;
+            if (choice.flight) {
+              btn.classList.add('flight');
+              const flightBtn = btn;
+              setTimeout(() => { if (flightBtn.parentNode) flightBtn.remove(); }, 9000);
+            }
+            btn.addEventListener('click', () => {
+              if (choice.stat && stats[choice.stat] !== undefined) stats[choice.stat] += choice.statInc || 1;
+              goToNode(choice.next);
+              if (Math.random() < 0.35 && stats.depth > 10) setTimeout(() => goToNode(getRandomNode()), 700);
+              if (stats.depth % 10 === 0) showMemories();
+              if (Math.random() < 0.5) spawnHall();
+              updateMargin();
+              if (Math.random() < 0.15) glitchOverlay();
+            });
+            choicesContainer.appendChild(btn);
+          });
+        } else {
+          const restartBtn = document.createElement('button');
+          restartBtn.textContent = 'descend again';
+          restartBtn.addEventListener('click', () => {
+            stats.depth = 0; journal = [];
+            currentNodeId = 'start'; lastNodeId = null;
+            visitedNodes.clear(); saveState();
+            document.getElementById('main').innerHTML = '';
+            document.getElementById('margin').innerHTML = '';
+            document.getElementById('margin').classList.remove('active');
+            document.body.className = '';
+            startJourney();
+          });
+          choicesContainer.appendChild(restartBtn);
+        }
+        main.appendChild(block);
+        if (stats.depth > 25 && Math.random() < 0.08) setTimeout(() => goToNode('mapRoom'), 2000);
+      }
+
+      function getRandomNode() {
+        const keys = Object.keys(nodes).filter(k => k !== 'start' && nodes[k].choices && nodes[k].choices.length > 0);
+        return keys[Math.floor(Math.random() * keys.length)];
+      }
+
       function startJourney() {
         const main = document.getElementById('main');
-        // Greeting based on visits
-        const greeting = state.visits > 1 ? "you came back." : "you are here now.";
-        const titleBlock = document.createElement('h2');
-        titleBlock.textContent = greeting;
-        titleBlock.style.marginBottom = '50px';
-        main.appendChild(titleBlock);
-
-        // Show old journal entries as faded memories
+        main.innerHTML = '';
+        const greeting = stats.visits > 1 ? 'you came back.' : 'you are here now.';
+        const h2 = document.createElement('h2');
+        h2.textContent = greeting;
+        h2.style.marginBottom = '50px';
+        h2.style.opacity = '0.8';
+        h2.style.fontWeight = 'normal';
+        main.appendChild(h2);
         if (journal.length > 0) {
-          const memoryBlock = document.createElement('div');
-          memoryBlock.className = 'block faint';
-          memoryBlock.innerHTML = `<div class="text">${journal.slice(-3).join('<br><br>')}</div>`;
-          main.appendChild(memoryBlock);
+          const memBlock = document.createElement('div');
+          memBlock.className = 'block faint';
+          memBlock.innerHTML = `<div class="text">${journal.slice(-3).join('<br><br>')}</div>`;
+          main.appendChild(memBlock);
         }
-
-        // Pre-populate a few blocks to start the descent
-        for (let i = 0; i < 3; i++) {
-          addBlock();
-        }
-
-        // Start audio on first interaction (click)
+        goToNode(currentNodeId);
         document.body.addEventListener('click', () => {
           initAudio();
           if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         }, { once: true });
-
-        // Audio modulation loop
         setInterval(updateAudio, 2000);
+        updateBodyDepthClass();
       }
 
-      // ---------- OCCASIONAL DENSITY BURST SCHEDULER ----------
-      // (already handled inside addBlock and button handlers)
-
-      // ---------- RUN ----------
       startJourney();
     })();
   </script>
