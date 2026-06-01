@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Nate Wooding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    img.pond { width: 100%; max-width: 480px; display: block; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h1>Nate Wooding</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="coconut-water.html">Coconut Water Reviews</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <h2>About</h2>
+  <p>I am <span id="age"></span> years old and live in Redondo Beach, California.</p>
+  <p>
+    <a href="https://www.youtube.com/@themcbobgorge" target="_blank">YouTube</a> &nbsp;&middot;&nbsp;
+    <a href="https://www.tiktok.com/@barstoolsyria" target="_blank">TikTok (@barstoolsyria)</a> &nbsp;&middot;&nbsp;
+    <a href="https://twitter.com/barstoolsyria" target="_blank">Twitter (@barstoolsyria)</a> &nbsp;&middot;&nbsp;
+    <a href="https://www.instagram.com/natewooding" target="_blank">Instagram (@natewooding)</a>
+  </p>
+
+  <h2>Scandals</h2>
+  <p>
+    In 2022 I posted a TikTok that resulted in some coverage from the Welsh press.
+    <a href="https://www.walesonline.co.uk/news/wales-news/tiktok-backlash-wales-not-country-25853882" target="_blank">Wales Online: TikTok backlash as American says Wales is not a country</a>.
+  </p>
+
+  <h2>Wooding Pond</h2>
+  <p>
+    There is a pond near my childhood home in New Hampshire that had no name.
+    I changed that by editing Google Maps and OpenStreetMaps to list it as Wooding Pond.
+  </p>
+  <p>
+    A few years later, a sitting NH state house member referenced it by name on Twitter.
+    <a href="https://x.com/KristinNobleNH/status/1871517654487560651" target="_blank">Rep. Kristin Noble, December 2024.</a>
+  </p>
+  <p>
+    A few years after that, my father made a sign.
+  </p>
+  <img class="pond" src="wooding-pond.jpg" alt="The Wooding Pond sign">
+
+  <footer>natewooding.com</footer>
+
+  <script>
+    // Always-correct age calculation
+    const born = new Date(1999, 9, 2); // Oct 2 1999 (months are 0-indexed)
+    const today = new Date();
+    let age = today.getFullYear() - born.getFullYear();
+    const beforeBirthday = today < new Date(today.getFullYear(), born.getMonth(), born.getDate());
+    if (beforeBirthday) age--;
+    document.getElementById('age').textContent = age;
+  </script>
+</body>
+</html>
