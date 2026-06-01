@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Courier Prime', monospace;
+  color: #111;
+  background: #fff;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 32px 0 8px;
+}
+
+nav { margin: 8px 0 40px; }
+
+nav a {
+  font-size: 0.85rem;
+  color: #111;
+  text-decoration: none;
+  margin-right: 16px;
+}
+
+nav a:hover { text-decoration: underline; }
+
+p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+a { color: #111; }
+a:visited { color: #555; }
+
+ul { list-style: none; }
+
+li {
+  font-size: 0.9rem;
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+}
+
+li:first-child { border-top: 1px solid #ddd; }
+
+footer {
+  margin-top: 60px;
+  font-size: 0.75rem;
+  color: #999;
+}
