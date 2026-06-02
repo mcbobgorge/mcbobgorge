@@ -8,11 +8,92 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 8px; overflow-x: auto; display: block; }
-    th { text-align: left; border-bottom: 1px solid #111; padding: 6px 8px; font-family: 'Courier Prime', monospace; font-weight: normal; color: #555; }
-    td { padding: 7px 8px; border-bottom: 1px solid #ddd; }
-    td a { text-decoration: none; color: #111; }
-    td a:hover { text-decoration: underline; }
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0; }
+    .tag {
+      font-size: 0.7rem;
+      border: 1px solid #ccc;
+      padding: 1px 7px;
+      color: #777;
+      cursor: pointer;
+      user-select: none;
+    }
+    .tag.active { border-color: #111; color: #111; background: #f5f5f5; }
+
+    /* Filter bar */
+    #filter-bar { margin-bottom: 20px; }
+    #filter-bar label { font-size: 0.8rem; color: #555; margin-right: 8px; }
+    .filter-tag {
+      font-size: 0.75rem;
+      border: 1px solid #ccc;
+      padding: 2px 9px;
+      color: #777;
+      cursor: pointer;
+      display: inline-block;
+      margin: 3px 4px 3px 0;
+      user-select: none;
+    }
+    .filter-tag.on { border-color: #111; color: #111; background: #f5f5f5; }
+
+    /* Review list */
+    .review-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .review-item:first-of-type { border-top: 1px solid #ddd; }
+    .review-item.hidden { display: none; }
+
+    .thumb {
+      width: 54px;
+      min-width: 54px;
+      height: 70px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      background: #f5f5f5;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .item-name a { color: #111; text-decoration: none; }
+    .item-name a:hover { text-decoration: underline; }
+
+    .item-meta { font-size: 0.75rem; color: #777; margin-bottom: 5px; }
+    .item-score { font-family: 'Playfair Display', serif; font-size: 1rem; }
+
+    /* Comparison table */
+    .table-wrap { overflow-x: auto; }
+    table.compare {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      min-width: 600px;
+    }
+    table.compare th {
+      font-size: 0.72rem;
+      font-family: 'Courier Prime', monospace;
+      color: #777;
+      border-bottom: 1px solid #111;
+      padding: 5px 8px;
+      text-align: left;
+      white-space: nowrap;
+      font-weight: normal;
+    }
+    table.compare td { padding: 7px 8px; border-bottom: 1px solid #ddd; }
+    table.compare tr:hover td { background: #fafafa; }
+    table.compare .pname { font-family: 'Playfair Display', serif; font-size: 0.88rem; }
+    table.compare .pname a { color: #111; text-decoration: none; }
+    table.compare .pname a:hover { text-decoration: underline; }
+    table.compare .sc { text-align: center; }
+    table.compare .overall { text-align: center; font-family: 'Playfair Display', serif; font-size: 1rem; border-left: 1px solid #ddd; }
+    table.compare .tc { text-align: center; font-size: 0.72rem; color: #777; }
   </style>
 </head>
 <body>
@@ -24,47 +105,126 @@
   </nav>
 
   <h2>All Reviews</h2>
-  <ul>
-    <li>
-      <a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest — Organic Sparkling</a>
-      <span>? / 10</span>
-    </li>
-    <!-- add reviews here -->
-  </ul>
+  <p style="font-size:0.82rem; color:#777; margin-bottom:12px;">Filter by:</p>
+  <div id="filter-bar">
+    <span class="filter-tag" data-filter="sparkling">Sparkling</span>
+    <span class="filter-tag" data-filter="still">Still</span>
+    <span class="filter-tag" data-filter="organic">USDA Organic</span>
+    <span class="filter-tag" data-filter="fair-trade">Fair Trade</span>
+    <span class="filter-tag" data-filter="no-sugar">No Added Sugar</span>
+    <span class="filter-tag" data-filter="pasteurized">Pasteurized</span>
+  </div>
+
+  <!-- REVIEW ITEMS -->
+  <!-- data-tags: space-separated list matching filter-tag data-filter values -->
+
+  <div class="review-item" data-tags="sparkling organic fair-trade no-sugar">
+    <div class="thumb">
+      <img src="reviews/img/harmless-harvest-sparkling.jpg" alt="Harmless Harvest Sparkling" onerror="this.parentElement.style.background='#eee'">
+    </div>
+    <div>
+      <div class="item-name"><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest — Organic Sparkling</a></div>
+      <div class="item-meta">16 fl oz &middot; Sparkling &middot; No added sugar &middot; USDA Organic &middot; Fair Trade</div>
+      <div class="tags">
+        <span class="tag">Sparkling</span>
+        <span class="tag">No Added Sugar</span>
+        <span class="tag">USDA Organic</span>
+        <span class="tag">Fair Trade</span>
+      </div>
+      <div class="item-score">? / 10</div>
+    </div>
+  </div>
+
+  <div class="review-item" data-tags="still pasteurized">
+    <div class="thumb">
+      <img src="reviews/img/coaqua-still.jpg" alt="Coaqua Still" onerror="this.parentElement.style.background='#eee'">
+    </div>
+    <div>
+      <div class="item-name"><a href="reviews/coaqua-still.html">Coaqua — Still Coconut Water</a></div>
+      <div class="item-meta">16.9 fl oz &middot; Still &middot; Pasteurized &middot; Added Sugar</div>
+      <div class="tags">
+        <span class="tag">Still</span>
+        <span class="tag">Pasteurized</span>
+        <span class="tag">Added Sugar</span>
+      </div>
+      <div class="item-score">6.6 / 10</div>
+    </div>
+  </div>
+
+  <!-- END REVIEW ITEMS -->
 
   <h2>Comparison</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Type</th>
-        <th>Sugar</th>
-        <th>Pulp</th>
-        <th>Taste</th>
-        <th>Sweet</th>
-        <th>Body</th>
-        <th>Refresh</th>
-        <th>Ethics</th>
-        <th>Overall</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest Sparkling</a></td>
-        <td>Sparkling</td>
-        <td>No</td>
-        <td>No</td>
-        <td>?</td>
-        <td>?</td>
-        <td>?</td>
-        <td>?</td>
-        <td>?</td>
-        <td>?</td>
-      </tr>
-      <!-- add rows here -->
-    </tbody>
-  </table>
+  <div class="table-wrap">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th style="min-width:180px;">Product</th>
+          <th>Type</th>
+          <th>Sugar</th>
+          <th>Pulp</th>
+          <th>Pasteurized</th>
+          <th>Organic</th>
+          <th>Taste</th>
+          <th>Sweet</th>
+          <th>Body</th>
+          <th>Refresh</th>
+          <th>Ethics</th>
+          <th style="border-left:1px solid #ddd;">Overall</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pname"><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest Sparkling</a></td>
+          <td class="tc">Sparkling</td>
+          <td class="tc">No</td>
+          <td class="tc">No</td>
+          <td class="tc">No</td>
+          <td class="tc">Yes</td>
+          <td class="sc">?</td>
+          <td class="sc">?</td>
+          <td class="sc">?</td>
+          <td class="sc">?</td>
+          <td class="sc">?</td>
+          <td class="overall">?</td>
+        </tr>
+        <tr>
+          <td class="pname"><a href="reviews/coaqua-still.html">Coaqua Still</a></td>
+          <td class="tc">Still</td>
+          <td class="tc">Yes</td>
+          <td class="tc">No</td>
+          <td class="tc">Yes</td>
+          <td class="tc">No</td>
+          <td class="sc">7</td>
+          <td class="sc">8</td>
+          <td class="sc">5</td>
+          <td class="sc">5</td>
+          <td class="sc">1</td>
+          <td class="overall">6.6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <footer>natewooding.com</footer>
+
+  <script>
+    const filters = new Set();
+    document.querySelectorAll('.filter-tag').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        if (filters.has(f)) { filters.delete(f); btn.classList.remove('on'); }
+        else { filters.add(f); btn.classList.add('on'); }
+        applyFilters();
+      });
+    });
+
+    function applyFilters() {
+      document.querySelectorAll('.review-item').forEach(item => {
+        const tags = item.dataset.tags.split(' ');
+        const show = filters.size === 0 || [...filters].every(f => tags.includes(f));
+        item.classList.toggle('hidden', !show);
+      });
+    }
+  </script>
 </body>
 </html>
