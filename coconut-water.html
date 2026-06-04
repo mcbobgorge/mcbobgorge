@@ -97,6 +97,7 @@
     .rating-guide .scale div { margin-bottom: 2px; }
     .rating-guide .scale span { display: inline-block; width: 90px; color: #999; font-size: 0.78rem; }
   </style>
+  <link rel="alternate" type="application/rss+xml" title="Nate Wooding" href="https://natewooding.com/feed.xml">
 </head>
 <body>
   <h1>Nate Wooding</h1>
@@ -124,7 +125,7 @@
     </div>
     <div>
       <div class="item-name"><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest — Organic Sparkling</a></div>
-      <div class="item-meta">16 fl oz &middot; Sparkling &middot; No Added Sugar &middot; USDA Organic &middot; Fair Trade</div>
+      <div class="item-meta">June 2025 &middot; 16 fl oz &middot; Sparkling &middot; No Added Sugar &middot; USDA Organic &middot; Fair Trade</div>
       <div class="tags">
         <span class="tag">Sparkling</span><span class="tag">No Added Sugar</span><span class="tag">USDA Organic</span><span class="tag">Fair Trade</span>
       </div>
@@ -138,7 +139,7 @@
     </div>
     <div>
       <div class="item-name"><a href="reviews/coaqua-still.html">Coaqua — Still Coconut Water</a></div>
-      <div class="item-meta">16.9 fl oz &middot; Still &middot; Pasteurized &middot; Added Sugar</div>
+      <div class="item-meta">June 2025 &middot; 16.9 fl oz &middot; Still &middot; Pasteurized &middot; Added Sugar</div>
       <div class="tags">
         <span class="tag">Still</span><span class="tag">Pasteurized</span><span class="tag">Added Sugar</span>
       </div>
@@ -152,7 +153,7 @@
     </div>
     <div>
       <div class="item-name"><a href="reviews/cocochito-pulp.html">Cocochito — with Pulp</a></div>
-      <div class="item-meta">Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
+      <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
       <div class="tags">
         <span class="tag">Still</span><span class="tag">Pasteurized</span><span class="tag">Added Sugar</span><span class="tag">Pulp</span>
       </div>
@@ -181,19 +182,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr data-tags="sparkling organic fair-trade no-sugar">
         <td class="pname"><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest Sparkling</a></td>
         <td class="tc">Sparkling</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">5</td><td class="sc">5</td><td class="sc">7</td><td class="sc">6</td><td class="sc">8</td>
         <td class="overall">7.4</td>
       </tr>
-      <tr>
+      <tr data-tags="still pasteurized">
         <td class="pname"><a href="reviews/coaqua-still.html">Coaqua Still</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">7</td><td class="sc">8</td><td class="sc">5</td><td class="sc">5</td><td class="sc">1</td>
         <td class="overall">6.6</td>
       </tr>
-      <tr>
+      <tr data-tags="still pasteurized pulp">
         <td class="pname"><a href="reviews/cocochito-pulp.html">Cocochito w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">4</td><td class="sc">7</td><td class="sc">6</td><td class="sc">4</td><td class="sc">1</td>
@@ -253,7 +254,7 @@
     <p style="margin-top:20px; color:#777; font-size:0.8rem;">Overall score is a personal rating based on the water as a whole — it is not an average.</p>
   </div>
 
-  <footer>natewooding.com</footer>
+  <footer>natewooding.com &nbsp;&middot;&nbsp; <a href="/feed.xml">RSS</a></footer>
 
   <script>
     const filters = new Set();
@@ -262,13 +263,24 @@
         const f = btn.dataset.filter;
         if (filters.has(f)) { filters.delete(f); btn.classList.remove('on'); }
         else { filters.add(f); btn.classList.add('on'); }
-        document.querySelectorAll('.review-item').forEach(item => {
-          const tags = item.dataset.tags.split(' ');
-          const show = filters.size === 0 || [...filters].every(f => tags.includes(f));
-          item.classList.toggle('hidden', !show);
-        });
+        applyFilters();
       });
     });
+
+    function applyFilters() {
+      // Filter review cards
+      document.querySelectorAll('.review-item').forEach(item => {
+        const tags = item.dataset.tags.split(' ');
+        const show = filters.size === 0 || [...filters].every(f => tags.includes(f));
+        item.classList.toggle('hidden', !show);
+      });
+      // Filter table rows (skip header row)
+      document.querySelectorAll('table.compare tbody tr').forEach(row => {
+        const tags = (row.dataset.tags || '').split(' ');
+        const show = filters.size === 0 || [...filters].every(f => tags.includes(f));
+        row.style.display = show ? '' : 'none';
+      });
+    }
   </script>
 </body>
 </html>

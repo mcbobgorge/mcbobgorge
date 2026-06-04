@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nate Wooding</title>
+    <link>https://natewooding.com</link>
+    <description>Coconut water reviews and other things.</description>
+    <language>en-us</language>
+    <atom:link href="https://natewooding.com/feed.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>Cocochito — with Pulp (4.1/10)</title>
+      <link>https://natewooding.com/reviews/cocochito-pulp.html</link>
+      <guid>https://natewooding.com/reviews/cocochito-pulp.html</guid>
+      <pubDate>Tue, 03 Jun 2025 12:00:00 +0000</pubDate>
+      <description>A heavily sweetened Thai water with added pulp. Bitter and sweet at the same time, with highly variable pulp. Overall: 4.1/10.</description>
+    </item>
+
+    <item>
+      <title>Coaqua — Still Coconut Water (6.6/10)</title>
+      <link>https://natewooding.com/reviews/coaqua-still.html</link>
+      <guid>https://natewooding.com/reviews/coaqua-still.html</guid>
+      <pubDate>Mon, 02 Jun 2025 12:00:00 +0000</pubDate>
+      <description>Single-origin Vietnamese coconut water with millennial marketing to match. Smooth and milky but the added sugar makes it less refreshing. Overall: 6.6/10.</description>
+    </item>
+
+    <item>
+      <title>Harmless Harvest — Organic Sparkling (7.4/10)</title>
+      <link>https://natewooding.com/reviews/harmless-harvest-sparkling.html</link>
+      <guid>https://natewooding.com/reviews/harmless-harvest-sparkling.html</guid>
+      <pubDate>Sun, 01 Jun 2025 12:00:00 +0000</pubDate>
+      <description>The OG pink water, carbonated. Industry-leading ethics, unpasteurized, but the floral flavor doesn't quite work with bubbles. Overall: 7.4/10.</description>
+    </item>
+
+  </channel>
+</rss>
