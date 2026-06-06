@@ -8,6 +8,22 @@
     <atom:link href="https://natewooding.com/feed.xml" rel="self" type="application/rss+xml"/>
 
     <item>
+      <title>Real Coco — Organic Pure (5.2/10)</title>
+      <link>https://natewooding.com/reviews/real-coco-pure.html</link>
+      <guid>https://natewooding.com/reviews/real-coco-pure.html</guid>
+      <pubDate>Thu, 05 Jun 2025 12:00:00 +0000</pubDate>
+      <description>Mildly sweet organic Vietnamese water. Very inoffensive, almost waterlike, but surprisingly refreshing. Lots of greenwashing on the packaging. Overall: 5.2/10.</description>
+    </item>
+
+    <item>
+      <title>Coaqua — Sparkling (7.3/10)</title>
+      <link>https://natewooding.com/reviews/coaqua-sparkling.html</link>
+      <guid>https://natewooding.com/reviews/coaqua-sparkling.html</guid>
+      <pubDate>Wed, 04 Jun 2025 12:00:00 +0000</pubDate>
+      <description>Coaqua's smooth, milky profile works well with carbonation. Very lightly effervescent. Ethics remain a problem. Overall: 7.3/10.</description>
+    </item>
+
+    <item>
       <title>Cocochito — with Pulp (4.1/10)</title>
       <link>https://natewooding.com/reviews/cocochito-pulp.html</link>
       <guid>https://natewooding.com/reviews/cocochito-pulp.html</guid>
@@ -16,7 +32,7 @@
     </item>
 
     <item>
-      <title>Coaqua — Still Coconut Water (6.6/10)</title>
+      <title>Coaqua — Still (6.6/10)</title>
       <link>https://natewooding.com/reviews/coaqua-still.html</link>
       <guid>https://natewooding.com/reviews/coaqua-still.html</guid>
       <pubDate>Mon, 02 Jun 2025 12:00:00 +0000</pubDate>
