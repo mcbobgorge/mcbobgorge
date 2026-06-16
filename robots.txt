@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://natewooding.com/sitemap.xml
