@@ -25,6 +25,14 @@ a:visited { color: #555; }
 
 footer { margin-top: 60px; font-size: 0.75rem; color: #999; }
 
+.donate-note {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid #ddd;
+  font-size: 0.8rem;
+  color: #777;
+}
+
 /* Review list page */
 .filter-tag {
   font-size: 0.75rem; border: 1px solid #ccc; padding: 2px 9px;
