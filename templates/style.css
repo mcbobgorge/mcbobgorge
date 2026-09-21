@@ -108,3 +108,11 @@ img.pond { width: 100%; max-width: 480px; display: block; margin: 12px 0; }
   img.bottle { width: 140px; }
   .scores span { width: 96px; }
 }
+
+/* Ranking context line on review pages, and notes column in the ranking */
+.rank-context { font-size: 0.8rem; color: #555; border-left: 2px solid #ddd; padding-left: 10px; }
+td.rank-note { font-family: 'Courier Prime', monospace; font-size: 0.72rem; color: #555; min-width: 260px; }
+@media (max-width: 700px) {
+  /* On a phone the ranking is just the order and the score */
+  table.rank td.rank-note, table.rank th:nth-child(4) { display: none; }
+}

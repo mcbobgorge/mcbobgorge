@@ -77,9 +77,11 @@ def render_review_paragraphs(text: str) -> str:
     return "\n\n".join(f"<p>{p}</p>" for p in paras)
 
 
-def render_review_page(r) -> str:
+def render_review_page(r, ranked=None) -> str:
     s = r.scores
+    context = rank_context(r, ranked) if ranked else ""
     return _tpl("review.html").substitute(
+        rank_context=context,
         title=esc(f"{r.title_name} Review ({fmt_overall(s['overall'])}/10) — Nate Wooding"),
         og_title=esc(f"{r.title_name} Review ({fmt_overall(s['overall'])}/10)"),
         description=esc(r.description),
@@ -167,3 +169,57 @@ def render_sitemap(reviews) -> str:
     ordered = sorted(reviews, key=lambda r: (r.date, r.order))
     urls = "".join(url_tpl.substitute(slug=r.slug, date=r.date) for r in ordered)
     return _tpl("sitemap.xml").substitute(urls=urls)
+
+
+def rank_context(r, ranked) -> str:
+    """One generated line placing a review against Nate's own other scores."""
+    names = [x.slug for x in ranked]
+    i = names.index(r.slug)
+    rank, total = i + 1, len(ranked)
+    bits = [f"Ranked {ordinal(rank)} of {total} coconut waters I have scored"]
+    if i > 0:
+        above = ranked[i - 1]
+        bits.append(
+            f'below <a href="{above.slug}.html">{esc(above.table_name)}</a> '
+            f'({fmt_overall(above.scores["overall"])})'
+        )
+    if i < total - 1:
+        below = ranked[i + 1]
+        bits.append(
+            f'above <a href="{below.slug}.html">{esc(below.table_name)}</a> '
+            f'({fmt_overall(below.scores["overall"])})'
+        )
+    return (
+        " &middot; ".join(bits)
+        + '. <a href="../best-coconut-water.html">See the full ranking</a>.'
+    )
+
+
+def ordinal(n: int) -> str:
+    if 10 <= n % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
+
+
+def by_score(reviews):
+    return sorted(reviews, key=lambda r: (-r.scores["overall"], r.table_name))
+
+
+def render_best_page(reviews, intro: str) -> str:
+    row_tpl = _tpl("rank_row.html")
+    ranked = by_score(reviews)
+    rows = "".join(
+        row_tpl.substitute(
+            rank=i,
+            slug=r.slug,
+            listing_name=esc(r.listing_name),
+            overall=fmt_overall(r.scores["overall"]),
+            taste=fmt_score(r.scores["taste"]),
+            style=r.style,
+            description=esc(r.description),
+        )
+        for i, r in enumerate(ranked, start=1)
+    )
+    return _tpl("best-coconut-water.html").substitute(intro=intro, rank_rows=rows)
