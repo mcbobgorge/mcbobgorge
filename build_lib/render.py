@@ -271,6 +271,22 @@ def render_best_page(reviews, intro: str) -> str:
     )
 
 
+def analytics_snippet(measurement_id: str) -> str:
+    """GA4 tag, loaded async so it cannot block rendering. Empty id means no tag."""
+    if not measurement_id:
+        return ""
+    mid = measurement_id.strip()
+    if not re.fullmatch(r"G-[A-Z0-9]+", mid):
+        raise ValueError(f"not a GA4 measurement id: {mid!r}")
+    return (
+        f'<script async src="https://www.googletagmanager.com/gtag/js?id={mid}"></script>\n'
+        "<script>window.dataLayer=window.dataLayer||[];"
+        "function gtag(){dataLayer.push(arguments);}"
+        'gtag("js",new Date());'
+        f'gtag("config","{mid}");</script>\n'
+    )
+
+
 def brand_slug(brand: str) -> str:
     """URL slug for a brand name: "Trader Joe's" -> "trader-joes"."""
     s = brand.lower().replace("&", "and").replace("'", "").replace("\u2019", "")

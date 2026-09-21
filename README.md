@@ -13,6 +13,12 @@ required.
   scores, tags, image, etc.) plus `## Notes` / `## Verdict` body text.
   This is the only thing you normally edit.
 - `content/reviews/_template.md` — copy this to start a new review.
+- `content/site.toml` — site-wide settings. `ga_measurement_id` holds the
+  Google Analytics 4 ID (e.g. `G-ABC1234XYZ`); leave it empty and the site
+  ships with no analytics at all. When set, `build.py` injects one async
+  gtag snippet into the `<head>` of every generated page. Clearing the value
+  removes tracking everywhere on the next build. Invalid IDs fail the build
+  rather than emitting a broken tag.
 - `content/site.toml` — site-wide settings (currently informational).
 - `build_lib/reviews.py` — loads and validates `content/reviews/*.md`.
 - `build_lib/render.py` — turns validated review data into HTML/XML using

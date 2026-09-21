@@ -99,6 +99,17 @@ def main() -> int:
     (ROOT / "about.html").write_text(render.render_about_page(), encoding="utf-8")
     shutil.copy(TEMPLATES / "style.css", ROOT / "style.css")
 
+    tag = render.analytics_snippet(site_config().get("ga_measurement_id", ""))
+    if tag:
+        pages = [ROOT / n for n in ("index.html", "about.html", "coconut-water.html", "best-coconut-water.html")]
+        pages += sorted(OUT_REVIEWS.glob("*.html")) + sorted(OUT_BRANDS.glob("*.html"))
+        for page in pages:
+            html = page.read_text(encoding="utf-8")
+            if "googletagmanager.com" in html:
+                continue
+            page.write_text(html.replace("</head>", tag + "</head>", 1), encoding="utf-8")
+        print(f"analytics tag added to {len(pages)} pages")
+
     if out_dir is not None:
         stage(out_dir, reviews, brands)
         print(f"staged publishable files in {out_dir.name}/")

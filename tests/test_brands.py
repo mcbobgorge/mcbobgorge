@@ -105,3 +105,17 @@ class StructuredDataTest(unittest.TestCase):
         self.assertEqual(rating["ratingValue"], render.fmt_overall(r.scores["overall"]))
         self.assertEqual(data["brand"]["name"], r.brand)
         self.assertTrue(data["review"]["reviewBody"])
+
+
+class AnalyticsTest(unittest.TestCase):
+    def test_no_id_means_no_tag(self):
+        self.assertEqual(render.analytics_snippet(""), "")
+
+    def test_tag_is_async_and_uses_the_id(self):
+        tag = render.analytics_snippet("G-ABC1234XYZ")
+        self.assertIn('<script async src="https://www.googletagmanager.com/gtag/js?id=G-ABC1234XYZ">', tag)
+
+    def test_rejects_anything_that_is_not_a_ga4_id(self):
+        for bad in ["UA-123456-1", "G-lowercase", "G-123; alert(1)", "not an id"]:
+            with self.assertRaises(ValueError):
+                render.analytics_snippet(bad)
