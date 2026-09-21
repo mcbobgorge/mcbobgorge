@@ -109,7 +109,7 @@ def render_review_item(r) -> str:
         listing_name=esc(r.listing_name),
         item_meta=listing_meta_line(r),
         overall=fmt_overall(r.scores["overall"]),
-        order=r.order,
+        order=r.position,
         table_name=esc(r.table_name),
     )
 
@@ -120,7 +120,7 @@ def render_table_row(r) -> str:
         tags=tags_attr(r),
         slug=r.slug,
         table_name=esc(r.table_name),
-        order=r.order,
+        order=r.position,
         style=r.style,
         sugar=yn(r.added_sugar),
         pulp=yn(r.pulp),
@@ -136,8 +136,8 @@ def render_table_row(r) -> str:
 
 
 def render_listing_page(reviews) -> str:
-    items = "\n".join(render_review_item(r) for r in sorted(reviews, key=lambda r: r.order))
-    rows = "".join(render_table_row(r) for r in sorted(reviews, key=lambda r: r.order))
+    items = "\n".join(render_review_item(r) for r in sorted(reviews, key=lambda r: r.position))
+    rows = "".join(render_table_row(r) for r in sorted(reviews, key=lambda r: r.position))
     return _tpl("coconut-water.html").substitute(review_items=items, table_rows=rows)
 
 

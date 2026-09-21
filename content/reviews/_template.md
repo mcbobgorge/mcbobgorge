@@ -3,7 +3,6 @@ brand = "Brand Name"
 product = "Full Product Name Coconut Water"
 listing_name = "Brand — Short Name"
 table_name = "Brand Short Name"
-order = 31
 date = "2026-01-01"
 size = "16.9 fl oz (500 mL)"
 style = "Still"

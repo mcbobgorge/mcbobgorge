@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 REQUIRED_FIELDS = [
-    "brand", "product", "listing_name", "table_name", "order", "date", "size",
+    "brand", "product", "listing_name", "table_name", "date", "size",
     "style", "pasteurized", "added_sugar", "organic", "fair_trade", "pulp",
     "image", "description", "scores",
 ]
@@ -25,7 +25,7 @@ class Review:
     product: str
     listing_name: str
     table_name: str
-    order: int
+    order: int | None
     date: str
     size: str
     style: str
@@ -40,6 +40,7 @@ class Review:
     extra_tags: list = field(default_factory=list)
     notes: str = ""
     verdict: str = ""
+    position: int = 0  # 1-based display position, assigned by load_all
 
     @property
     def title_name(self) -> str:
@@ -100,7 +101,7 @@ def load_review(path: Path) -> Review:
         product=front["product"],
         listing_name=front["listing_name"],
         table_name=front["table_name"],
-        order=front["order"],
+        order=front.get("order"),
         date=front["date"],
         size=front["size"],
         style=front["style"],
@@ -130,10 +131,21 @@ def load_all(reviews_dir: Path) -> list[Review]:
     if dupes:
         raise ValidationError(f"duplicate slug(s): {', '.join(sorted(dupes))}")
 
-    orders = [r.order for r in reviews]
+    orders = [r.order for r in reviews if r.order is not None]
     dupe_orders = {o for o in orders if orders.count(o) > 1}
     if dupe_orders:
         raise ValidationError(f"duplicate order value(s): {sorted(dupe_orders)}")
 
-    reviews.sort(key=lambda r: r.order)
-    return reviews
+    # Reviews without an explicit `order` are new ones: they go above the
+    # legacy, hand-ordered list, newest date first. `order` exists only to
+    # preserve the ordering the site was published with.
+    new = sorted(
+        (r for r in reviews if r.order is None),
+        key=lambda r: (r.date, r.slug),
+        reverse=True,
+    )
+    legacy = sorted((r for r in reviews if r.order is not None), key=lambda r: r.order)
+    ordered = new + legacy
+    for position, review in enumerate(ordered, start=1):
+        review.position = position
+    return ordered
