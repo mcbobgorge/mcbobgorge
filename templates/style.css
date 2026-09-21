@@ -114,5 +114,8 @@ img.pond { width: 100%; max-width: 480px; display: block; margin: 12px 0; }
 td.rank-note { font-family: 'Courier Prime', monospace; font-size: 0.72rem; color: #555; min-width: 260px; }
 @media (max-width: 700px) {
   /* On a phone the ranking is just the order and the score */
-  table.rank td.rank-note, table.rank th:nth-child(4) { display: none; }
+  table.rank td.rank-note, table.rank th.rank-note { display: none; }
 }
+
+.brand-list { line-height: 2; }
+.brand-line { margin-top: 24px; }

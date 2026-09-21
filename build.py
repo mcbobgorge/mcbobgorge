@@ -19,6 +19,7 @@ import render  # noqa: E402
 
 CONTENT_REVIEWS = ROOT / "content" / "reviews"
 OUT_REVIEWS = ROOT / "reviews"
+OUT_BRANDS = ROOT / "brands"
 TEMPLATES = ROOT / "templates"
 
 
@@ -40,11 +41,12 @@ PUBLISH_FILES = [
 ]
 
 
-def stage(out_dir: Path, reviews) -> None:
+def stage(out_dir: Path, reviews, brands) -> None:
     """Copy only the files the public site needs into out_dir (for deployment)."""
     if out_dir.exists():
         shutil.rmtree(out_dir)
     (out_dir / "reviews").mkdir(parents=True)
+    (out_dir / "brands").mkdir(parents=True)
     for name in PUBLISH_FILES:
         src = ROOT / name
         if src.exists():
@@ -56,6 +58,9 @@ def stage(out_dir: Path, reviews) -> None:
     for r in reviews:
         shutil.copy(OUT_REVIEWS / f"{r.slug}.html", out_dir / "reviews" / f"{r.slug}.html")
     shutil.copytree(OUT_REVIEWS / "img", out_dir / "reviews" / "img")
+    for brand in brands:
+        name = f"{render.brand_slug(brand)}.html"
+        shutil.copy(OUT_BRANDS / name, out_dir / "brands" / name)
 
 
 def main() -> int:
@@ -73,9 +78,15 @@ def main() -> int:
         return 1
 
     ranked = render.by_score(reviews)
+    brands = render.brands_with_multiple(reviews)
     for r in reviews:
         out_path = OUT_REVIEWS / f"{r.slug}.html"
-        out_path.write_text(render.render_review_page(r, ranked), encoding="utf-8")
+        out_path.write_text(render.render_review_page(r, ranked, brands), encoding="utf-8")
+
+    OUT_BRANDS.mkdir(exist_ok=True)
+    for brand, items in brands.items():
+        page = render.render_brand_page(brand, items, ranked, brands)
+        (OUT_BRANDS / f"{render.brand_slug(brand)}.html").write_text(page, encoding="utf-8")
 
     (ROOT / "coconut-water.html").write_text(render.render_listing_page(reviews), encoding="utf-8")
     (ROOT / "best-coconut-water.html").write_text(
@@ -89,10 +100,10 @@ def main() -> int:
     shutil.copy(TEMPLATES / "style.css", ROOT / "style.css")
 
     if out_dir is not None:
-        stage(out_dir, reviews)
+        stage(out_dir, reviews, brands)
         print(f"staged publishable files in {out_dir.name}/")
 
-    print(f"built {len(reviews)} review pages + listing + feed + sitemap")
+    print(f"built {len(reviews)} review pages + {len(brands)} brand pages + listing + feed + sitemap")
     return 0
 
 

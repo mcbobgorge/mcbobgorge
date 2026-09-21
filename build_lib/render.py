@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import datetime
 import re
-
-import datetime
 from pathlib import Path
 from string import Template
 
@@ -80,10 +78,25 @@ def render_review_paragraphs(text: str) -> str:
     return "\n\n".join(f"<p>{p}</p>" for p in paras)
 
 
-def render_review_page(r, ranked=None) -> str:
+def brand_line(r, brands) -> str:
+    """Link a review to its brand page, when Nate has reviewed that brand twice."""
+    items = brands.get(r.brand) if brands else None
+    if not items:
+        return ""
+    others = len(items) - 1
+    word = "review" if others == 1 else "reviews"
+    return (
+        f'<p class="brand-line">See my other {others} {esc(r.brand)} '
+        f'{word}: <a href="../brands/{brand_slug(r.brand)}.html">'
+        f'all {esc(r.brand)} coconut water</a>.</p>'
+    )
+
+
+def render_review_page(r, ranked=None, brands=None) -> str:
     s = r.scores
     context = rank_context(r, ranked) if ranked else ""
     return _tpl("review.html").substitute(
+        brand_line=brand_line(r, brands),
         rank_context=context,
         title=esc(f"{r.title_name} Review ({fmt_overall(s['overall'])}/10) — Nate Wooding"),
         og_title=esc(f"{r.title_name} Review ({fmt_overall(s['overall'])}/10)"),
@@ -143,7 +156,11 @@ def render_table_row(r) -> str:
 def render_listing_page(reviews) -> str:
     items = "\n".join(render_review_item(r) for r in sorted(reviews, key=lambda r: r.position))
     rows = "".join(render_table_row(r) for r in sorted(reviews, key=lambda r: r.position))
-    return _tpl("coconut-water.html").substitute(review_items=items, table_rows=rows)
+    return _tpl("coconut-water.html").substitute(
+        review_items=items,
+        table_rows=rows,
+        brand_links=brand_links(brands_with_multiple(reviews), prefix="brands/"),
+    )
 
 
 def _pub_date(date_str: str) -> str:
@@ -169,9 +186,14 @@ def render_feed(reviews) -> str:
 
 def render_sitemap(reviews) -> str:
     url_tpl = _tpl("sitemap_url.xml")
-    ordered = sorted(reviews, key=lambda r: (r.date, r.order))
+    ordered = sorted(reviews, key=lambda r: (r.date, r.order or 0))
     urls = "".join(url_tpl.substitute(slug=r.slug, date=r.date) for r in ordered)
-    return _tpl("sitemap.xml").substitute(urls=urls)
+    brand_tpl = _tpl("sitemap_brand.xml")
+    brand_urls = "".join(
+        brand_tpl.substitute(brand_slug=brand_slug(b))
+        for b in brands_with_multiple(reviews)
+    )
+    return _tpl("sitemap.xml").substitute(urls=urls + brand_urls)
 
 
 def rank_context(r, ranked) -> str:
@@ -231,6 +253,84 @@ def render_best_page(reviews, intro: str) -> str:
         for i, r in enumerate(ranked, start=1)
     )
     return _tpl("best-coconut-water.html").substitute(intro=intro, rank_rows=rows)
+
+
+def brand_slug(brand: str) -> str:
+    """URL slug for a brand name: "Trader Joe's" -> "trader-joes"."""
+    s = brand.lower().replace("&", "and").replace("'", "").replace("\u2019", "")
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    return s.strip("-")
+
+
+def brands_with_multiple(reviews):
+    """Brands Nate has reviewed more than once, alphabetical, each best-first."""
+    groups: dict[str, list] = {}
+    for r in reviews:
+        groups.setdefault(r.brand, []).append(r)
+    return {
+        brand: sorted(items, key=lambda r: (-r.scores["overall"], r.table_name))
+        for brand, items in sorted(groups.items())
+        if len(items) > 1
+    }
+
+
+def brand_intro(brand: str, items, ranked) -> str:
+    """A factual summary built only from Nate's own scores."""
+    best, worst = items[0], items[-1]
+    place = [x.slug for x in ranked].index(best.slug) + 1
+    out = (
+        f"I have bought and scored {len(items)} {esc(brand)} coconut waters, "
+        f"listed best to worst by my overall score."
+        f' My highest was <a href="../reviews/{best.slug}.html">{esc(best.table_name)}</a>'
+        f' at {fmt_overall(best.scores["overall"])}/10, which places it '
+        f"{ordinal(place)} of {len(ranked)} overall."
+    )
+    if worst.scores["overall"] != best.scores["overall"]:
+        out += (
+            f' My lowest was <a href="../reviews/{worst.slug}.html">{esc(worst.table_name)}</a>'
+            f' at {fmt_overall(worst.scores["overall"])}/10.'
+        )
+    return out
+
+
+def brand_links(brands, current: str | None = None, prefix: str = "") -> str:
+    """Inline list of links to every brand page, for cross-referencing."""
+    parts = []
+    for brand, items in brands.items():
+        label = f"{esc(brand)} ({len(items)})"
+        if brand == current:
+            parts.append(f"<strong>{label}</strong>")
+        else:
+            parts.append(f'<a href="{prefix}{brand_slug(brand)}.html">{label}</a>')
+    return " &middot; ".join(parts)
+
+
+def render_brand_page(brand: str, items, ranked, brands) -> str:
+    row_tpl = _tpl("brand_row.html")
+    rows = "".join(
+        row_tpl.substitute(
+            slug=r.slug,
+            listing_name=esc(r.listing_name),
+            overall=fmt_overall(r.scores["overall"]),
+            description=esc(short_description(r)),
+        )
+        for r in items
+    )
+    heading = f"{brand} Coconut Water Reviews"
+    description = (
+        f"All {len(items)} {brand} coconut waters I have bought and scored, "
+        f"best to worst, with my overall rating and a link to each full review."
+    )
+    return _tpl("brand.html").substitute(
+        title=esc(f"{heading} \u2014 Nate Wooding"),
+        og_title=esc(heading),
+        heading=esc(heading),
+        description=esc(description),
+        brand_slug=brand_slug(brand),
+        intro=brand_intro(brand, items, ranked),
+        brand_rows=rows,
+        brand_links=brand_links(brands, current=brand),
+    )
 
 
 BIRTHDATE = datetime.date(1999, 10, 2)

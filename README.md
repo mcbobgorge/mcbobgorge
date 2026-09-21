@@ -22,6 +22,14 @@ required.
 - `build.py` — the generator entry point. Reads `content/`, writes:
   - `reviews/<slug>.html` — one page per review
   - `coconut-water.html` — the listing + tag filters + comparison table
+  - `best-coconut-water.html` — every review ranked by overall score
+  - `brands/<brand>.html` — one page per brand with more than one review,
+    generated automatically from the `brand` field. A brand appears here as
+    soon as it has a second review, and disappears if it drops back to one;
+    there is nothing to maintain by hand. Reviews of those brands get a link
+    to their brand page, and `coconut-water.html` lists them under "By Brand".
+    Note that brands are grouped on the exact `brand` string, so
+    `Zico` and `Zico Pure` currently count as two different brands.
   - `feed.xml` — RSS, newest first
   - `sitemap.xml`
   - `index.html`, `about.html`, `style.css` — copied from `templates/`
@@ -37,8 +45,9 @@ required.
 - `tools/compare_legacy.py` — diffs generated pages against the last
   hand-written versions, ignoring whitespace differences. Used while
   building the generator; see `tools/VERIFICATION.md` for the results.
-- `tests/test_reviews.py` — unit tests for the data loading/validation
-  rules in `build_lib/reviews.py`.
+- `tests/` — unit tests: `test_reviews.py` (data loading/validation),
+  `test_new_review.py` (email intake), `test_about.py` (age line) and
+  `test_brands.py` (brand grouping, slugs and cross-links).
 
 ## Build locally
 
