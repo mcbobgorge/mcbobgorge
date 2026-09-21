@@ -93,3 +93,18 @@ and deploys directly, so the files on GitHub Pages always match the
 current `content/reviews/*.md`. You can also build and commit locally if
 you want the generated HTML in git for diffing (this repo keeps the
 generated files committed for that reason).
+
+## Filtered ranking pages
+
+`build_lib/filters.py` defines one spec per filtered ranking (slug, h1, meta
+description, predicate, intro builder). `build.py` renders each with
+`render.render_filtered_page` into `<slug>.html` using `templates/filtered-rank.html`
+and the shared `rank_row.html`.
+
+Current pages: best-organic-coconut-water, coconut-water-no-added-sugar,
+unpasteurized-coconut-water. They regenerate from the `organic`, `added_sugar`
+and `pasteurized` fields, so a new review joins the right rankings automatically.
+
+To add one: append a spec to `PAGES`, add the filename to `PUBLISH_FILES` in
+build.py, and add a `<url>` line to `templates/sitemap.xml`. Intro text must be
+generated from Nate's own scores and flags only — never written tasting language.

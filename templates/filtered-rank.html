@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="$description">
+  <link rel="canonical" href="https://natewooding.com/$slug.html">
+  <title>$h1 &mdash; Nate Wooding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "$ld_name",
+    "url": "https://natewooding.com/$slug.html",
+    "numberOfItems": $ld_count,
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "itemListElement": [
+$ld_items    ]
+  }
+  </script>
+  <link rel="alternate" type="application/rss+xml" title="Nate Wooding" href="https://natewooding.com/feed.xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="$h1 &mdash; Nate Wooding">
+  <meta property="og:description" content="$description">
+  <meta property="og:url" content="https://natewooding.com/$slug.html">
+  <meta property="og:site_name" content="Nate Wooding">
+  <meta property="og:image" content="https://natewooding.com/$og_image">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <a class="masthead" href="index.html">Nate Wooding</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="best-coconut-water.html">Best Coconut Water</a>
+    <a href="coconut-water.html">All Reviews</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <h1 class="page-title">$h1</h1>
+  <p>$intro</p>
+
+  <h2>The Ranking</h2>
+  <div class="table-wrap">
+  <table class="compare rank">
+    <thead>
+      <tr><th>#</th><th>Product</th><th>Overall</th><th class="rank-note">In short</th></tr>
+    </thead>
+    <tbody>
+$rank_rows    </tbody>
+  </table>
+  </div>
+
+  <p style="margin-top:20px;">$siblings</p>
+
+  <p>Every review in full, with tag filters and the score-by-score comparison: <a href="coconut-water.html">all reviews</a>. How the scores work: <a href="coconut-water.html#rating-guide">the rating guide</a>.</p>
+
+  <p class="donate-note">These coconuts are grown in habitats threatened by palm oil deforestation. If you find this site useful, consider <a href="https://www.ran.org/donate/" target="_blank" rel="noopener">donating to the Rainforest Action Network</a>.</p>
+  <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
+<script>
+  var u='nate',d='natewooding.com';
+  document.getElementById('contact-link').innerHTML='<a href="mailto:'+u+'@'+d+'">Contact</a>';
+</script>
+</body>
+</html>

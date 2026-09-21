@@ -16,11 +16,25 @@ sys.path.insert(0, str(ROOT / "build_lib"))
 
 from reviews import ValidationError, load_all  # noqa: E402
 import render  # noqa: E402
+import filters  # noqa: E402
 
 CONTENT_REVIEWS = ROOT / "content" / "reviews"
 OUT_REVIEWS = ROOT / "reviews"
 OUT_BRANDS = ROOT / "brands"
 TEMPLATES = ROOT / "templates"
+
+
+def siblings_line(current) -> str:
+    """Cross-links from one filtered ranking to the full ranking and the others."""
+    others = [s for s in filters.PAGES if s["slug"] != current["slug"]]
+    links = " ".join(
+        f'<a href="{s["slug"]}.html">{s["h1"]}</a>.' for s in others
+    )
+    return (
+        'The full ranking of everything I have scored: '
+        '<a href="best-coconut-water.html">the best coconut water</a>. '
+        f"Other cuts of the same scores: {links}"
+    )
 
 
 def site_config() -> dict:
@@ -31,6 +45,9 @@ def site_config() -> dict:
 PUBLISH_FILES = [
     "index.html",
     "best-coconut-water.html",
+    "best-organic-coconut-water.html",
+    "coconut-water-no-added-sugar.html",
+    "unpasteurized-coconut-water.html",
     "about.html",
     "coconut-water.html",
     "style.css",
@@ -92,6 +109,11 @@ def main() -> int:
     (ROOT / "best-coconut-water.html").write_text(
         render.render_best_page(reviews, site_config()["best_page_intro"]), encoding="utf-8"
     )
+    for spec in filters.PAGES:
+        subset = filters.page_subset(spec, reviews)
+        page = render.render_filtered_page(spec, subset, ranked, siblings_line(spec))
+        (ROOT / f"{spec['slug']}.html").write_text(page, encoding="utf-8")
+
     (ROOT / "feed.xml").write_text(render.render_feed(reviews), encoding="utf-8")
     (ROOT / "sitemap.xml").write_text(render.render_sitemap(reviews), encoding="utf-8")
 
@@ -101,7 +123,9 @@ def main() -> int:
 
     tag = render.analytics_snippet(site_config().get("ga_measurement_id", ""))
     if tag:
-        pages = [ROOT / n for n in ("index.html", "about.html", "coconut-water.html", "best-coconut-water.html")]
+        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html"]
+        names += [f"{spec['slug']}.html" for spec in filters.PAGES]
+        pages = [ROOT / n for n in names]
         pages += sorted(OUT_REVIEWS.glob("*.html")) + sorted(OUT_BRANDS.glob("*.html"))
         for page in pages:
             html = page.read_text(encoding="utf-8")

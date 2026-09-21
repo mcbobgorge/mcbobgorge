@@ -273,6 +273,43 @@ def render_best_page(reviews, intro: str) -> str:
     )
 
 
+def render_filtered_page(spec, subset, ranked, siblings: str) -> str:
+    """A ranking page restricted to one of Nate's tag fields."""
+    row_tpl = _tpl("rank_row.html")
+    rows = "".join(
+        row_tpl.substitute(
+            rank=i,
+            slug=r.slug,
+            listing_name=esc(r.listing_name),
+            overall=fmt_overall(r.scores["overall"]),
+            taste=fmt_score(r.scores["taste"]),
+            style=r.style,
+            description=esc(short_description(r)),
+        )
+        for i, r in enumerate(subset, start=1)
+    )
+    items = ",\n".join(
+        "      {"
+        f'"@type": "ListItem", "position": {i}, '
+        f'"url": "https://natewooding.com/reviews/{r.slug}.html", '
+        f'"name": {json.dumps(r.listing_name)}'
+        "}"
+        for i, r in enumerate(subset, start=1)
+    )
+    return _tpl("filtered-rank.html").substitute(
+        slug=spec["slug"],
+        h1=esc(spec["h1"]),
+        description=esc(spec["description"]),
+        ld_name=esc(spec["ld_name"]),
+        og_image=subset[0].image,
+        intro=esc(spec["intro"](subset, ranked)),
+        rank_rows=rows,
+        ld_count=len(subset),
+        ld_items=items + "\n",
+        siblings=siblings,
+    )
+
+
 def analytics_snippet(measurement_id: str) -> str:
     """GA4 tag, loaded async so it cannot block rendering. Empty id means no tag."""
     if not measurement_id:
