@@ -42,7 +42,7 @@
   </nav>
 
   <h1 class="page-title">About</h1>
-  <p>I am <span id="age"></span> years old and live in Redondo Beach, California.</p>
+  <p>I am <span id="age">$age</span> years old and live in Redondo Beach, California.</p>
   <p>
     <a href="https://www.youtube.com/@themcbobgorge" target="_blank">YouTube</a> &middot;
     <a href="https://www.tiktok.com/@barstoolsyria" target="_blank">TikTok (@barstoolsyria)</a> &middot;
@@ -68,10 +68,12 @@
 </script>
 
   <script>
+    // The build writes today's age into the page; this keeps it right for a
+    // visitor reading a cached copy after 2 October.
     const born = new Date(1999, 9, 2);
-    const today = new Date();
-    let age = today.getFullYear() - born.getFullYear();
-    if (today < new Date(today.getFullYear(), born.getMonth(), born.getDate())) age--;
+    const now = new Date();
+    let age = now.getFullYear() - born.getFullYear();
+    if (now < new Date(now.getFullYear(), born.getMonth(), born.getDate())) age--;
     document.getElementById('age').textContent = age;
   </script>
 </body>

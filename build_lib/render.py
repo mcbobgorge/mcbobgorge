@@ -1,6 +1,7 @@
 """Render HTML/XML pages from Review objects using templates/ (string.Template)."""
 from __future__ import annotations
 
+import datetime
 import re
 
 import datetime
@@ -230,3 +231,18 @@ def render_best_page(reviews, intro: str) -> str:
         for i, r in enumerate(ranked, start=1)
     )
     return _tpl("best-coconut-water.html").substitute(intro=intro, rank_rows=rows)
+
+
+BIRTHDATE = datetime.date(1999, 10, 2)
+
+
+def age_today(today: datetime.date | None = None) -> int:
+    today = today or datetime.date.today()
+    had_birthday = (today.month, today.day) >= (BIRTHDATE.month, BIRTHDATE.day)
+    return today.year - BIRTHDATE.year - (0 if had_birthday else 1)
+
+
+def render_about_page() -> str:
+    """The About page states Nate's age; the build fills it in and inline JS
+    keeps a cached copy correct after his birthday."""
+    return _tpl("about.html").substitute(age=age_today())

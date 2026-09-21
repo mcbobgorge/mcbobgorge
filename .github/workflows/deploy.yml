@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch: {}
+  # Weekly rebuild so date-derived text (Nate's age on the About page) stays
+  # correct in the served HTML, not only in the browser.
+  schedule:
+    - cron: "17 9 * * 1"
 
 permissions:
   contents: read

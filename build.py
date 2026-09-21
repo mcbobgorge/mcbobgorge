@@ -85,7 +85,7 @@ def main() -> int:
     (ROOT / "sitemap.xml").write_text(render.render_sitemap(reviews), encoding="utf-8")
 
     shutil.copy(TEMPLATES / "index.html", ROOT / "index.html")
-    shutil.copy(TEMPLATES / "about.html", ROOT / "about.html")
+    (ROOT / "about.html").write_text(render.render_about_page(), encoding="utf-8")
     shutil.copy(TEMPLATES / "style.css", ROOT / "style.css")
 
     if out_dir is not None:
