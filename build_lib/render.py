@@ -255,7 +255,20 @@ def render_best_page(reviews, intro: str) -> str:
         )
         for i, r in enumerate(ranked, start=1)
     )
-    return _tpl("best-coconut-water.html").substitute(intro=intro, rank_rows=rows)
+    items = ",\n".join(
+        "      {"
+        f'"@type": "ListItem", "position": {i}, '
+        f'"url": "https://natewooding.com/reviews/{r.slug}.html", '
+        f'"name": {json.dumps(r.listing_name)}'
+        "}"
+        for i, r in enumerate(ranked, start=1)
+    )
+    return _tpl("best-coconut-water.html").substitute(
+        intro=intro,
+        rank_rows=rows,
+        ld_count=len(ranked),
+        ld_items=items + "\n",
+    )
 
 
 def brand_slug(brand: str) -> str:

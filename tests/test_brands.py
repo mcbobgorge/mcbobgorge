@@ -72,3 +72,36 @@ class RealSiteTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StructuredDataTest(unittest.TestCase):
+    """The machine-readable data must match the scores and scale Nate actually uses."""
+
+    def setUp(self):
+        self.reviews = load_all(ROOT / "content" / "reviews")
+
+    def test_ranking_page_item_list_matches_the_ranking(self):
+        import json
+        import re
+
+        page = render.render_best_page(self.reviews, "intro")
+        data = json.loads(re.search(r'application/ld\+json">(.*?)</script>', page, re.S).group(1))
+        ranked = render.by_score(self.reviews)
+        self.assertEqual(data["numberOfItems"], len(ranked))
+        self.assertEqual(len(data["itemListElement"]), len(ranked))
+        self.assertEqual(data["itemListElement"][0]["position"], 1)
+        self.assertIn(ranked[0].slug, data["itemListElement"][0]["url"])
+
+    def test_review_rating_uses_the_real_zero_to_ten_scale(self):
+        import json
+        import re
+
+        r = next(x for x in self.reviews if x.scores["overall"] < 3)
+        page = render.render_review_page(r)
+        data = json.loads(re.search(r'application/ld\+json">(.*?)</script>', page, re.S).group(1))
+        rating = data["review"]["reviewRating"]
+        self.assertEqual(rating["worstRating"], "0")
+        self.assertEqual(rating["bestRating"], "10")
+        self.assertEqual(rating["ratingValue"], render.fmt_overall(r.scores["overall"]))
+        self.assertEqual(data["brand"]["name"], r.brand)
+        self.assertTrue(data["review"]["reviewBody"])
