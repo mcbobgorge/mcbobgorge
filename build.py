@@ -42,6 +42,10 @@ def stage(out_dir: Path, reviews) -> None:
         src = ROOT / name
         if src.exists():
             shutil.copy(src, out_dir / name)
+    # Loose images used by the top-level pages (e.g. wooding-pond.jpg)
+    for pattern in ("*.jpg", "*.png", "*.ico", "*.svg"):
+        for src in ROOT.glob(pattern):
+            shutil.copy(src, out_dir / src.name)
     for r in reviews:
         shutil.copy(OUT_REVIEWS / f"{r.slug}.html", out_dir / "reviews" / f"{r.slug}.html")
     shutil.copytree(OUT_REVIEWS / "img", out_dir / "reviews" / "img")
