@@ -6,3 +6,6 @@
 title = "Nate Wooding"
 url = "https://natewooding.com"
 description = "Coconut water reviews and other things."
+
+# Intro paragraph on best-coconut-water.html. Plain text or inline HTML.
+best_page_intro = "I have bought and scored every coconut water below, paid for out of my own pocket. They are ranked by overall score, best at the top. My reviews are not scientific but if you click on the individual reviews you can learn a bit more about my thought process."
