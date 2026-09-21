@@ -1,5 +1,5 @@
 +++
-brand = "Zico Pure"
+brand = "Zico"
 product = "Organic Coconut Water"
 listing_name = "Zico Pure — Organic Coconut Water"
 table_name = "Zico Pure"
