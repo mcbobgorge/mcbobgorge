@@ -98,3 +98,10 @@ class ReviewLoadingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OrderingTest(unittest.TestCase):
+    def test_the_real_listing_is_newest_first(self):
+        content = Path(__file__).resolve().parents[1] / "content" / "reviews"
+        dates = [r.date for r in load_all(content)]
+        self.assertEqual(dates, sorted(dates, reverse=True))

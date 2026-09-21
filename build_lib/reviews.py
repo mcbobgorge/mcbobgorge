@@ -136,16 +136,13 @@ def load_all(reviews_dir: Path) -> list[Review]:
     if dupe_orders:
         raise ValidationError(f"duplicate order value(s): {sorted(dupe_orders)}")
 
-    # Reviews without an explicit `order` are new ones: they go above the
-    # legacy, hand-ordered list, newest date first. `order` exists only to
-    # preserve the ordering the site was published with.
-    new = sorted(
-        (r for r in reviews if r.order is None),
-        key=lambda r: (r.date, r.slug),
+    # Newest first, by the date Nate tasted it. `order` only breaks ties
+    # between reviews tasted on the same day, keeping the original sequence.
+    ordered = sorted(
+        reviews,
+        key=lambda r: (r.date, -(r.order if r.order is not None else 10**6)),
         reverse=True,
     )
-    legacy = sorted((r for r in reviews if r.order is not None), key=lambda r: r.order)
-    ordered = new + legacy
     for position, review in enumerate(ordered, start=1):
         review.position = position
     return ordered
