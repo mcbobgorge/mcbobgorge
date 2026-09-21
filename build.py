@@ -45,6 +45,7 @@ def site_config() -> dict:
 PUBLISH_FILES = [
     "index.html",
     "best-coconut-water.html",
+    "404.html",
     "best-organic-coconut-water.html",
     "coconut-water-no-added-sugar.html",
     "unpasteurized-coconut-water.html",
@@ -109,6 +110,10 @@ def main() -> int:
     (ROOT / "best-coconut-water.html").write_text(
         render.render_best_page(reviews, site_config()["best_page_intro"]), encoding="utf-8"
     )
+    (ROOT / "404.html").write_text(
+        (TEMPLATES / "404.html").read_text(encoding="utf-8"), encoding="utf-8"
+    )
+
     for spec in filters.PAGES:
         subset = filters.page_subset(spec, reviews)
         page = render.render_filtered_page(spec, subset, ranked, siblings_line(spec))
@@ -123,7 +128,7 @@ def main() -> int:
 
     tag = render.analytics_snippet(site_config().get("ga_measurement_id", ""))
     if tag:
-        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html"]
+        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html"]
         names += [f"{spec['slug']}.html" for spec in filters.PAGES]
         pages = [ROOT / n for n in names]
         pages += sorted(OUT_REVIEWS.glob("*.html")) + sorted(OUT_BRANDS.glob("*.html"))
