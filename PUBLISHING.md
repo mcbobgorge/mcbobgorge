@@ -36,6 +36,27 @@ That's it. Pushing to `main` triggers the GitHub Action in
 the review page, the listing page, the comparison table, the RSS feed, and
 the sitemap, then publishes the result to natewooding.com.
 
+## What your tags do
+
+Three of the true/false fields put the review on extra pages automatically.
+You don't have to do anything; just set them accurately.
+
+- `organic = true` adds it to **The Best Organic Coconut Water**
+- `added_sugar = false` adds it to **Coconut Water With No Added Sugar**
+- `pasteurized = false` adds it to **Unpasteurized Coconut Water**
+
+Each of those pages ranks its entries by overall score and opens with a
+sentence built from the numbers (how many qualify, the highest and lowest).
+So a new review can change that opening sentence and reshuffle the order.
+That is expected.
+
+The `brand` field works the same way: the second review of a brand creates
+`brands/<brand>.html` by itself, and if a brand drops back to one review the
+page disappears. Spelling matters here — "Vita Coco" and "VitaCoco" would
+become two different brands.
+
+If a tag is wrong, fix the field and push; every page that used it updates.
+
 ## Worked example
 
 ```
