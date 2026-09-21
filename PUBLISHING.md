@@ -9,9 +9,10 @@ You don't need to touch any HTML. Follow these steps:
 
 2. **Fill in the fields** at the top of the file, between the `+++` lines.
    Every field is explained by the `_template.md` example. A couple of notes:
-   - `order` controls where the review appears in the list and comparison
-     table. Give it a number one higher than the current highest `order`
-     (check the other files in `content/reviews/` if unsure).
+   - There is no ordering to worry about: a new review goes to the top of
+     the list automatically. (The `order` field you'll see in the older
+     files just pins the order the site was originally published in. Leave
+     it out of new ones.)
    - `date` is the review's publish date, `YYYY-MM-DD`.
    - The `scores` line takes numbers from 0 to 10.
    - Booleans (`pasteurized`, `added_sugar`, `organic`, `fair_trade`, `pulp`)
@@ -43,7 +44,6 @@ brand = "Coco Nova"
 product = "Coco Nova Pure Coconut Water"
 listing_name = "Coco Nova — Pure"
 table_name = "Coco Nova Pure"
-order = 31
 date = "2026-02-14"
 size = "17 fl oz (500 mL)"
 style = "Still"
@@ -74,8 +74,8 @@ if it's what's on the shelf. Overall: 6.4/10.
 
 Before publishing anything, the build runs a check on every review file.
 If something is missing or malformed — a required field left out, a score
-outside 0–10, a typo in `image` pointing at a photo that doesn't exist, or
-two reviews sharing the same `order` — the build stops with a clear error
+outside 0–10, or a typo in `image` pointing at a photo that doesn't exist
+— the build stops with a clear error
 message naming the file and the problem, and the site is **not**
 published. Nothing on the live site breaks; fix the file, commit again,
 and the Action will retry.
