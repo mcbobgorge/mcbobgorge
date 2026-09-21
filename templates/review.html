@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$title</title>
+  <meta name="description" content="$description">
+  <link rel="canonical" href="https://natewooding.com/reviews/$slug.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="alternate" type="application/rss+xml" title="Nate Wooding" href="https://natewooding.com/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="$og_title">
+  <meta property="og:description" content="$description">
+  <meta property="og:url" content="https://natewooding.com/reviews/$slug.html">
+  <meta property="og:image" content="https://natewooding.com/reviews/img/$image_file">
+  <meta property="og:site_name" content="Nate Wooding">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "$ld_name",
+    "image": "https://natewooding.com/reviews/img/$image_file",
+    "review": {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "Nate Wooding"
+      },
+      "datePublished": "$date",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "$overall",
+        "bestRating": "10",
+        "worstRating": "1"
+      }
+    }
+  }
+  </script>
+</head>
+<body>
+  <h1>Nate Wooding</h1>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../coconut-water.html">Coconut Water Reviews</a>
+    <a href="../about.html">About</a>
+  </nav>
+  <img class="bottle" src="img/$image_file" alt="$ld_name">
+
+  <h2>$h2_heading</h2>
+  <p>$meta_line</p>
+
+  <h2>Scores</h2>
+  <div class="scores">
+    <span>Taste</span> $taste / 10<br>
+    <span>Sweetness</span> $sweetness / 10<br>
+    <span>Body</span> $body / 10<br>
+    <span>Refreshment</span> $refreshment / 10<br>
+    <span>Ethics</span> $ethics / 10<br>
+    <span>Overall</span> $overall / 10<br>
+  </div>
+
+  <h2>Notes</h2>
+  $notes
+
+  <h2>Verdict</h2>
+  $verdict
+
+  <p style="margin-top:20px;"><a href="../coconut-water.html">&larr; All reviews</a></p>
+  <p class="donate-note">These coconuts are grown in habitats threatened by palm oil deforestation. If you find this site useful, consider <a href="https://www.ran.org/donate/" target="_blank" rel="noopener">donating to the Rainforest Action Network</a>.</p>
+  <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
+<script>
+  var u='nate',d='natewooding.com';
+  document.getElementById('contact-link').innerHTML='<a href="mailto:'+u+'@'+d+'">Contact</a>';
+</script>
+</body>
+</html>

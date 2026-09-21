@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Nate Wooding: hiking and backpacking (including a 2018 Long Trail thru-hike), social links, and the story behind Wooding Pond in New Hampshire.">
+  <link rel="canonical" href="https://natewooding.com/about.html">
+  <title>About — Nate Wooding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="alternate" type="application/rss+xml" title="Nate Wooding" href="https://natewooding.com/feed.xml">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="About — Nate Wooding">
+  <meta property="og:description" content="Hiking and backpacking (including a 2018 Long Trail thru-hike), social links, and the story behind Wooding Pond in New Hampshire.">
+  <meta property="og:url" content="https://natewooding.com/about.html">
+  <meta property="og:image" content="https://natewooding.com/wooding-pond.jpg">
+  <meta property="og:site_name" content="Nate Wooding">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Nate Wooding",
+    "url": "https://natewooding.com/about.html",
+    "sameAs": [
+      "https://www.youtube.com/@themcbobgorge",
+      "https://www.tiktok.com/@barstoolsyria",
+      "https://twitter.com/barstoolsyria",
+      "https://www.instagram.com/natewooding"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <h1>Nate Wooding</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="coconut-water.html">Coconut Water Reviews</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <h2>About</h2>
+  <p>I am <span id="age"></span> years old and live in Redondo Beach, California.</p>
+  <p>
+    <a href="https://www.youtube.com/@themcbobgorge" target="_blank">YouTube</a> &middot;
+    <a href="https://www.tiktok.com/@barstoolsyria" target="_blank">TikTok (@barstoolsyria)</a> &middot;
+    <a href="https://twitter.com/barstoolsyria" target="_blank">Twitter (@barstoolsyria)</a> &middot;
+    <a href="https://www.instagram.com/natewooding" target="_blank">Instagram (@natewooding)</a>
+  </p>
+  <p>I enjoy hiking and backpacking. In 2018 I thru-hiked the Long Trail in Vermont, which runs 273 miles from the Massachusetts border to the Canadian border and is the oldest long-distance hiking trail in the United States. I track all of my hikes on <a href="https://caltopo.com/m/HT1J" target="_blank">CalTopo</a> and log every summit on <a href="https://www.peakbagger.com/climber/climber.aspx?cid=30373" target="_blank">Peakbagger</a>.</p>
+
+  <h2>Scandals</h2>
+  <p>In 2022 I posted a TikTok that resulted in some coverage from the Welsh press. <a href="https://www.walesonline.co.uk/news/wales-news/tiktok-backlash-wales-not-country-25853882" target="_blank">Wales Online: TikTok backlash as American says Wales is not a country</a>.</p>
+
+  <h2>Wooding Pond</h2>
+  <p>There is a pond near my childhood home in New Hampshire that had no name. I changed that by editing Google Maps and OpenStreetMaps to list it as Wooding Pond.</p>
+  <p>A few years later, a sitting NH state house member referenced it by name on Twitter. <a href="https://x.com/KristinNobleNH/status/1871517654487560651" target="_blank">Rep. Kristin Noble, December 2024.</a></p>
+  <p>A few years after that, my father made a sign.</p>
+  <img class="pond" src="wooding-pond.jpg" alt="The Wooding Pond sign">
+
+  <p class="donate-note">These coconuts are grown in habitats threatened by palm oil deforestation. If you find this site useful, consider <a href="https://www.ran.org/donate/" target="_blank" rel="noopener">donating to the Rainforest Action Network</a>.</p>
+  <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
+<script>
+  var u='nate',d='natewooding.com';
+  document.getElementById('contact-link').innerHTML='<a href="mailto:'+u+'@'+d+'">Contact</a>';
+</script>
+
+  <script>
+    const born = new Date(1999, 9, 2);
+    const today = new Date();
+    let age = today.getFullYear() - born.getFullYear();
+    if (today < new Date(today.getFullYear(), born.getMonth(), born.getDate())) age--;
+    document.getElementById('age').textContent = age;
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+
+    <item>
+      <title>$title</title>
+      <link>https://natewooding.com/reviews/$slug.html</link>
+      <guid>https://natewooding.com/reviews/$slug.html</guid>
+      <pubDate>$pub_date</pubDate>
+      <description>$description</description>
+    </item>
