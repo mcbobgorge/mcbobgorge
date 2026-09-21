@@ -34,6 +34,9 @@ jobs:
       - name: Run tests
         run: python3 -m unittest discover -s tests
 
+      - name: Check the built site
+        run: python3 tools/check_site.py _site
+
       - name: Check CNAME and robots.txt made it into the artifact
         run: |
           test -f _site/CNAME

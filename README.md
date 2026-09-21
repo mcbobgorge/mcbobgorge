@@ -28,6 +28,9 @@ required.
 - `tools/new_review.py` — converts a plain-text intake block (email format)
   into a review data file. Validates the result and refuses to overwrite
   existing files. See "If you email the review to Woody" in PUBLISHING.md.
+- `tools/check_site.py` — checks the built site for broken local links,
+  pages without exactly one `<h1>`, and missing or thin titles and meta
+  descriptions. Runs in the deploy workflow, so a regression fails the build.
 - `tools/extract_legacy.py` — one-off script used to migrate the original
   hand-written HTML into `content/reviews/*.md`. Kept for reference; you
   should not need to run it again.
