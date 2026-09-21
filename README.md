@@ -57,9 +57,15 @@ python3 -m unittest discover -s tests
 
 Deployment is automatic: `.github/workflows/deploy.yml` runs on every push
 to `main`. It runs `python3 build.py`, runs the unit tests, and — if both
-succeed — publishes the repository (including the freshly built pages,
-`CNAME`, and `robots.txt`) to GitHub Pages via
+succeed — publishes the site to GitHub Pages via
 `actions/upload-pages-artifact` + `actions/deploy-pages`.
+
+The workflow builds with `python3 build.py --out _site`, which stages only
+the publishable files (pages, `style.css`, `feed.xml`, `sitemap.xml`,
+`robots.txt`, `CNAME`, `reviews/img/`) into `_site/` and deploys that, so
+the generator, templates and content sources are not served publicly.
+`_site/` is gitignored; it is also handy for previewing the real site
+locally: `python3 build.py --out _site && (cd _site && python3 -m http.server 8099)`.
 
 There is no separate "commit the build output" step: the workflow builds
 and deploys directly, so the files on GitHub Pages always match the

@@ -109,6 +109,8 @@ def render_review_item(r) -> str:
         listing_name=esc(r.listing_name),
         item_meta=listing_meta_line(r),
         overall=fmt_overall(r.scores["overall"]),
+        order=r.order,
+        table_name=esc(r.table_name),
     )
 
 
@@ -118,6 +120,7 @@ def render_table_row(r) -> str:
         tags=tags_attr(r),
         slug=r.slug,
         table_name=esc(r.table_name),
+        order=r.order,
         style=r.style,
         sugar=yn(r.added_sugar),
         pulp=yn(r.pulp),

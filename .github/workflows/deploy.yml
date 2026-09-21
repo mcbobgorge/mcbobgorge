@@ -25,19 +25,19 @@ jobs:
           python-version: "3.12"
 
       - name: Build site
-        run: python3 build.py
+        run: python3 build.py --out _site
 
       - name: Run tests
         run: python3 -m unittest discover -s tests
 
-      - name: Preserve CNAME and robots.txt
+      - name: Check CNAME and robots.txt made it into the artifact
         run: |
-          test -f CNAME && echo "CNAME present" || echo "no CNAME file"
-          test -f robots.txt && echo "robots.txt present" || echo "no robots.txt file"
+          test -f _site/CNAME
+          test -f _site/robots.txt
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
   deploy:
     needs: build

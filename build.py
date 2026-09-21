@@ -21,7 +21,40 @@ OUT_REVIEWS = ROOT / "reviews"
 TEMPLATES = ROOT / "templates"
 
 
+PUBLISH_FILES = [
+    "index.html",
+    "about.html",
+    "coconut-water.html",
+    "style.css",
+    "feed.xml",
+    "sitemap.xml",
+    "robots.txt",
+    "CNAME",
+]
+
+
+def stage(out_dir: Path, reviews) -> None:
+    """Copy only the files the public site needs into out_dir (for deployment)."""
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+    (out_dir / "reviews").mkdir(parents=True)
+    for name in PUBLISH_FILES:
+        src = ROOT / name
+        if src.exists():
+            shutil.copy(src, out_dir / name)
+    for r in reviews:
+        shutil.copy(OUT_REVIEWS / f"{r.slug}.html", out_dir / "reviews" / f"{r.slug}.html")
+    shutil.copytree(OUT_REVIEWS / "img", out_dir / "reviews" / "img")
+
+
 def main() -> int:
+    out_dir = None
+    args = sys.argv[1:]
+    if args[:1] == ["--out"] and len(args) == 2:
+        out_dir = ROOT / args[1]
+    elif args:
+        print("usage: build.py [--out DIR]", file=sys.stderr)
+        return 2
     try:
         reviews = load_all(CONTENT_REVIEWS)
     except ValidationError as e:
@@ -39,6 +72,10 @@ def main() -> int:
     shutil.copy(TEMPLATES / "index.html", ROOT / "index.html")
     shutil.copy(TEMPLATES / "about.html", ROOT / "about.html")
     shutil.copy(TEMPLATES / "style.css", ROOT / "style.css")
+
+    if out_dir is not None:
+        stage(out_dir, reviews)
+        print(f"staged publishable files in {out_dir.name}/")
 
     print(f"built {len(reviews)} review pages + listing + feed + sitemap")
     return 0

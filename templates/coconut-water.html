@@ -18,12 +18,14 @@
   <meta name="twitter:card" content="summary">
 </head>
 <body>
-  <h1>Nate Wooding</h1>
+  <a class="masthead" href="index.html">Nate Wooding</a>
   <nav>
     <a href="index.html">Home</a>
     <a href="coconut-water.html">Coconut Water Reviews</a>
     <a href="about.html">About</a>
   </nav>
+
+  <h1 class="page-title">Coconut Water Reviews</h1>
 
   <h2>All Reviews</h2>
   <div style="margin-bottom:16px;">
@@ -36,9 +38,19 @@
     <span class="filter-tag" data-filter="pulp">Pulp</span>
   </div>
 
+  <div class="sortbar">
+    <span class="label">Sort</span>
+    <button data-sort="order" class="on">Newest</button>
+    <button data-sort="score">Highest score</button>
+    <button data-sort="name">Name</button>
+  </div>
+
+<div id="review-list">
 $review_items
+</div>
 
   <h2>Comparison</h2>
+  <div class="table-wrap">
   <table class="compare">
     <thead>
       <tr>
@@ -60,6 +72,7 @@ $review_items
 $table_rows
     </tbody>
   </table>
+  </div>
 
   <h2>Rating Guide</h2>
 
@@ -127,6 +140,26 @@ $table_rows
           const show = !filters.size || [...filters].every(f => tags.includes(f));
           el instanceof HTMLElement && (el.style.display = show ? '' : 'none');
           el.classList && el.classList.toggle('hidden', !show);
+        });
+      });
+    });
+  </script>
+
+  <script>
+    const list = document.getElementById('review-list');
+    const tbody = document.querySelector('table.compare tbody');
+    const num = (el, k) => parseFloat(el.dataset[k]);
+    const sorters = {
+      order: (a, b) => num(a, 'order') - num(b, 'order'),
+      score: (a, b) => num(b, 'score') - num(a, 'score'),
+      name: (a, b) => a.dataset.name.localeCompare(b.dataset.name),
+    };
+    document.querySelectorAll('.sortbar button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sortbar button').forEach(b => b.classList.toggle('on', b === btn));
+        const cmp = sorters[btn.dataset.sort];
+        [[list, '.review-item'], [tbody, 'tr']].forEach(([parent, sel]) => {
+          [...parent.querySelectorAll(sel)].sort(cmp).forEach(el => parent.appendChild(el));
         });
       });
     });

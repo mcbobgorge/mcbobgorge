@@ -18,12 +18,14 @@
   <meta name="twitter:card" content="summary">
 </head>
 <body>
-  <h1>Nate Wooding</h1>
+  <a class="masthead" href="index.html">Nate Wooding</a>
   <nav>
     <a href="index.html">Home</a>
     <a href="coconut-water.html">Coconut Water Reviews</a>
     <a href="about.html">About</a>
   </nav>
+
+  <h1 class="page-title">Coconut Water Reviews</h1>
 
   <h2>All Reviews</h2>
   <div style="margin-bottom:16px;">
@@ -36,8 +38,16 @@
     <span class="filter-tag" data-filter="pulp">Pulp</span>
   </div>
 
-  <div class="review-item" data-tags="sparkling organic fair-trade no-sugar">
-    <div class="thumb"><img src="reviews/img/harmless-harvest-sparkling.jpg" alt="Harmless Harvest — Organic Sparkling"></div>
+  <div class="sortbar">
+    <span class="label">Sort</span>
+    <button data-sort="order" class="on">Newest</button>
+    <button data-sort="score">Highest score</button>
+    <button data-sort="name">Name</button>
+  </div>
+
+<div id="review-list">
+  <div class="review-item" data-tags="sparkling organic fair-trade no-sugar" data-order="1" data-score="7.4" data-name="Harmless Harvest Sparkling">
+    <div class="thumb"><img src="reviews/img/harmless-harvest-sparkling.jpg" alt="Harmless Harvest — Organic Sparkling" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest — Organic Sparkling</a></div>
       <div class="item-meta">June 2025 &middot; Sparkling &middot; Unpasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Fair Trade</div>
@@ -45,8 +55,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="sparkling pasteurized">
-    <div class="thumb"><img src="reviews/img/coaqua-sparkling.jpg" alt="Coaqua — Sparkling"></div>
+  <div class="review-item" data-tags="sparkling pasteurized" data-order="2" data-score="7.3" data-name="Coaqua Sparkling">
+    <div class="thumb"><img src="reviews/img/coaqua-sparkling.jpg" alt="Coaqua — Sparkling" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/coaqua-sparkling.html">Coaqua — Sparkling</a></div>
       <div class="item-meta">June 2025 &middot; Sparkling &middot; Pasteurized &middot; Added Sugar</div>
@@ -54,8 +64,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized">
-    <div class="thumb"><img src="reviews/img/coaqua-still.jpg" alt="Coaqua — Still"></div>
+  <div class="review-item" data-tags="still pasteurized" data-order="3" data-score="6.6" data-name="Coaqua Still">
+    <div class="thumb"><img src="reviews/img/coaqua-still.jpg" alt="Coaqua — Still" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/coaqua-still.html">Coaqua — Still</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar</div>
@@ -63,8 +73,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/real-coco-pure.jpg" alt="Real Coco — Organic Pure"></div>
+  <div class="review-item" data-tags="still organic no-sugar pasteurized" data-order="4" data-score="5.2" data-name="Real Coco Organic Pure">
+    <div class="thumb"><img src="reviews/img/real-coco-pure.jpg" alt="Real Coco — Organic Pure" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/real-coco-pure.html">Real Coco — Organic Pure</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; USDA Organic</div>
@@ -72,8 +82,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/trader-joes-pasteurized.jpg" alt="Trader Joe's — Coconut Water"></div>
+  <div class="review-item" data-tags="still no-sugar pasteurized" data-order="5" data-score="3.9" data-name="Trader Joe's">
+    <div class="thumb"><img src="reviews/img/trader-joes-pasteurized.jpg" alt="Trader Joe's — Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/trader-joes-pasteurized.html">Trader Joe's — Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; Not from Concentrate</div>
@@ -81,8 +91,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/cocochito-pulp.jpg" alt="Cocochito — with Pulp"></div>
+  <div class="review-item" data-tags="still pasteurized pulp" data-order="6" data-score="4.1" data-name="Cocochito w/ Pulp">
+    <div class="thumb"><img src="reviews/img/cocochito-pulp.jpg" alt="Cocochito — with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/cocochito-pulp.html">Cocochito — with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
@@ -90,8 +100,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar">
-    <div class="thumb"><img src="reviews/img/trader-joes-organic.jpg" alt="Trader Joe's — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic no-sugar" data-order="7" data-score="7.8" data-name="Trader Joe's Organic">
+    <div class="thumb"><img src="reviews/img/trader-joes-organic.jpg" alt="Trader Joe's — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/trader-joes-organic.html">Trader Joe's — Organic Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Unpasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Single Origin</div>
@@ -99,8 +109,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized">
-    <div class="thumb"><img src="reviews/img/vita-coco-original.jpg" alt="Vita Coco — The Original"></div>
+  <div class="review-item" data-tags="still pasteurized" data-order="8" data-score="5.0" data-name="Vita Coco Original">
+    <div class="thumb"><img src="reviews/img/vita-coco-original.jpg" alt="Vita Coco — The Original" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/vita-coco-original.html">Vita Coco — The Original</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Not from Concentrate</div>
@@ -108,8 +118,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized">
-    <div class="thumb"><img src="reviews/img/vita-coco-extra-coconut.jpg" alt="Vita Coco — Extra Coconut"></div>
+  <div class="review-item" data-tags="still pasteurized" data-order="9" data-score="4.6" data-name="Vita Coco Extra Coconut">
+    <div class="thumb"><img src="reviews/img/vita-coco-extra-coconut.jpg" alt="Vita Coco — Extra Coconut" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/vita-coco-extra-coconut.html">Vita Coco — Extra Coconut</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; From Concentrate</div>
@@ -117,8 +127,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/maui-and-sons.jpg" alt="Maui &amp; Sons — 100% Pure"></div>
+  <div class="review-item" data-tags="still no-sugar pasteurized" data-order="10" data-score="4.6" data-name="Maui &amp; Sons">
+    <div class="thumb"><img src="reviews/img/maui-and-sons.jpg" alt="Maui &amp; Sons — 100% Pure" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/maui-and-sons.html">Maui &amp; Sons — 100% Pure</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; Not from Concentrate</div>
@@ -126,8 +136,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/vita-coco-farmers-organic.jpg" alt="Vita Coco — Farmers Organic"></div>
+  <div class="review-item" data-tags="still organic no-sugar pasteurized" data-order="11" data-score="5.2" data-name="Vita Coco Farmers Organic">
+    <div class="thumb"><img src="reviews/img/vita-coco-farmers-organic.jpg" alt="Vita Coco — Farmers Organic" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/vita-coco-farmers-organic.html">Vita Coco — Farmers Organic</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Not from Concentrate</div>
@@ -135,8 +145,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/zico-natural.jpg" alt="Zico — Natural 100% Coconut Water"></div>
+  <div class="review-item" data-tags="still no-sugar pasteurized" data-order="12" data-score="6.6" data-name="Zico Natural">
+    <div class="thumb"><img src="reviews/img/zico-natural.jpg" alt="Zico — Natural 100% Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/zico-natural.html">Zico — Natural 100% Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar</div>
@@ -144,8 +154,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized">
-    <div class="thumb"><img src="reviews/img/c2o-original.jpg" alt="C2O — Coconut Water Original"></div>
+  <div class="review-item" data-tags="still pasteurized" data-order="13" data-score="2.9" data-name="C2O Original">
+    <div class="thumb"><img src="reviews/img/c2o-original.jpg" alt="C2O — Coconut Water Original" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/c2o-original.html">C2O — Coconut Water Original</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar</div>
@@ -153,8 +163,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic fair-trade no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/simple-truth-no-pulp.jpg" alt="Simple Truth — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic fair-trade no-sugar pasteurized" data-order="14" data-score="6.3" data-name="Simple Truth">
+    <div class="thumb"><img src="reviews/img/simple-truth-no-pulp.jpg" alt="Simple Truth — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/simple-truth-no-pulp.html">Simple Truth — Organic Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Fair Trade</div>
@@ -162,8 +172,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/parrot-pulp.jpg" alt="Parrot — Coconut Water with Pulp"></div>
+  <div class="review-item" data-tags="still pasteurized pulp" data-order="15" data-score="3.1" data-name="Parrot w/ Pulp">
+    <div class="thumb"><img src="reviews/img/parrot-pulp.jpg" alt="Parrot — Coconut Water with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/parrot-pulp.html">Parrot — Coconut Water with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
@@ -171,8 +181,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/c2o-pulp.jpg" alt="C2O — Coconut Water with Pulp"></div>
+  <div class="review-item" data-tags="still pasteurized pulp" data-order="16" data-score="4.2" data-name="C2O w/ Pulp">
+    <div class="thumb"><img src="reviews/img/c2o-pulp.jpg" alt="C2O — Coconut Water with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/c2o-pulp.html">C2O — Coconut Water with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
@@ -180,8 +190,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still no-sugar pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/nilo-pulp.jpg" alt="Nilo — Coconut Water with Pulp"></div>
+  <div class="review-item" data-tags="still no-sugar pasteurized pulp" data-order="17" data-score="5.3" data-name="Nilo w/ Pulp">
+    <div class="thumb"><img src="reviews/img/nilo-pulp.jpg" alt="Nilo — Coconut Water with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/nilo-pulp.html">Nilo — Coconut Water with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; Pulp</div>
@@ -189,8 +199,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/el-mexicano-pulp.jpg" alt="El Mexicano — Agua de Coco with Pulp"></div>
+  <div class="review-item" data-tags="still pasteurized pulp" data-order="18" data-score="3.9" data-name="El Mexicano w/ Pulp">
+    <div class="thumb"><img src="reviews/img/el-mexicano-pulp.jpg" alt="El Mexicano — Agua de Coco with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/el-mexicano-pulp.html">El Mexicano — Agua de Coco with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
@@ -198,8 +208,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/moon-boo-sun.jpg" alt="Moon Boo Sun — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic no-sugar pasteurized" data-order="19" data-score="6.2" data-name="Moon Boo Sun">
+    <div class="thumb"><img src="reviews/img/moon-boo-sun.jpg" alt="Moon Boo Sun — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/moon-boo-sun.html">Moon Boo Sun — Organic Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; USDA Organic</div>
@@ -207,8 +217,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/visvita-pulp.jpg" alt="Visvita — Coconut Water with Pulp"></div>
+  <div class="review-item" data-tags="still pasteurized pulp" data-order="20" data-score="3.8" data-name="Visvita w/ Pulp">
+    <div class="thumb"><img src="reviews/img/visvita-pulp.jpg" alt="Visvita — Coconut Water with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/visvita-pulp.html">Visvita — Coconut Water with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Pulp</div>
@@ -216,8 +226,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still pasteurized">
-    <div class="thumb"><img src="reviews/img/once-upon-a-coconut.jpg" alt="Once Upon a Coconut — Premium Coconut Water"></div>
+  <div class="review-item" data-tags="still pasteurized" data-order="21" data-score="4.6" data-name="Once Upon a Coconut">
+    <div class="thumb"><img src="reviews/img/once-upon-a-coconut.jpg" alt="Once Upon a Coconut — Premium Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/once-upon-a-coconut.html">Once Upon a Coconut — Premium Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; Never from Concentrate</div>
@@ -225,8 +235,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic fair-trade no-sugar">
-    <div class="thumb"><img src="reviews/img/harmless-harvest-original.jpg" alt="Harmless Harvest — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic fair-trade no-sugar" data-order="22" data-score="8.1" data-name="Harmless Harvest Original">
+    <div class="thumb"><img src="reviews/img/harmless-harvest-original.jpg" alt="Harmless Harvest — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/harmless-harvest-original.html">Harmless Harvest — Organic Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Unpasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Fair Trade</div>
@@ -234,8 +244,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still no-sugar pasteurized pulp">
-    <div class="thumb"><img src="reviews/img/sprouts-pulp.jpg" alt="Sprouts — 100% Coconut Water with Pulp"></div>
+  <div class="review-item" data-tags="still no-sugar pasteurized pulp" data-order="23" data-score="5.2" data-name="Sprouts w/ Pulp">
+    <div class="thumb"><img src="reviews/img/sprouts-pulp.jpg" alt="Sprouts — 100% Coconut Water with Pulp" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/sprouts-pulp.html">Sprouts — 100% Coconut Water with Pulp</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; Pulp &middot; Not from Concentrate</div>
@@ -243,8 +253,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic pasteurized">
-    <div class="thumb"><img src="reviews/img/c2o-organic.jpg" alt="C2O — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic pasteurized" data-order="24" data-score="4.8" data-name="C2O Organic">
+    <div class="thumb"><img src="reviews/img/c2o-organic.jpg" alt="C2O — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/c2o-organic.html">C2O — Organic Coconut Water</a></div>
       <div class="item-meta">June 2025 &middot; Still &middot; Pasteurized &middot; Added Sugar &middot; USDA Organic</div>
@@ -252,8 +262,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar">
-    <div class="thumb"><img src="reviews/img/zico-pure.jpg" alt="Zico Pure — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic no-sugar" data-order="25" data-score="6.9" data-name="Zico Pure">
+    <div class="thumb"><img src="reviews/img/zico-pure.jpg" alt="Zico Pure — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/zico-pure.html">Zico Pure — Organic Coconut Water</a></div>
       <div class="item-meta">July 2025 &middot; Still &middot; Unpasteurized &middot; No Added Sugar &middot; USDA Organic &middot; 100% Nam Hom</div>
@@ -261,8 +271,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic fair-trade no-sugar">
-    <div class="thumb"><img src="reviews/img/sprouts-organic.jpg" alt="Sprouts — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic fair-trade no-sugar" data-order="26" data-score="7.8" data-name="Sprouts Organic">
+    <div class="thumb"><img src="reviews/img/sprouts-organic.jpg" alt="Sprouts — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/sprouts-organic.html">Sprouts — Organic Coconut Water</a></div>
       <div class="item-meta">July 2025 &middot; Still &middot; Unpasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Fair Trade</div>
@@ -270,8 +280,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar">
-    <div class="thumb"><img src="reviews/img/kirkland-organic.jpg" alt="Kirkland Signature — Organic Coconut Water"></div>
+  <div class="review-item" data-tags="still organic no-sugar" data-order="27" data-score="7.9" data-name="Kirkland Organic">
+    <div class="thumb"><img src="reviews/img/kirkland-organic.jpg" alt="Kirkland Signature — Organic Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/kirkland-organic.html">Kirkland Signature — Organic Coconut Water</a></div>
       <div class="item-meta">July 2025 &middot; Still &middot; Unpasteurized &middot; No Added Sugar &middot; USDA Organic</div>
@@ -279,8 +289,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/taste-nirvana.jpg" alt="Taste Nirvana — Real Premium Coconut Water"></div>
+  <div class="review-item" data-tags="still no-sugar pasteurized" data-order="28" data-score="5.4" data-name="Taste Nirvana">
+    <div class="thumb"><img src="reviews/img/taste-nirvana.jpg" alt="Taste Nirvana — Real Premium Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/taste-nirvana.html">Taste Nirvana — Real Premium Coconut Water</a></div>
       <div class="item-meta">July 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; Nam Hom</div>
@@ -288,8 +298,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/blue-monkey-organic.jpg" alt="Blue Monkey — Organic Pure Coconut Water"></div>
+  <div class="review-item" data-tags="still organic no-sugar pasteurized" data-order="29" data-score="4.4" data-name="Blue Monkey Organic">
+    <div class="thumb"><img src="reviews/img/blue-monkey-organic.jpg" alt="Blue Monkey — Organic Pure Coconut Water" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/blue-monkey-organic.html">Blue Monkey — Organic Pure Coconut Water</a></div>
       <div class="item-meta">July 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; USDA Organic</div>
@@ -297,8 +307,8 @@
     </div>
   </div>
 
-  <div class="review-item" data-tags="still organic no-sugar pasteurized">
-    <div class="thumb"><img src="reviews/img/o-organics-original.jpg" alt="O Organics — Coconut Water Original"></div>
+  <div class="review-item" data-tags="still organic no-sugar pasteurized" data-order="30" data-score="2.4" data-name="O Organics">
+    <div class="thumb"><img src="reviews/img/o-organics-original.jpg" alt="O Organics — Coconut Water Original" width="54" height="70" loading="lazy"></div>
     <div>
       <div class="item-name"><a href="reviews/o-organics-original.html">O Organics — Coconut Water Original</a></div>
       <div class="item-meta">August 2025 &middot; Still &middot; Pasteurized &middot; No Added Sugar &middot; USDA Organic &middot; Brazilian</div>
@@ -306,8 +316,10 @@
     </div>
   </div>
 
+</div>
 
   <h2>Comparison</h2>
+  <div class="table-wrap">
   <table class="compare">
     <thead>
       <tr>
@@ -326,181 +338,181 @@
       </tr>
     </thead>
     <tbody>
-      <tr data-tags="sparkling organic fair-trade no-sugar">
+      <tr data-tags="sparkling organic fair-trade no-sugar" data-order="1" data-score="7.4" data-name="Harmless Harvest Sparkling">
         <td class="pname"><a href="reviews/harmless-harvest-sparkling.html">Harmless Harvest Sparkling</a></td>
         <td class="tc">Sparkling</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">5</td><td class="sc">5</td><td class="sc">7</td><td class="sc">6</td><td class="sc">8</td>
         <td class="overall">7.4</td>
       </tr>
-      <tr data-tags="sparkling pasteurized">
+      <tr data-tags="sparkling pasteurized" data-order="2" data-score="7.3" data-name="Coaqua Sparkling">
         <td class="pname"><a href="reviews/coaqua-sparkling.html">Coaqua Sparkling</a></td>
         <td class="tc">Sparkling</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">7</td><td class="sc">7</td><td class="sc">6</td><td class="sc">6</td><td class="sc">1</td>
         <td class="overall">7.3</td>
       </tr>
-      <tr data-tags="still pasteurized">
+      <tr data-tags="still pasteurized" data-order="3" data-score="6.6" data-name="Coaqua Still">
         <td class="pname"><a href="reviews/coaqua-still.html">Coaqua Still</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">7</td><td class="sc">8</td><td class="sc">5</td><td class="sc">5</td><td class="sc">1</td>
         <td class="overall">6.6</td>
       </tr>
-      <tr data-tags="still organic no-sugar pasteurized">
+      <tr data-tags="still organic no-sugar pasteurized" data-order="4" data-score="5.2" data-name="Real Coco Organic Pure">
         <td class="pname"><a href="reviews/real-coco-pure.html">Real Coco Organic Pure</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">3</td><td class="sc">4</td><td class="sc">2</td><td class="sc">7</td><td class="sc">3</td>
         <td class="overall">5.2</td>
       </tr>
-      <tr data-tags="still no-sugar pasteurized">
+      <tr data-tags="still no-sugar pasteurized" data-order="5" data-score="3.9" data-name="Trader Joe's">
         <td class="pname"><a href="reviews/trader-joes-pasteurized.html">Trader Joe's</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">3</td><td class="sc">4</td><td class="sc">4</td><td class="sc">5</td><td class="sc">2</td>
         <td class="overall">3.9</td>
       </tr>
-      <tr data-tags="still pasteurized pulp">
+      <tr data-tags="still pasteurized pulp" data-order="6" data-score="4.1" data-name="Cocochito w/ Pulp">
         <td class="pname"><a href="reviews/cocochito-pulp.html">Cocochito w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">4</td><td class="sc">7</td><td class="sc">6</td><td class="sc">4</td><td class="sc">1</td>
         <td class="overall">4.1</td>
       </tr>
-      <tr data-tags="still organic no-sugar">
+      <tr data-tags="still organic no-sugar" data-order="7" data-score="7.8" data-name="Trader Joe's Organic">
         <td class="pname"><a href="reviews/trader-joes-organic.html">Trader Joe's Organic</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">8</td><td class="sc">7</td><td class="sc">4</td><td class="sc">6</td><td class="sc">3</td>
         <td class="overall">7.8</td>
       </tr>
-      <tr data-tags="still pasteurized">
+      <tr data-tags="still pasteurized" data-order="8" data-score="5.0" data-name="Vita Coco Original">
         <td class="pname"><a href="reviews/vita-coco-original.html">Vita Coco Original</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">4</td><td class="sc">7</td><td class="sc">3</td><td class="sc">5</td><td class="sc">3</td>
         <td class="overall">5.0</td>
       </tr>
-      <tr data-tags="still pasteurized">
+      <tr data-tags="still pasteurized" data-order="9" data-score="4.6" data-name="Vita Coco Extra Coconut">
         <td class="pname"><a href="reviews/vita-coco-extra-coconut.html">Vita Coco Extra Coconut</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">3</td><td class="sc">6</td><td class="sc">9</td><td class="sc">3</td><td class="sc">3</td>
         <td class="overall">4.6</td>
       </tr>
-      <tr data-tags="still no-sugar pasteurized">
+      <tr data-tags="still no-sugar pasteurized" data-order="10" data-score="4.6" data-name="Maui &amp; Sons">
         <td class="pname"><a href="reviews/maui-and-sons.html">Maui &amp; Sons</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">4</td><td class="sc">3</td><td class="sc">4</td><td class="sc">6</td><td class="sc">1</td>
         <td class="overall">4.6</td>
       </tr>
-      <tr data-tags="still organic no-sugar pasteurized">
+      <tr data-tags="still organic no-sugar pasteurized" data-order="11" data-score="5.2" data-name="Vita Coco Farmers Organic">
         <td class="pname"><a href="reviews/vita-coco-farmers-organic.html">Vita Coco Farmers Organic</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">5</td><td class="sc">4</td><td class="sc">4</td><td class="sc">6</td><td class="sc">3</td>
         <td class="overall">5.2</td>
       </tr>
-      <tr data-tags="still no-sugar pasteurized">
+      <tr data-tags="still no-sugar pasteurized" data-order="12" data-score="6.6" data-name="Zico Natural">
         <td class="pname"><a href="reviews/zico-natural.html">Zico Natural</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">7</td><td class="sc">4</td><td class="sc">4</td><td class="sc">7</td><td class="sc">2</td>
         <td class="overall">6.6</td>
       </tr>
-      <tr data-tags="still pasteurized">
+      <tr data-tags="still pasteurized" data-order="13" data-score="2.9" data-name="C2O Original">
         <td class="pname"><a href="reviews/c2o-original.html">C2O Original</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">2</td><td class="sc">8</td><td class="sc">3</td><td class="sc">3</td><td class="sc">1</td>
         <td class="overall">2.9</td>
       </tr>
-      <tr data-tags="still organic fair-trade no-sugar pasteurized">
+      <tr data-tags="still organic fair-trade no-sugar pasteurized" data-order="14" data-score="6.3" data-name="Simple Truth">
         <td class="pname"><a href="reviews/simple-truth-no-pulp.html">Simple Truth</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">6</td><td class="sc">3</td><td class="sc">3</td><td class="sc">8</td><td class="sc">5</td>
         <td class="overall">6.3</td>
       </tr>
-      <tr data-tags="still pasteurized pulp">
+      <tr data-tags="still pasteurized pulp" data-order="15" data-score="3.1" data-name="Parrot w/ Pulp">
         <td class="pname"><a href="reviews/parrot-pulp.html">Parrot w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">2</td><td class="sc">9</td><td class="sc">6</td><td class="sc">3</td><td class="sc">1</td>
         <td class="overall">3.1</td>
       </tr>
-      <tr data-tags="still pasteurized pulp">
+      <tr data-tags="still pasteurized pulp" data-order="16" data-score="4.2" data-name="C2O w/ Pulp">
         <td class="pname"><a href="reviews/c2o-pulp.html">C2O w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">3</td><td class="sc">6</td><td class="sc">5</td><td class="sc">4</td><td class="sc">1</td>
         <td class="overall">4.2</td>
       </tr>
-      <tr data-tags="still no-sugar pasteurized pulp">
+      <tr data-tags="still no-sugar pasteurized pulp" data-order="17" data-score="5.3" data-name="Nilo w/ Pulp">
         <td class="pname"><a href="reviews/nilo-pulp.html">Nilo w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">5</td><td class="sc">6</td><td class="sc">6</td><td class="sc">4</td><td class="sc">1</td>
         <td class="overall">5.3</td>
       </tr>
-      <tr data-tags="still pasteurized pulp">
+      <tr data-tags="still pasteurized pulp" data-order="18" data-score="3.9" data-name="El Mexicano w/ Pulp">
         <td class="pname"><a href="reviews/el-mexicano-pulp.html">El Mexicano w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">4</td><td class="sc">9</td><td class="sc">6</td><td class="sc">3</td><td class="sc">1</td>
         <td class="overall">3.9</td>
       </tr>
-      <tr data-tags="still organic no-sugar pasteurized">
+      <tr data-tags="still organic no-sugar pasteurized" data-order="19" data-score="6.2" data-name="Moon Boo Sun">
         <td class="pname"><a href="reviews/moon-boo-sun.html">Moon Boo Sun</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">6</td><td class="sc">5</td><td class="sc">8</td><td class="sc">3</td><td class="sc">3</td>
         <td class="overall">6.2</td>
       </tr>
-      <tr data-tags="still pasteurized pulp">
+      <tr data-tags="still pasteurized pulp" data-order="20" data-score="3.8" data-name="Visvita w/ Pulp">
         <td class="pname"><a href="reviews/visvita-pulp.html">Visvita w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">5</td><td class="sc">9</td><td class="sc">5</td><td class="sc">4</td><td class="sc">1</td>
         <td class="overall">3.8</td>
       </tr>
-      <tr data-tags="still pasteurized">
+      <tr data-tags="still pasteurized" data-order="21" data-score="4.6" data-name="Once Upon a Coconut">
         <td class="pname"><a href="reviews/once-upon-a-coconut.html">Once Upon a Coconut</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">3</td><td class="sc">8</td><td class="sc">3</td><td class="sc">3</td><td class="sc">3</td>
         <td class="overall">4.6</td>
       </tr>
-      <tr data-tags="still organic fair-trade no-sugar">
+      <tr data-tags="still organic fair-trade no-sugar" data-order="22" data-score="8.1" data-name="Harmless Harvest Original">
         <td class="pname"><a href="reviews/harmless-harvest-original.html">Harmless Harvest Original</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">8</td><td class="sc">6</td><td class="sc">6</td><td class="sc">7</td><td class="sc">8</td>
         <td class="overall">8.1</td>
       </tr>
-      <tr data-tags="still no-sugar pasteurized pulp">
+      <tr data-tags="still no-sugar pasteurized pulp" data-order="23" data-score="5.2" data-name="Sprouts w/ Pulp">
         <td class="pname"><a href="reviews/sprouts-pulp.html">Sprouts w/ Pulp</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">5</td><td class="sc">4</td><td class="sc">6</td><td class="sc">6</td><td class="sc">2</td>
         <td class="overall">5.2</td>
       </tr>
-      <tr data-tags="still organic pasteurized">
+      <tr data-tags="still organic pasteurized" data-order="24" data-score="4.8" data-name="C2O Organic">
         <td class="pname"><a href="reviews/c2o-organic.html">C2O Organic</a></td>
         <td class="tc">Still</td><td class="tc">Yes</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">4</td><td class="sc">7</td><td class="sc">5</td><td class="sc">6</td><td class="sc">2</td>
         <td class="overall">4.8</td>
       </tr>
-      <tr data-tags="still organic no-sugar">
+      <tr data-tags="still organic no-sugar" data-order="25" data-score="6.9" data-name="Zico Pure">
         <td class="pname"><a href="reviews/zico-pure.html">Zico Pure</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">7</td><td class="sc">7</td><td class="sc">4</td><td class="sc">5</td><td class="sc">3</td>
         <td class="overall">6.9</td>
       </tr>
-      <tr data-tags="still organic fair-trade no-sugar">
+      <tr data-tags="still organic fair-trade no-sugar" data-order="26" data-score="7.8" data-name="Sprouts Organic">
         <td class="pname"><a href="reviews/sprouts-organic.html">Sprouts Organic</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">8</td><td class="sc">7</td><td class="sc">4</td><td class="sc">6</td><td class="sc">3</td>
         <td class="overall">7.8</td>
       </tr>
-      <tr data-tags="still organic no-sugar">
+      <tr data-tags="still organic no-sugar" data-order="27" data-score="7.9" data-name="Kirkland Organic">
         <td class="pname"><a href="reviews/kirkland-organic.html">Kirkland Organic</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td>
         <td class="sc">7</td><td class="sc">5</td><td class="sc">5</td><td class="sc">8</td><td class="sc">3</td>
         <td class="overall">7.9</td>
       </tr>
-      <tr data-tags="still no-sugar pasteurized">
+      <tr data-tags="still no-sugar pasteurized" data-order="28" data-score="5.4" data-name="Taste Nirvana">
         <td class="pname"><a href="reviews/taste-nirvana.html">Taste Nirvana</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">No</td>
         <td class="sc">6</td><td class="sc">6</td><td class="sc">4</td><td class="sc">5</td><td class="sc">2</td>
         <td class="overall">5.4</td>
       </tr>
-      <tr data-tags="still organic no-sugar pasteurized">
+      <tr data-tags="still organic no-sugar pasteurized" data-order="29" data-score="4.4" data-name="Blue Monkey Organic">
         <td class="pname"><a href="reviews/blue-monkey-organic.html">Blue Monkey Organic</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">4</td><td class="sc">3</td><td class="sc">3</td><td class="sc">7</td><td class="sc">3</td>
         <td class="overall">4.4</td>
       </tr>
-      <tr data-tags="still organic no-sugar pasteurized">
+      <tr data-tags="still organic no-sugar pasteurized" data-order="30" data-score="2.4" data-name="O Organics">
         <td class="pname"><a href="reviews/o-organics-original.html">O Organics</a></td>
         <td class="tc">Still</td><td class="tc">No</td><td class="tc">No</td><td class="tc">Yes</td><td class="tc">Yes</td>
         <td class="sc">2</td><td class="sc">5</td><td class="sc">2</td><td class="sc">4</td><td class="sc">2</td>
@@ -509,6 +521,7 @@
 
     </tbody>
   </table>
+  </div>
 
   <h2>Rating Guide</h2>
 
@@ -576,6 +589,26 @@
           const show = !filters.size || [...filters].every(f => tags.includes(f));
           el instanceof HTMLElement && (el.style.display = show ? '' : 'none');
           el.classList && el.classList.toggle('hidden', !show);
+        });
+      });
+    });
+  </script>
+
+  <script>
+    const list = document.getElementById('review-list');
+    const tbody = document.querySelector('table.compare tbody');
+    const num = (el, k) => parseFloat(el.dataset[k]);
+    const sorters = {
+      order: (a, b) => num(a, 'order') - num(b, 'order'),
+      score: (a, b) => num(b, 'score') - num(a, 'score'),
+      name: (a, b) => a.dataset.name.localeCompare(b.dataset.name),
+    };
+    document.querySelectorAll('.sortbar button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sortbar button').forEach(b => b.classList.toggle('on', b === btn));
+        const cmp = sorters[btn.dataset.sort];
+        [[list, '.review-item'], [tbody, 'tr']].forEach(([parent, sel]) => {
+          [...parent.querySelectorAll(sel)].sort(cmp).forEach(el => parent.appendChild(el));
         });
       });
     });
