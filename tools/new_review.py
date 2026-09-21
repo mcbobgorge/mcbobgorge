@@ -184,19 +184,9 @@ def parse_scores(score_str):
 
     # Try to match patterns like "Taste: 5" or "Sweetness: 7" etc.
     # Split on multiple spaces or newlines to separate key-value pairs
-    parts = re.split(r"\s{2,}|[\n]", score_str)
-
-    for part in parts:
-        part = part.strip()
-        if not part:
-            continue
-        # Try to find "Key: value" or "Key value" pattern
-        match = re.match(r"([a-z]+)\s*:?\s*([\d.]+)", part, re.IGNORECASE)
-        if match:
-            key = match.group(1).lower()
-            value = float(match.group(2))
-            if key in score_keys:
-                scores[key] = value
+    for key, value in re.findall(r"([a-z]+)\s*:\s*([\d.]+)", score_str, re.IGNORECASE):
+        if key.lower() in score_keys:
+            scores[key.lower()] = float(value)
 
     return scores
 
