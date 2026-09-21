@@ -1,0 +1,8 @@
+# Site-wide settings. Currently informational; index.html/about.html/style.css
+# are copied from templates/ verbatim by build.py since their copy rarely
+# changes. If that copy needs to vary per-build, wire these values into
+# templates/index.html and templates/about.html with string.Template ($title
+# etc.) and have build.py pass them through.
+title = "Nate Wooding"
+url = "https://natewooding.com"
+description = "Coconut water reviews and other things."
