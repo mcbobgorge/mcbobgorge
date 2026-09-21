@@ -160,6 +160,7 @@ def render_listing_page(reviews) -> str:
     items = "\n".join(render_review_item(r) for r in sorted(reviews, key=lambda r: r.position))
     rows = "".join(render_table_row(r) for r in sorted(reviews, key=lambda r: r.position))
     return _tpl("coconut-water.html").substitute(
+        og_image=by_score(reviews)[0].image,
         review_items=items,
         table_rows=rows,
         brand_links=brand_links(brands_with_multiple(reviews), prefix="brands/"),
@@ -264,6 +265,7 @@ def render_best_page(reviews, intro: str) -> str:
         for i, r in enumerate(ranked, start=1)
     )
     return _tpl("best-coconut-water.html").substitute(
+        og_image=ranked[0].image,
         intro=intro,
         rank_rows=rows,
         ld_count=len(ranked),
@@ -359,6 +361,7 @@ def render_brand_page(brand: str, items, ranked, brands) -> str:
         heading=esc(heading),
         description=esc(description),
         brand_slug=brand_slug(brand),
+        og_image=items[0].image,
         intro=brand_intro(brand, items, ranked),
         brand_rows=rows,
         brand_links=brand_links(brands, current=brand),

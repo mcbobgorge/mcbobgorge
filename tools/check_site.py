@@ -12,6 +12,8 @@ LINK = re.compile(r'(?:href|src)="([^"#?]+)"')
 H1 = re.compile(r"<h1[^>]*>(.*?)</h1>", re.S)
 TITLE = re.compile(r"<title>(.*?)</title>", re.S)
 DESCRIPTION = re.compile(r'name="description" content="([^"]*)"')
+OG_IMAGE = re.compile(r'property="og:image" content="([^"]*)"')
+SITE = "https://natewooding.com/"
 
 
 def problems(root: Path):
@@ -35,6 +37,13 @@ def problems(root: Path):
         description = DESCRIPTION.search(html)
         if not description or len(description.group(1)) < 50:
             yield f"{name}: missing or too-short meta description"
+        # og:image is an absolute URL, so the link check above cannot see it.
+        # A wrong path here shows up only as a blank preview when someone shares the page.
+        for image in OG_IMAGE.findall(html):
+            if not image.startswith(SITE):
+                yield f"{name}: og:image is not on the site: {image}"
+            elif not (root / image[len(SITE):]).exists():
+                yield f"{name}: og:image points at a missing file: {image}"
 
 
 def main() -> int:
