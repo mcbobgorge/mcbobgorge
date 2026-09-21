@@ -13,4 +13,4 @@ best_page_intro = "I have bought and scored every coconut water below, paid for 
 # Google Analytics 4 measurement ID, e.g. "G-ABC1234XYZ". Leave empty to ship no
 # analytics at all: the snippet is only added when this has a value, so clearing
 # this line removes tracking from every page on the next build.
-ga_measurement_id = ""
+ga_measurement_id = "G-GHB7P7N0ML"
