@@ -140,14 +140,14 @@ class NewReviewTests(unittest.TestCase):
         """Test that a valid intake produces a file that loads correctly."""
         exit_code, stdout, stderr = self.run_new_review(HAPPY_PATH_INTAKE, slug="test-brand-water")
         self.assertEqual(exit_code, 0, f"Script failed: {stderr}")
-        self.assertIn("Review written to", stdout)
+        self.assertIn("written:", stdout)
 
         # Check that file exists and can be loaded
         review_file = self.content_dir / "test-brand-water.md"
         self.assertTrue(review_file.exists(), "Review file was not created")
 
         # Should load without errors
-        review = load_review(review_file)
+        review = load_review(review_file, require_image=False)
         self.assertEqual(review.brand, "Test Brand")
         self.assertEqual(review.product, "Test Water")
         self.assertEqual(review.scores["taste"], 7.0)
@@ -178,7 +178,7 @@ class NewReviewTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, f"Script failed: {stderr}")
 
         review_file = self.content_dir / "multi-brand-water.md"
-        review = load_review(review_file)
+        review = load_review(review_file, require_image=False)
         
         # Notes should have all three paragraphs
         self.assertIn("First paragraph", review.notes)
@@ -214,7 +214,7 @@ class NewReviewTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, f"Script failed: {stderr}")
         
         # File should be updated
-        review = load_review(review_file)
+        review = load_review(review_file, require_image=False)
         self.assertEqual(review.brand, "Test Brand")
 
     def test_slug_derivation(self):
@@ -246,7 +246,7 @@ Verdict: Test.
         self.assertEqual(exit_code, 0, f"Script failed: {stderr}")
 
         review_file = self.content_dir / "bool-test.md"
-        review = load_review(review_file)
+        review = load_review(review_file, require_image=False)
         self.assertTrue(review.pasteurized)
         self.assertFalse(review.added_sugar)
         self.assertTrue(review.organic)

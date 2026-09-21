@@ -373,14 +373,11 @@ def main():
     # Write file
     output_path.write_text(content, encoding="utf-8")
 
-    # Validate through the loader
+    # Validate through the loader. The photo usually arrives separately, so a
+    # missing image is a reminder rather than an error here; build.py enforces it.
+    img_path = ROOT / "reviews" / "img" / f"{slug}.jpg"
     try:
-        # Create a placeholder image so validation passes
-        img_path = ROOT / "reviews" / "img" / f"{slug}.jpg"
-        img_path.parent.mkdir(parents=True, exist_ok=True)
-        if not img_path.exists():
-            img_path.write_bytes(b"\xff\xd8\xff")  # Minimal JPEG header
-        review = load_review(output_path)
+        load_review(output_path, require_image=img_path.exists())
     except ValidationError as e:
         # Remove the file if validation failed
         output_path.unlink()
@@ -392,8 +389,11 @@ def main():
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
-    print(f"✓ Review written to: {output_path}")
-    print(f"⚠ Remember to place the photo at: {img_path}")
+    print(f"written: {output_path}")
+    if img_path.exists():
+        print("photo found; run: python3 build.py")
+    else:
+        print(f"now put the photo at {img_path}, then run: python3 build.py")
 
 
 if __name__ == "__main__":

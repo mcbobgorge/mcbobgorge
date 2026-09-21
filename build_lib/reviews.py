@@ -74,7 +74,7 @@ def _section(body: str, name: str, next_name: str | None) -> str:
     return m.group(1).strip()
 
 
-def load_review(path: Path) -> Review:
+def load_review(path: Path, require_image: bool = True) -> Review:
     slug = path.stem
     front, body = _parse_md(path)
     missing = [f for f in REQUIRED_FIELDS if f not in front]
@@ -89,7 +89,7 @@ def load_review(path: Path) -> Review:
             raise ValidationError(f"{slug}: score '{key}'={val} out of range 0-10")
 
     image_path = path.parent.parent.parent / front["image"]
-    if not image_path.exists():
+    if require_image and not image_path.exists():
         raise ValidationError(f"{slug}: image file not found: {front['image']}")
 
     notes = _section(body, "Notes", "Verdict")
