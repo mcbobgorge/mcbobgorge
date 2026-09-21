@@ -1,6 +1,8 @@
 """Render HTML/XML pages from Review objects using templates/ (string.Template)."""
 from __future__ import annotations
 
+import re
+
 import datetime
 from pathlib import Path
 from string import Template
@@ -203,6 +205,11 @@ def ordinal(n: int) -> str:
     return f"{n}{suffix}"
 
 
+def short_description(r) -> str:
+    """The review's own description, minus the trailing score the table shows."""
+    return re.sub(r"\s*Overall:\s*[\d.]+/10\.?\s*$", "", r.description)
+
+
 def by_score(reviews):
     return sorted(reviews, key=lambda r: (-r.scores["overall"], r.table_name))
 
@@ -218,7 +225,7 @@ def render_best_page(reviews, intro: str) -> str:
             overall=fmt_overall(r.scores["overall"]),
             taste=fmt_score(r.scores["taste"]),
             style=r.style,
-            description=esc(r.description),
+            description=esc(short_description(r)),
         )
         for i, r in enumerate(ranked, start=1)
     )
