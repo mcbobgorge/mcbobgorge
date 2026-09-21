@@ -79,3 +79,55 @@ outside 0–10, or a typo in `image` pointing at a photo that doesn't exist
 message naming the file and the problem, and the site is **not**
 published. Nothing on the live site breaks; fix the file, commit again,
 and the Action will retry.
+
+## If you email the review to Woody
+
+If you send the review to Woody via email as a plain-text block, he can
+convert it directly to a review file with `tools/new_review.py`:
+
+```
+python3 tools/new_review.py < email-excerpt.txt
+```
+
+Or with a filename:
+
+```
+python3 tools/new_review.py email-excerpt.txt
+```
+
+The script expects the review in this format (order doesn't matter, field
+names are case-insensitive):
+
+```
+Brand: Brand Name
+Product: Product Name
+Date tasted: 2026-09-18
+Size: 16.9 fl oz (500 mL)
+Still or sparkling: Still
+Pasteurized: yes
+Added sugar: no
+Organic: true
+Fair trade: false
+Pulp: false
+Scores — Taste: 7  Sweetness: 5  Body: 6  Refreshment: 8  Ethics: 4  Overall: 6.5
+One-line summary: A short description for the listing and preview.
+Notes: Multi-paragraph notes. Separate with a blank line.
+
+Another paragraph here.
+Verdict: Final thoughts.
+```
+
+The script will:
+- Validate all required fields
+- Derive the slug from brand + product (unless you pass `--slug custom-slug`)
+- Generate the `.md` file in `content/reviews/`
+- Check that all scores are in range (0–10) and required fields are present
+- Refuse to overwrite an existing file unless you pass `--force`
+
+You can also override the derived names:
+```
+python3 tools/new_review.py email.txt --listing-name "Brand — Short Form" --table-name "Brand Short"
+```
+
+After the file is written, place the photo at the path shown (e.g.
+`reviews/img/goya-coconut-water.jpg`), then commit and push both files.

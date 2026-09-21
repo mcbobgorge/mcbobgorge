@@ -25,6 +25,9 @@ required.
   - `feed.xml` — RSS, newest first
   - `sitemap.xml`
   - `index.html`, `about.html`, `style.css` — copied from `templates/`
+- `tools/new_review.py` — converts a plain-text intake block (email format)
+  into a review data file. Validates the result and refuses to overwrite
+  existing files. See "If you email the review to Woody" in PUBLISHING.md.
 - `tools/extract_legacy.py` — one-off script used to migrate the original
   hand-written HTML into `content/reviews/*.md`. Kept for reference; you
   should not need to run it again.
