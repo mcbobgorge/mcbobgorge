@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import datetime
+import json
 import re
 from pathlib import Path
 from string import Template
@@ -104,6 +105,8 @@ def render_review_page(r, ranked=None, brands=None) -> str:
         slug=r.slug,
         image_file=Path(r.image).name,
         ld_name=esc(r.title_name),
+        ld_brand=json.dumps(r.brand),
+        ld_review_body=json.dumps(r.verdict),
         date=r.date,
         overall=fmt_overall(s["overall"]),
         h2_heading=esc(f"{r.brand} — {r.product}"),

@@ -22,19 +22,29 @@
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "$ld_name",
+    "brand": {
+      "@type": "Brand",
+      "name": $ld_brand
+    },
     "image": "https://natewooding.com/reviews/img/$image_file",
     "review": {
       "@type": "Review",
+      "url": "https://natewooding.com/reviews/$slug.html",
       "author": {
         "@type": "Person",
         "name": "Nate Wooding"
       },
+      "publisher": {
+        "@type": "Person",
+        "name": "Nate Wooding"
+      },
       "datePublished": "$date",
+      "reviewBody": $ld_review_body,
       "reviewRating": {
         "@type": "Rating",
         "ratingValue": "$overall",
         "bestRating": "10",
-        "worstRating": "1"
+        "worstRating": "0"
       }
     }
   }
