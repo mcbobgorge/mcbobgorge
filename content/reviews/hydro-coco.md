@@ -6,6 +6,7 @@ table_name = "Hydro Coco"
 date = "2026-09-11"
 size = "8.5 fl oz (250 mL)"
 style = "Still"
+origin = "Indonesia"
 pasteurized = true
 added_sugar = true
 organic = false

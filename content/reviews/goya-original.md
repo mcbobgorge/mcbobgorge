@@ -6,6 +6,7 @@ table_name = "Goya Original"
 date = "2026-08-31"
 size = "16.9 fl oz (500 mL)"
 style = "Still"
+origin = "Vietnam"
 pasteurized = true
 added_sugar = true
 organic = false

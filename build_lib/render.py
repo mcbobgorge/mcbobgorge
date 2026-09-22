@@ -20,6 +20,8 @@ def yn(b: bool) -> str:
 
 def meta_line(r) -> str:
     parts = [r.month_year, r.size, r.style]
+    if r.origin:
+        parts.append(r.origin)
     parts.append("Pasteurized" if r.pasteurized else "Unpasteurized")
     parts.append("Added Sugar" if r.added_sugar else "No Added Sugar")
     if r.pulp:
@@ -156,7 +158,7 @@ def render_table_row(r) -> str:
     )
 
 
-def render_listing_page(reviews) -> str:
+def render_listing_page(reviews, narrower: str = "") -> str:
     items = "\n".join(render_review_item(r) for r in sorted(reviews, key=lambda r: r.position))
     rows = "".join(render_table_row(r) for r in sorted(reviews, key=lambda r: r.position))
     return _tpl("coconut-water.html").substitute(
@@ -164,6 +166,7 @@ def render_listing_page(reviews) -> str:
         review_items=items,
         table_rows=rows,
         brand_links=brand_links(brands_with_multiple(reviews), prefix="brands/"),
+        narrower=narrower,
     )
 
 
@@ -241,7 +244,7 @@ def by_score(reviews):
     return sorted(reviews, key=lambda r: (-r.scores["overall"], r.table_name))
 
 
-def render_best_page(reviews, intro: str) -> str:
+def render_best_page(reviews, intro: str, narrower: str = "") -> str:
     row_tpl = _tpl("rank_row.html")
     ranked = by_score(reviews)
     rows = "".join(
@@ -267,6 +270,7 @@ def render_best_page(reviews, intro: str) -> str:
     return _tpl("best-coconut-water.html").substitute(
         og_image=ranked[0].image,
         intro=intro,
+        narrower=narrower,
         rank_rows=rows,
         ld_count=len(ranked),
         ld_items=items + "\n",
@@ -418,3 +422,37 @@ def render_about_page() -> str:
     """The About page states Nate's age; the build fills it in and inline JS
     keeps a cached copy correct after his birthday."""
     return _tpl("about.html").substitute(age=age_today())
+
+
+def render_data_page(reviews) -> str:
+    import dataset
+    crit = "".join(
+        f"      <tr><td>{k.capitalize()}</td><td>{avg:.2f}</td><td>{fmt_score(lo)}</td>"
+        f"<td>{fmt_score(hi)}</td><td>{'&mdash;' if c is None else f'{c:+.2f}'}</td></tr>\n"
+        for k, avg, lo, hi, c in dataset.criterion_rows(reviews)
+    )
+    orig = "".join(
+        f"      <tr><td>{esc(country)}</td><td>{n}</td><td>{avg:.2f}</td>"
+        f'<td><a href="reviews/{best.slug}.html">{esc(best.table_name)}</a> '
+        f"({fmt_overall(best.scores['overall'])})</td></tr>\n"
+        for country, n, avg, best in dataset.origin_rows(reviews)
+    )
+    missing = sum(1 for r in reviews if not r.origin)
+    note = "Origin is recorded where my review names it."
+    if missing:
+        note += f" {missing} of the {len(reviews)} reviews do not have one yet and are left out of this table."
+    n = len(reviews)
+    return _tpl("coconut-water-data.html").substitute(
+        description=esc(
+            f"Every score from the {n} coconut waters I have bought and scored, as a "
+            "downloadable spreadsheet, with averages by criterion and by country of origin."
+        ),
+        og_image=by_score(reviews)[0].image,
+        intro=esc(
+            f"Every score from the {n} coconut waters I have bought and scored, in one place: "
+            "six criteria each, out of 10, plus the tags on every review."
+        ),
+        criterion_rows=crit,
+        origin_rows=orig,
+        origin_note=esc(note),
+    )

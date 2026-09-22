@@ -23,6 +23,7 @@ build_lib/render.py         turns reviews into HTML using templates/
 build_lib/filters.py        defines the filtered ranking pages
 templates/*.html            plain string templates (string.Template, $placeholders)
 tools/new_review.py         converts a loose text block into a data file
+build_lib/dataset.py        the CSV download and the statistics on the data page
 tools/check_site.py         link/metadata checker, run against the built site
 tests/                      unittest suite
 .github/workflows/deploy.yml  builds and publishes on every push to main
@@ -89,6 +90,7 @@ table_name = "Brand Short Name"
 date = "2026-01-01"
 size = "16.9 fl oz (500 mL)"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = false
 organic = true
@@ -132,6 +134,7 @@ All of these must be present or the build fails:
 | `organic` | bool | `true` puts it on the organic ranking. |
 | `fair_trade` | bool | Shown as a tag; no page of its own yet. |
 | `pulp` | bool | Whether it contains pulp. |
+| `origin` | string | **Optional.** Country the coconuts come from, e.g. `"Thailand"`. Only fill it when the carton, the brand, or Nate says so — never infer it from the brand. Drives the Thai and Vietnamese ranking pages and the origin table. Spell countries consistently. |
 | `extra_tags` | list | Optional free-text tags, e.g. `["single-origin"]`. Use `[]` if none. |
 | `image` | string | Path **relative to the repo root**, normally `reviews/img/<slug>.jpg`. The file must exist or the build fails. |
 | `description` | string | One or two sentences. Used in listings, social previews and RSS. Aim for 50+ characters; the checker rejects short meta descriptions. |
@@ -315,13 +318,15 @@ and no tag is emitted anywhere. That is the off switch.
 
 ## 8. Adding a new filtered ranking page
 
-The organic, no-added-sugar and unpasteurized pages are generated from tag
-fields. To add another:
+The organic, no-added-sugar, unpasteurized, Thai and Vietnamese pages are
+generated from tag fields. To add another:
 
 1. append a spec to `PAGES` in `build_lib/filters.py` (slug, h1, description,
    ld_name, a `predicate` lambda over a review, and an `intro` builder)
-2. add `"<slug>.html"` to `PUBLISH_FILES` in `build.py`
-3. add a `<url>` line to `templates/sitemap.xml`
+2. add a `<url>` line to `templates/sitemap.xml`
+
+Publishing and the cross-links are generated from `PAGES` automatically.
+Country pages are one line each: `_origin_page("Brazil", "Brazilian")`.
 
 Intro text must be generated from his scores and flags. A ranking needs enough
 entries to be worth publishing — fair trade was left out at four.

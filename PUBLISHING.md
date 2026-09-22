@@ -68,6 +68,7 @@ table_name = "Coco Nova Pure"
 date = "2026-02-14"
 size = "17 fl oz (500 mL)"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = false
 organic = true
@@ -75,7 +76,7 @@ fair_trade = false
 pulp = false
 extra_tags = ["From Concentrate"]
 image = "reviews/img/coco-nova-pure.jpg"
-description = "A newcomer with a clean, mild taste and a fair price."
+description = "A newcomer from Thailand, pasteurized, with no added sugar."
 scores = { taste = 7, sweetness = 6, body = 6, refreshment = 7, ethics = 5, overall = 6.4 }
 +++
 
@@ -130,6 +131,7 @@ Added sugar: no
 Organic: true
 Fair trade: false
 Pulp: false
+Country of origin: Thailand
 Scores — Taste: 7  Sweetness: 5  Body: 6  Refreshment: 8  Ethics: 4  Overall: 6.5
 One-line summary: A short description for the listing and preview.
 Notes: Multi-paragraph notes. Separate with a blank line.
@@ -171,3 +173,13 @@ python3 tools/new_review.py email.txt --listing-name "Brand — Short Form" --ta
 
 After the file is written, place the photo at the path shown (e.g.
 `reviews/img/goya-coconut-water.jpg`), then commit and push both files.
+
+## Country of origin
+
+Add a line like `Country of origin: Vietnam` (or `Origin - Vietnam`) with the
+other labels, above Notes. It is optional: leave it out if the carton does not
+say, and the review simply won't appear on a country page. Nothing guesses it.
+
+Spell countries the same way every time. "Thailand" and "Thai" would split
+into two groups. The pages that exist today are Thai and Vietnamese; the
+data page shows every country you have recorded.

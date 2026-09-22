@@ -38,6 +38,7 @@ class Review:
     description: str
     scores: dict
     extra_tags: list = field(default_factory=list)
+    origin: str = ""
     notes: str = ""
     verdict: str = ""
     position: int = 0  # 1-based display position, assigned by load_all
@@ -114,6 +115,7 @@ def load_review(path: Path, require_image: bool = True) -> Review:
         description=front["description"],
         scores=scores,
         extra_tags=front.get("extra_tags", []),
+        origin=front.get("origin", ""),
         notes=notes,
         verdict=verdict,
     )

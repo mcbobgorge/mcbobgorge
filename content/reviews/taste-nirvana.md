@@ -7,6 +7,7 @@ order = 28
 date = "2026-07-07"
 size = "9.5 fl oz (280 mL)"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = false
 organic = false

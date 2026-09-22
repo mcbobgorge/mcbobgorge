@@ -56,6 +56,42 @@ def unpasteurized_intro(subset, ranked):
     )
 
 
+def _origin_count_line(ranked):
+    missing = sum(1 for r in ranked if not r.origin)
+    if not missing:
+        return ""
+    return (
+        f" Origin is recorded where my review names it; "
+        f"{missing} of the {len(ranked)} reviews do not have one yet."
+    )
+
+
+def origin_intro(country, adjective):
+    def intro(subset, ranked):
+        return (
+            f"I have scored {len(subset)} coconut waters from {country}. This page ranks "
+            f"just the {adjective} ones by my overall score. "
+            + _range_line(subset)
+            + _placings_line(subset, ranked)
+            + _origin_count_line(ranked)
+        )
+    return intro
+
+
+def _origin_page(country, adjective):
+    return {
+        "slug": f"best-{adjective.lower()}-coconut-water",
+        "h1": f"The Best {adjective} Coconut Water",
+        "description": (
+            f"Every coconut water from {country} that I have bought and scored, ranked best "
+            "to worst by overall score, with a one-line verdict and a link to each review."
+        ),
+        "ld_name": f"{adjective} coconut waters I have bought and scored, ranked",
+        "predicate": lambda r, c=country: r.origin == c,
+        "intro": origin_intro(country, adjective),
+    }
+
+
 PAGES = [
     {
         "slug": "best-organic-coconut-water",
@@ -90,8 +126,15 @@ PAGES = [
         "predicate": lambda r: not r.pasteurized,
         "intro": unpasteurized_intro,
     },
+    _origin_page("Thailand", "Thai"),
+    _origin_page("Vietnam", "Vietnamese"),
 ]
 
 
 def page_subset(spec, reviews):
     return by_score([r for r in reviews if spec["predicate"](r)])
+
+
+def narrower_links():
+    """The link line on the full ranking and the listing, generated so no page is missed."""
+    return " ".join(f'<a href="{p["slug"]}.html">{p["h1"]}</a>.' for p in PAGES)

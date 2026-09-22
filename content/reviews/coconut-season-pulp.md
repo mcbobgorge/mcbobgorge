@@ -6,6 +6,7 @@ table_name = "Coconut Season w/ Pulp"
 date = "2026-09-20"
 size = "16.9 fl oz (500 mL)"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = true
 organic = false

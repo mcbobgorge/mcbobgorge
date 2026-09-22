@@ -94,7 +94,7 @@ SCORE_KEYS = ("taste", "sweetness", "body", "refreshment", "ethics", "overall")
 DASH_LABELS = (
     "brand", "product", "date tasted", "date", "size", "still or sparkling",
     "style", "pasteurized", "added sugar", "organic", "fair trade", "pulp",
-    "one line summary", "summary",
+    "one line summary", "summary", "origin", "country of origin", "country",
 )
 
 
@@ -324,6 +324,9 @@ def generate_review_content(data, slug, listing_name, table_name):
     product = data.get("product", "").strip()
     size = data.get("size", "").strip()
     style = data.get("still or sparkling", "Still").strip()
+    origin = (
+        data.get("origin") or data.get("country of origin") or data.get("country") or ""
+    ).strip()
     description = data.get("one line summary", "").strip()
     image = f"reviews/img/{slug}.jpg"
 
@@ -343,6 +346,7 @@ def generate_review_content(data, slug, listing_name, table_name):
             'One line summary: Clean and mild, a solid everyday option.'
         )
 
+    origin_line = f'origin = "{origin}"\n' if origin else ""
     toml_content = f'''+++
 brand = "{brand}"
 product = "{product}"
@@ -351,7 +355,7 @@ table_name = "{table_name}"
 date = "{date_str}"
 size = "{size}"
 style = "{style}"
-pasteurized = {bool_data["pasteurized"]}
+{origin_line}pasteurized = {bool_data["pasteurized"]}
 added_sugar = {bool_data["added_sugar"]}
 organic = {bool_data["organic"]}
 fair_trade = {bool_data["fair_trade"]}

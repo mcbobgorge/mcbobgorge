@@ -49,10 +49,30 @@ class FilteredSubsetTest(unittest.TestCase):
         for spec in filters.PAGES:
             subset = filters.page_subset(spec, self.reviews)
             intro = spec["intro"](subset, ranked)
-            self.assertTrue(
-                intro.startswith(f"{len(subset)} of the {len(ranked)} "),
+            first_number = int(re.search(r"\d+", intro).group(0))
+            self.assertEqual(
+                first_number, len(subset),
                 f"{spec['slug']} intro disagrees with its own row count: {intro[:60]}",
             )
+
+
+    def test_origin_pages_hold_only_their_country(self):
+        for slug, country in [("best-thai-coconut-water", "Thailand"),
+                              ("best-vietnamese-coconut-water", "Vietnam")]:
+            spec = next(s for s in filters.PAGES if s["slug"] == slug)
+            subset = filters.page_subset(spec, self.reviews)
+            self.assertTrue(subset)
+            self.assertTrue(all(r.origin == country for r in subset))
+            self.assertEqual(len(subset), sum(1 for r in self.reviews if r.origin == country))
+
+    def test_origin_intro_admits_unrecorded_reviews(self):
+        """Readers must not take 'I have scored 15 Thai waters' as the whole picture."""
+        ranked = sorted(self.reviews, key=lambda r: -r.scores["overall"])
+        missing = sum(1 for r in self.reviews if not r.origin)
+        spec = next(s for s in filters.PAGES if s["slug"] == "best-thai-coconut-water")
+        intro = spec["intro"](filters.page_subset(spec, self.reviews), ranked)
+        if missing:
+            self.assertIn(f"{missing} of the {len(ranked)} reviews do not have one", intro)
 
 
 class FilteredPageOutputTest(unittest.TestCase):

@@ -6,6 +6,7 @@ table_name = "Brand Short Name"
 date = "2026-01-01"
 size = "16.9 fl oz (500 mL)"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = false
 organic = true

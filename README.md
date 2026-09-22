@@ -102,8 +102,20 @@ description, predicate, intro builder). `build.py` renders each with
 and the shared `rank_row.html`.
 
 Current pages: best-organic-coconut-water, coconut-water-no-added-sugar,
-unpasteurized-coconut-water. They regenerate from the `organic`, `added_sugar`
-and `pasteurized` fields, so a new review joins the right rankings automatically.
+unpasteurized-coconut-water, best-thai-coconut-water, best-vietnamese-coconut-water.
+They regenerate from the `organic`, `added_sugar`, `pasteurized` and `origin`
+fields, so a new review joins the right rankings automatically. `PUBLISH_FILES`
+and the "narrower rankings" links are generated from `filters.PAGES`; only the
+sitemap line is added by hand.
+
+## Data page and CSV
+
+`build_lib/dataset.py` produces `coconut-water-scores.csv` (one row per review,
+every score and tag, no prices) and the statistics on `coconut-water-data.html`:
+average/lowest/highest per criterion, each criterion's correlation with overall,
+and averages by country of origin. It states patterns in the scores and never
+explains them. `origin` is optional; reviews without it are counted and left out
+of the origin table rather than guessed.
 
 To add one: append a spec to `PAGES`, add the filename to `PUBLISH_FILES` in
 build.py, and add a `<url>` line to `templates/sitemap.xml`. Intro text must be

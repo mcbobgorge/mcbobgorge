@@ -17,6 +17,7 @@ sys.path.insert(0, str(ROOT / "build_lib"))
 from reviews import ValidationError, load_all  # noqa: E402
 import render  # noqa: E402
 import filters  # noqa: E402
+import dataset  # noqa: E402
 
 CONTENT_REVIEWS = ROOT / "content" / "reviews"
 OUT_REVIEWS = ROOT / "reviews"
@@ -46,9 +47,6 @@ PUBLISH_FILES = [
     "index.html",
     "best-coconut-water.html",
     "404.html",
-    "best-organic-coconut-water.html",
-    "coconut-water-no-added-sugar.html",
-    "unpasteurized-coconut-water.html",
     "about.html",
     "coconut-water.html",
     "style.css",
@@ -56,7 +54,9 @@ PUBLISH_FILES = [
     "sitemap.xml",
     "robots.txt",
     "CNAME",
-]
+    "coconut-water-data.html",
+    "coconut-water-scores.csv",
+] + [f"{spec['slug']}.html" for spec in filters.PAGES]
 
 
 def stage(out_dir: Path, reviews, brands) -> None:
@@ -106,9 +106,9 @@ def main() -> int:
         page = render.render_brand_page(brand, items, ranked, brands)
         (OUT_BRANDS / f"{render.brand_slug(brand)}.html").write_text(page, encoding="utf-8")
 
-    (ROOT / "coconut-water.html").write_text(render.render_listing_page(reviews), encoding="utf-8")
+    (ROOT / "coconut-water.html").write_text(render.render_listing_page(reviews, filters.narrower_links()), encoding="utf-8")
     (ROOT / "best-coconut-water.html").write_text(
-        render.render_best_page(reviews, site_config()["best_page_intro"]), encoding="utf-8"
+        render.render_best_page(reviews, site_config()["best_page_intro"], filters.narrower_links()), encoding="utf-8"
     )
     (ROOT / "404.html").write_text(
         (TEMPLATES / "404.html").read_text(encoding="utf-8"), encoding="utf-8"
@@ -119,6 +119,9 @@ def main() -> int:
         page = render.render_filtered_page(spec, subset, ranked, siblings_line(spec))
         (ROOT / f"{spec['slug']}.html").write_text(page, encoding="utf-8")
 
+    (ROOT / "coconut-water-data.html").write_text(render.render_data_page(reviews), encoding="utf-8")
+    (ROOT / "coconut-water-scores.csv").write_text(dataset.csv_text(reviews), encoding="utf-8")
+
     (ROOT / "feed.xml").write_text(render.render_feed(reviews), encoding="utf-8")
     (ROOT / "sitemap.xml").write_text(render.render_sitemap(reviews), encoding="utf-8")
 
@@ -128,7 +131,7 @@ def main() -> int:
 
     tag = render.analytics_snippet(site_config().get("ga_measurement_id", ""))
     if tag:
-        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html"]
+        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html", "coconut-water-data.html"]
         names += [f"{spec['slug']}.html" for spec in filters.PAGES]
         pages = [ROOT / n for n in names]
         pages += sorted(OUT_REVIEWS.glob("*.html")) + sorted(OUT_BRANDS.glob("*.html"))

@@ -6,6 +6,7 @@ table_name = "Goya w/ Pulp"
 date = "2026-09-03"
 size = "17.6 fl oz (520 mL)"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = true
 organic = false

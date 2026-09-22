@@ -7,6 +7,7 @@ order = 2
 date = "2026-06-04"
 size = "16.9 fl oz"
 style = "Sparkling"
+origin = "Vietnam"
 pasteurized = true
 added_sugar = true
 organic = false

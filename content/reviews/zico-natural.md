@@ -7,6 +7,7 @@ order = 12
 date = "2026-06-11"
 size = "1 L"
 style = "Still"
+origin = "Thailand"
 pasteurized = true
 added_sugar = false
 organic = false

@@ -282,6 +282,30 @@ Verdict: Test.
         self.assertEqual(review.scores["taste"], 7)
         self.assertEqual(review.scores["overall"], 6.4)
 
+    def test_origin_is_optional_and_never_guessed(self):
+        base = """Brand: Origin Test
+Product: Coconut Water
+Date tasted: 2026-09-21
+Size: 16.9 fl oz (500 mL)
+Still or sparkling: Still
+Pasteurized: yes
+Added sugar: no
+Organic: no
+Fair trade: no
+Pulp: no
+{origin}Scores: taste 5, sweetness 5, body 5, refreshment 5, ethics 5, overall 5
+One line summary: Checks that the origin field is read when given and left blank when not.
+Notes: Test.
+Verdict: Test.
+"""
+        code, _, err = self.run_new_review(base.format(origin="Country of origin - Vietnam\n"), slug="with-origin")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(load_review(self.content_dir / "with-origin.md", require_image=False).origin, "Vietnam")
+
+        code, _, err = self.run_new_review(base.format(origin=""), slug="no-origin")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(load_review(self.content_dir / "no-origin.md", require_image=False).origin, "")
+
     def test_prose_numbers_are_not_mistaken_for_scores(self):
         """A number in the notes must never become a score."""
         intake = """Brand: Prose Guard
