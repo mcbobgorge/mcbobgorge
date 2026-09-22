@@ -79,8 +79,8 @@ table.compare .tc { text-align: center; font-size: 0.72rem; color: #777; }
 
 /* Rating guide */
 .scale { margin-left: 12px; color: #444; font-size: 0.82rem; line-height: 1.7; }
-.scale div { margin-bottom: 2px; }
-.scale span { display: inline-block; width: 90px; color: #999; font-size: 0.78rem; }
+.scale div { margin-bottom: 2px; padding-left: 90px; text-indent: -90px; }
+.scale span { display: inline-block; width: 90px; text-indent: 0; color: #999; font-size: 0.78rem; }
 
 /* Individual review pages */
 img.bottle { width: 180px; display: block; margin: 12px 0; }
