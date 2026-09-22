@@ -22,6 +22,7 @@ build_lib/reviews.py        loads and VALIDATES the data files
 build_lib/render.py         turns reviews into HTML using templates/
 build_lib/filters.py        defines the filtered ranking pages
 templates/*.html            plain string templates (string.Template, $placeholders)
+templates/rating-guide.html Nate's scoring rubric, verbatim — edit only with his words
 tools/new_review.py         converts a loose text block into a data file
 build_lib/dataset.py        the CSV download and the statistics on the data page
 tools/check_site.py         link/metadata checker, run against the built site

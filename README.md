@@ -120,3 +120,11 @@ of the origin table rather than guessed.
 To add one: append a spec to `PAGES`, add the filename to `PUBLISH_FILES` in
 build.py, and add a `<url>` line to `templates/sitemap.xml`. Intro text must be
 generated from Nate's own scores and flags only — never written tasting language.
+
+## Rating guide
+
+`templates/rating-guide.html` is Nate's own text, copied verbatim to
+`rating-guide.html`. Every review page links it beside the scores, as do the
+rankings, brand pages and data page. `coconut-water.html#rating-guide` still
+exists as a short pointer so old links land somewhere useful. Edit the guide
+only with his words.

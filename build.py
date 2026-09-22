@@ -47,6 +47,7 @@ PUBLISH_FILES = [
     "index.html",
     "best-coconut-water.html",
     "404.html",
+    "rating-guide.html",
     "about.html",
     "coconut-water.html",
     "style.css",
@@ -110,6 +111,9 @@ def main() -> int:
     (ROOT / "best-coconut-water.html").write_text(
         render.render_best_page(reviews, site_config()["best_page_intro"], filters.narrower_links()), encoding="utf-8"
     )
+    (ROOT / "rating-guide.html").write_text(
+        (TEMPLATES / "rating-guide.html").read_text(encoding="utf-8"), encoding="utf-8"
+    )
     (ROOT / "404.html").write_text(
         (TEMPLATES / "404.html").read_text(encoding="utf-8"), encoding="utf-8"
     )
@@ -131,7 +135,7 @@ def main() -> int:
 
     tag = render.analytics_snippet(site_config().get("ga_measurement_id", ""))
     if tag:
-        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html", "coconut-water-data.html"]
+        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html", "coconut-water-data.html", "rating-guide.html"]
         names += [f"{spec['slug']}.html" for spec in filters.PAGES]
         pages = [ROOT / n for n in names]
         pages += sorted(OUT_REVIEWS.glob("*.html")) + sorted(OUT_BRANDS.glob("*.html"))
