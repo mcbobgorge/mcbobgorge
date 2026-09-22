@@ -253,6 +253,59 @@ Verdict: Test.
         self.assertFalse(review.fair_trade)
         self.assertFalse(review.pulp)
 
+    def test_accepts_dash_labels_and_unpunctuated_scores(self):
+        """Nate writes these by hand; a dash or a missing colon must not bounce it."""
+        intake = """Brand: Loose Format
+Product: Coconut Water
+Date tasted - 2026-09-21
+Size - 16.9 fl oz (500 mL)
+Still or sparkling - Still
+Pasteurized - yes
+Added sugar - no
+Organic - yes
+Fair trade - no
+Pulp - no
+taste 7, sweetness 6, body 6, refreshment 7, ethics 5, overall 6.4
+One line summary: Parsed from a deliberately loose intake block.
+Notes: Test.
+Verdict: Test.
+"""
+        exit_code, stdout, stderr = self.run_new_review(intake, slug="loose-test")
+        self.assertEqual(exit_code, 0, f"Script failed: {stderr}")
+
+        review = load_review(self.content_dir / "loose-test.md", require_image=False)
+        self.assertEqual(review.brand, "Loose Format")
+        self.assertEqual(review.size, "16.9 fl oz (500 mL)")
+        self.assertTrue(review.pasteurized)
+        self.assertFalse(review.added_sugar)
+        self.assertTrue(review.organic)
+        self.assertEqual(review.scores["taste"], 7)
+        self.assertEqual(review.scores["overall"], 6.4)
+
+    def test_prose_numbers_are_not_mistaken_for_scores(self):
+        """A number in the notes must never become a score."""
+        intake = """Brand: Prose Guard
+Product: Coconut Water
+Date tasted: 2026-09-21
+Size: 16.9 fl oz (500 mL)
+Still or sparkling: Still
+Pasteurized: yes
+Added sugar: yes
+Organic: false
+Fair trade: false
+Pulp: false
+Scores \u2014 Taste: 4 Sweetness: 7 Body: 4 Refreshment: 4 Ethics: 1 Overall: 3.7
+One line summary: Guard against prose numbers.
+Notes: Has 15g added sugar per 8oz and costs about 3 dollars.
+Verdict: Overall a plain option.
+"""
+        exit_code, stdout, stderr = self.run_new_review(intake, slug="prose-test")
+        self.assertEqual(exit_code, 0, f"Script failed: {stderr}")
+
+        review = load_review(self.content_dir / "prose-test.md", require_image=False)
+        self.assertEqual(review.scores["taste"], 4)
+        self.assertEqual(review.scores["overall"], 3.7)
+
 
 if __name__ == "__main__":
     unittest.main()

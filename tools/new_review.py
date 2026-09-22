@@ -88,6 +88,34 @@ def normalize_label(label):
     return label
 
 
+SCORE_KEYS = ("taste", "sweetness", "body", "refreshment", "ethics", "overall")
+
+# Labels we recognise when a line uses a dash instead of a colon.
+DASH_LABELS = (
+    "brand", "product", "date tasted", "date", "size", "still or sparkling",
+    "style", "pasteurized", "added sugar", "organic", "fair trade", "pulp",
+    "one line summary", "summary",
+)
+
+
+def split_label(line):
+    """Split "Label: value" or "Label - value" into (normalized_label, value).
+
+    Nate writes these by hand, so a dash instead of a colon should not cost him
+    an email round-trip. Dashes are only accepted for labels we know, because a
+    sentence in his notes can easily contain one.
+    """
+    if ":" in line:
+        head, value = line.split(":", 1)
+        return normalize_label(head), value.strip()
+    match = re.match(r"\s*([A-Za-z ]+?)\s+[-\u2013\u2014]\s+(.*)", line)
+    if match:
+        label = normalize_label(match.group(1))
+        if label in DASH_LABELS:
+            return label, match.group(2).strip()
+    return None, None
+
+
 def parse_intake(text):
     """Parse intake block into a dict with data and sections."""
     lines = text.strip().split("\n")
@@ -96,6 +124,13 @@ def parse_intake(text):
     section_lines = []
 
     for line in lines:
+        # A dash instead of a colon ("Pasteurized - yes") would otherwise be dropped.
+        if current_section is None and ":" not in line:
+            dash_label, dash_value = split_label(line)
+            if dash_label:
+                data[dash_label] = dash_value
+                continue
+
         # Check if line is a label (contains a colon but not part of a multi-line section)
         if ":" in line and current_section is None:
             # Try to parse as label: value
@@ -161,6 +196,13 @@ def parse_intake(text):
     if current_section:
         data[current_section] = "\n".join(section_lines).strip()
 
+    # Scores written as a bare line ("taste 7, sweetness 6, ...") carry no "Scores"
+    # label, so fall back to scanning the whole block for the six named keys.
+    if not parse_scores(data.get("scores", "")):
+        found = parse_scores(text)
+        if found:
+            data["scores"] = text
+
     return data
 
 
@@ -178,16 +220,11 @@ def normalize_bool(value):
 
 
 def parse_scores(score_str):
-    """Parse scores from one line or multiple lines."""
+    """Parse scores written as "Taste: 5", "taste 5", "taste = 5" or "taste - 5"."""
     scores = {}
-    score_keys = ["taste", "sweetness", "body", "refreshment", "ethics", "overall"]
-
-    # Try to match patterns like "Taste: 5" or "Sweetness: 7" etc.
-    # Split on multiple spaces or newlines to separate key-value pairs
-    for key, value in re.findall(r"([a-z]+)\s*:\s*([\d.]+)", score_str, re.IGNORECASE):
-        if key.lower() in score_keys:
-            scores[key.lower()] = float(value)
-
+    pattern = r"\b(" + "|".join(SCORE_KEYS) + r")\b\s*[:=\u2013\u2014-]?\s*(\d+(?:\.\d+)?)"
+    for key, value in re.findall(pattern, score_str, re.IGNORECASE):
+        scores[key.lower()] = float(value)
     return scores
 
 
@@ -259,7 +296,11 @@ def generate_review_content(data, slug, listing_name, table_name):
     scores_text = data.get("scores", "")
     scores = parse_scores(scores_text)
     if not scores:
-        raise ValueError("No valid scores found in intake")
+        raise ValueError(
+            "No scores found. Add a line with all six, in any of these forms:\n"
+            "  taste 7, sweetness 6, body 6, refreshment 7, ethics 5, overall 6.4\n"
+            "  Scores - Taste: 7 Sweetness: 6 Body: 6 Refreshment: 7 Ethics: 5 Overall: 6.4"
+        )
 
     # Normalize boolean fields
     bool_fields = ["pasteurized", "added sugar", "organic", "fair trade", "pulp"]
@@ -287,13 +328,20 @@ def generate_review_content(data, slug, listing_name, table_name):
     image = f"reviews/img/{slug}.jpg"
 
     if not brand:
-        raise ValueError("Brand is required")
+        raise ValueError('Brand is required. Add a line like:  Brand: Vita Coco')
     if not product:
-        raise ValueError("Product is required")
+        raise ValueError(
+            'Product is required. Add a line like:  Product: Original Coconut Water'
+        )
     if not size:
-        raise ValueError("Size is required")
+        raise ValueError(
+            'Size is required. Add a line like:  Size: 16.9 fl oz (500 mL)'
+        )
     if not description:
-        raise ValueError("One-line summary is required")
+        raise ValueError(
+            'One-line summary is required. Add a line like:  '
+            'One line summary: Clean and mild, a solid everyday option.'
+        )
 
     toml_content = f'''+++
 brand = "{brand}"
