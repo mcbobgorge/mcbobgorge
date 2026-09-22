@@ -138,6 +138,25 @@ Another paragraph here.
 Verdict: Final thoughts.
 ```
 
+### You don't have to be neat about it
+
+That block is the tidy version. These all work too:
+
+- A dash instead of a colon: `Pasteurized - yes`
+- Scores with no punctuation, on their own line, in any order:
+  `taste 7, sweetness 5, body 6, refreshment 8, ethics 4, overall 6.5`
+- Yes/no written as yes, no, y, n, true or false
+
+What it will *not* do is guess. A bare `16.9oz` with no `Size:` label in front
+of it is an error, not an assumption — a wrong size on a published review is
+worse than one question over email. If a required field is missing, the error
+names the exact line to add.
+
+One thing to know: a field label written with a dash used to be dropped
+silently, which could publish the opposite of what you meant about
+pasteurization. That is fixed and tested, but it is the reason the tool now
+prefers to fail loudly rather than carry on.
+
 The script will:
 - Validate all required fields
 - Derive the slug from brand + product (unless you pass `--slug custom-slug`)
