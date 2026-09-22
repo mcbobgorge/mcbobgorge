@@ -7,6 +7,7 @@ order = 1
 date = "2026-06-01"
 size = "16 fl oz"
 style = "Sparkling"
+origin = "Thailand"
 pasteurized = false
 added_sugar = false
 organic = true

@@ -438,7 +438,7 @@ def render_data_page(reviews) -> str:
         for country, n, avg, best in dataset.origin_rows(reviews)
     )
     missing = sum(1 for r in reviews if not r.origin)
-    note = "Origin is recorded where my review names it."
+    note = "Origin is recorded where my review or the brand itself names it."
     if missing:
         note += f" {missing} of the {len(reviews)} reviews do not have one yet and are left out of this table."
     n = len(reviews)

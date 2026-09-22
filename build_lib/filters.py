@@ -61,7 +61,7 @@ def _origin_count_line(ranked):
     if not missing:
         return ""
     return (
-        f" Origin is recorded where my review names it; "
+        f" Origin is recorded where my review or the brand itself names it; "
         f"{missing} of the {len(ranked)} reviews do not have one yet."
     )
 

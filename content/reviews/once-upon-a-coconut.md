@@ -7,6 +7,7 @@ order = 21
 date = "2026-06-26"
 size = "10.8 fl oz (320 mL)"
 style = "Still"
+origin = "Vietnam"
 pasteurized = true
 added_sugar = true
 organic = false
