@@ -55,6 +55,7 @@ PUBLISH_FILES = [
     "sitemap.xml",
     "robots.txt",
     "CNAME",
+    "deb40f8399261227a16024fc1038b027.txt",
     "coconut-water-data.html",
     "coconut-water-scores.csv",
 ] + [f"{spec['slug']}.html" for spec in filters.PAGES]
