@@ -14,6 +14,7 @@ organic = true
 fair_trade = false
 pulp = false
 extra_tags = []
+seo_title = "Blue Monkey Coconut Water Review: Organic, No Added Sugar"
 image = "reviews/img/blue-monkey-organic.jpg"
 description = "Pasteurized organic Vietnamese coconut water. No added sugar, tastes burnt but not bad. Zero freshness, great if you don't like sweet waters. Overall: 4.4/10."
 scores = { taste = 4.0, sweetness = 3.0, body = 3.0, refreshment = 7.0, ethics = 3.0, overall = 4.4 }

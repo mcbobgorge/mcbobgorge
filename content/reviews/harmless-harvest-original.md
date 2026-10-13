@@ -14,6 +14,7 @@ organic = true
 fair_trade = true
 pulp = false
 extra_tags = []
+seo_title = "Harmless Harvest Coconut Water Review: Unpasteurized, Organic"
 image = "reviews/img/harmless-harvest-original.jpg"
 description = "Harmless Harvest's classic unpasteurized Thai coconut water. Crisp, punchy, and floral with no aftertaste. Industry-leading ethics. Overall: 8.1/10."
 scores = { taste = 8.0, sweetness = 6.0, body = 6.0, refreshment = 7.0, ethics = 8.0, overall = 8.1 }

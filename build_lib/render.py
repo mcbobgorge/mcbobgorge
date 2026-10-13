@@ -101,7 +101,7 @@ def render_review_page(r, ranked=None, brands=None) -> str:
     return _tpl("review.html").substitute(
         brand_line=brand_line(r, brands),
         rank_context=context,
-        title=esc(f"{r.title_name} Review ({fmt_overall(s['overall'])}/10) — Nate Wooding"),
+        title=esc(f"{r.seo_title or r.title_name + ' Review'} ({fmt_overall(s['overall'])}/10) — Nate Wooding"),
         og_title=esc(f"{r.title_name} Review ({fmt_overall(s['overall'])}/10)"),
         description=esc(r.description),
         slug=r.slug,
@@ -303,6 +303,7 @@ def render_filtered_page(spec, subset, ranked, siblings: str) -> str:
     return _tpl("filtered-rank.html").substitute(
         slug=spec["slug"],
         h1=esc(spec["h1"]),
+        page_title=esc(spec.get("title", spec["h1"])),
         description=esc(spec["description"]),
         ld_name=esc(spec["ld_name"]),
         og_image=subset[0].image,

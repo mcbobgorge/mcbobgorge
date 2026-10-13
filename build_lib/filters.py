@@ -107,6 +107,7 @@ PAGES = [
     {
         "slug": "coconut-water-no-added-sugar",
         "h1": "Coconut Water With No Added Sugar",
+        "title": "Coconut Water With No Added Sugar: Every Brand I've Tried, Ranked",
         "description": (
             "Every coconut water with no added sugar that I have bought and scored, ranked "
             "best to worst by overall score, with a one-line verdict and a link to each review."

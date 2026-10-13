@@ -14,6 +14,7 @@ organic = false
 fair_trade = false
 pulp = true
 extra_tags = []
+seo_title = "El Mexicano Coconut Water with Pulp Review: Added Sugar, Milky"
 image = "reviews/img/el-mexicano-pulp.jpg"
 description = "A Thai coconut water pasteurized with a bunch of added sugar. Super smooth but milky, with zero freshness or green floral character. Overall: 3.9/10."
 scores = { taste = 4.0, sweetness = 9.0, body = 6.0, refreshment = 3.0, ethics = 1.0, overall = 3.9 }

@@ -184,3 +184,5 @@ Spell countries the same way every time. "Thailand" and "Thai" would split
 into two groups. The pages that exist today are Thai and Vietnamese; the
 data page shows every country you have recorded.
 - IndexNow: key file at site root (content/indexnow-key); the deploy workflow's indexnow job POSTs all sitemap URLs after each push (not the weekly cron).
+
+Optional: `seo_title = "..."` in front matter overrides the browser/search title (score and "— Nate Wooding" are appended automatically).

@@ -41,6 +41,7 @@ class Review:
     origin: str = ""
     notes: str = ""
     verdict: str = ""
+    seo_title: str = ""
     position: int = 0  # 1-based display position, assigned by load_all
 
     @property
@@ -112,6 +113,7 @@ def load_review(path: Path, require_image: bool = True) -> Review:
         fair_trade=front["fair_trade"],
         pulp=front["pulp"],
         image=front["image"],
+        seo_title=front.get("seo_title", ""),
         description=front["description"],
         scores=scores,
         extra_tags=front.get("extra_tags", []),
