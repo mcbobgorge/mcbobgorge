@@ -78,6 +78,7 @@ def stage(out_dir: Path, reviews, brands) -> None:
     for r in reviews:
         shutil.copy(OUT_REVIEWS / f"{r.slug}.html", out_dir / "reviews" / f"{r.slug}.html")
     shutil.copytree(OUT_REVIEWS / "img", out_dir / "reviews" / "img")
+    shutil.copytree(ROOT / "data", out_dir / "data")
     for brand in brands:
         name = f"{render.brand_slug(brand)}.html"
         shutil.copy(OUT_BRANDS / name, out_dir / "brands" / name)
@@ -126,6 +127,8 @@ def main() -> int:
 
     (ROOT / "coconut-water-data.html").write_text(render.render_data_page(reviews), encoding="utf-8")
     (ROOT / "coconut-water-scores.csv").write_text(dataset.csv_text(reviews), encoding="utf-8")
+    (ROOT / "data").mkdir(exist_ok=True)
+    (ROOT / "data" / "ratings.csv").write_text(dataset.csv_text(reviews), encoding="utf-8")
 
     (ROOT / "feed.xml").write_text(render.render_feed(reviews), encoding="utf-8")
     (ROOT / "sitemap.xml").write_text(render.render_sitemap(reviews), encoding="utf-8")
