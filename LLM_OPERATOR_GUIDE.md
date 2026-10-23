@@ -3,18 +3,20 @@
 This document exists so Nate can run or automate this site with any capable
 assistant — Claude, ChatGPT, a local model, or a human with a terminal — with no
 dependency on the agent that built the main site. The main-site source is in GitHub;
-the separate matcher source and local helper currently live outside that repo, as explained below.
+an optional local publish helper lives outside that repo, as explained below.
 
-Updated October 22, 2026. Start with the quick operating instructions below; the later sections are the technical reference.
+Updated October 23, 2026. Start with the quick operating instructions below; the later sections are the technical reference.
 
 Repo: `mcbobgorge/mcbobgorge` · default branch `main` · live at https://natewooding.com
 
 
 ## Quick start: what you actually do
 
-For a normal review, send your notes, verdict, six scores and a product photo to your operator. They create one review file and add the photo. GitHub builds the pages; the rankings and CSV update automatically. The separate matcher needs a second data export and deployment.
+For a normal review, send your notes, verdict, six scores and a product photo to your operator. They create one review file and add the photo. GitHub builds the pages; the rankings and CSV update automatically.
 
-The main site does not depend on Pion. Its files and publishing automation live at https://github.com/mcbobgorge/mcbobgorge. The matcher currently does depend on Pion; see the separate instructions below.
+The site does not depend on Pion. Its files and publishing automation live at https://github.com/mcbobgorge/mcbobgorge.
+
+The coconut water matcher (match.natewooding.com) was retired by Nate on October 23, 2026. Do not export data to it, rebuild it or link to it.
 
 ### Publish by email
 
@@ -41,7 +43,7 @@ Verdict: [your full verdict]
 ```
 
 Put the scores on one line for the intake script. All six are out of ten. Overall is your score, not their average. Unknown required fields need clarification; origin and pasteurized are optional.
-Omit pasteurized when unknown; never set false to mean unknown. The operator must preserve your prose, check the image and factual tags, build/test/preview, publish, re-export the matcher and verify both live sites. No assistant may invent tasting notes or scores.
+Omit pasteurized when unknown; never set false to mean unknown. The operator must preserve your prose, check the image and factual tags, build/test/preview, publish and verify the live site. Nate has authorized publishing complete reviews he supplies without a separate preview sign-off. No assistant may invent tasting notes or scores.
 
 ### Publish in the GitHub browser
 
@@ -52,7 +54,6 @@ No terminal is needed for the main site. Log into GitHub as a repo owner or coll
 3. Open https://github.com/mcbobgorge/mcbobgorge/tree/main/content/reviews. Choose Add file, then Create new file. Name it `<slug>.md`, paste the complete formatted review and commit to main. The image field must exactly match `reviews/img/<slug>.jpg`.
 4. Open the repository's Actions tab. Wait for the latest Build and deploy run's deploy job to succeed. An IndexNow notification failure after deployment is different from a failed site build.
 5. Open `https://natewooding.com/reviews/<slug>.html`. Check every score, paragraph, photo and tag. Check the listing and relevant rankings too.
-6. Arrange the matcher re-export separately. GitHub's workflow does not update that app.
 
 Upload the photo first to avoid a review build failing while its photo is missing. An image-only commit does not add a review. Do not rename an existing review slug: it changes a live link.
 
@@ -69,13 +70,12 @@ Upload the photo first to avoid a review build failing while its photo is missin
 - Public CSV: https://natewooding.com/data/ratings.csv; the older https://natewooding.com/coconut-water-scores.csv is also generated.
 - Scoring explanation: https://natewooding.com/rating-guide.html
 - Feed and search sitemap: https://natewooding.com/feed.xml and https://natewooding.com/sitemap.xml
-- Matcher: https://match.natewooding.com/ (also https://find-coconut-water.pion.dev/).
 
 The catalogue has 40 reviews as of this update. All rankings, brand pages, statistics and CSV rows come from the review files. The `_template.md` file is not a review. The organic, sugar, pasteurization and origin fields decide which filtered pages include a review. Brand pages appear when two reviews share the exact brand spelling. Do not edit generated HTML or CSV by hand.
 
 ### The existing publish script
 
-Woody's current container has `~/scripts/publish_review.sh`. This helper is not in the GitHub repository and is not an email service. It assumes the site checkout is `~/site` and the matcher checkout is `~/coconut-match`.
+Woody's current container has `~/scripts/publish_review.sh`. This helper is not in the GitHub repository and is not an email service. It assumes the site checkout is `~/site`.
 
 ```
 ~/scripts/publish_review.sh stage intake.txt prepared-photo.jpg custom-slug
@@ -93,34 +93,13 @@ Preview `_site` and inspect the proposed git changes before:
 ~/scripts/publish_review.sh push "Add Brand Product review"
 ```
 
-Push reruns the tests, commits all current site changes and pushes to GitHub. It then exports matcher data, commits all changed matcher files and pushes the matcher to Pion. Because it uses `git add -A`, unrelated changes must be removed or separated first. Push does not itself rerun the site build/link checker or test the matcher. Run those checks before invoking it. If the matcher step fails after the GitHub push, the review may already be live: fix the matcher separately, do not blindly repeat the whole publish command. Watch GitHub Actions and verify both sites afterward.
-
-### Re-export the matcher data
-
-The matcher is a separate SvelteKit app. Its repo is the internal Pion repo `coconut-match`, currently checked out at `~/coconut-match`, with remote named `andon`. There is no confirmed GitHub matcher repo. Its source instructions are in AGENTS.md; some generic database/webhook instructions in that file are platform scaffolding, not features used by the quiz.
-
-```
-cd ~/coconut-match
-python3 tools_export.py
-pnpm run check
-pnpm run build
-# Inspect git diff, then commit only the intended generated files:
-git add src/lib/reviews.json src/lib/flavour-tags.json
-git commit -m "Sync matcher data after new review"
-git push andon main
-```
-
-If the export changes nothing, there is no data commit to make. The exporter reads review source from `~/site` (a hardcoded path), not the live CSV. Keep that checkout current and only export approved, published reviews. It writes src/lib/reviews.json and src/lib/flavour-tags.json. Never hand-edit those generated files.
-
-flavours.json is the separately maintained evidence map. A new review can be exported without flavour tags. Add tags only when the exact affirmative phrase appears in Nate's review; the exporter checks quoted evidence and stops on mismatches. It must never invent a flavour. The quiz links full reviews with `utm_source=match&utm_medium=quiz` so the main site's GA4 can identify referrals. It remains unlinked from the main site's navigation by Nate's direction.
-
-Without Pion, the main site still publishes normally through GitHub. To operate the matcher independently, first obtain an export of the coconut-match source (including package/lock files, tools_export.py, flavours.json and src/). Its current deployment command is Pion-specific. A replacement static host and SvelteKit static-output configuration must be prepared and tested before switching DNS; this migration is not already implemented. Simply pushing the main GitHub repo does not move or update the matcher.
+Push reruns the tests, commits all current site changes and pushes to GitHub. The script also has a step that exports data to the retired matcher; that step is obsolete and its failure can be ignored, or remove it from the script. Because it uses `git add -A`, unrelated changes must be removed or separated first. Push does not itself rerun the site build/link checker. Run those checks before invoking it. Watch GitHub Actions and verify the live site afterward.
 
 ### Analytics: GA4 and Search Console
 
-Nate manages the Google accounts directly. Open https://analytics.google.com/ and select the natewooding.com GA4 property. The installed measurement ID is `G-GHB7P7N0ML`, stored in content/site.toml as ga_measurement_id. The build adds it to generated pages. Clearing that setting disables the tag on the next deployment. This is not a measurement of visitors to the matcher itself.
+Nate manages the Google accounts directly. Open https://analytics.google.com/ and select the natewooding.com GA4 property. The installed measurement ID is `G-GHB7P7N0ML`, stored in content/site.toml as ga_measurement_id. The build adds it to generated pages. Clearing that setting disables the tag on the next deployment.
 
-For the weekly visitor goal, select a consistent seven-day date range and record the Users metric with the dates and the exact metric label. Do not substitute page views or a 28-day total. Use acquisition reports to compare traffic sources; matcher referrals use source match and medium quiz. Realtime can help check a visit, but consent, blockers and reporting delays mean one missing visit does not prove the site is broken.
+For the weekly visitor goal, select a consistent seven-day date range and record the Users metric with the dates and the exact metric label. Do not substitute page views or a 28-day total. Use acquisition reports to compare traffic sources. Older reports may show referrals with source `match` and medium `quiz` from the retired matcher; none will appear after it goes offline. Realtime can help check a visit, but consent, blockers and reporting delays mean one missing visit does not prove the site is broken.
 
 Open https://search.google.com/search-console/ and select the verified natewooding.com property. Performance shows search clicks, impressions, click-through rate and queries, not all visitors. URL Inspection checks a specific live review and its indexing status; requesting indexing is not a guarantee. The sitemap is https://natewooding.com/sitemap.xml and is rebuilt automatically. Check the Sitemaps report before resubmitting; do not create duplicate properties to solve a reporting delay. The operator has no direct Google analytics access established; Nate can supply dated reports without sharing passwords.
 
@@ -133,13 +112,11 @@ Squarespace manages the domain records; it is not serving the review site. In yo
 - A, host `@`, value `185.199.110.153`
 - A, host `@`, value `185.199.111.153`
 - CNAME, host `www`, value `mcbobgorge.github.io`
-- CNAME, host `match`, value `apps.pion.dev`
-- TXT, host `_cf-custom-hostname.match`, value `fed8038b-1db2-4185-92c4-1e3d7e3cf62f`
 - Search Console verification CNAME, host `crshzriid3gt`, value `gv-wj2weodi4wc3ks.dv.googlehosted.com`
 
-The screenshot also contained TXT `mailo._domainkey` (email DKIM) and Squarespace email-forwarding MX/SPF records. Their full values are not recorded here. Preserve them exactly; they are unrelated to review publishing and removing them can break email. Do not replace the whole DNS zone with this partial list. No ordinary review requires a DNS change.
+The screenshot also contained TXT `mailo._domainkey` (email DKIM) and Squarespace email-forwarding MX/SPF records. Their full values are not recorded here. Preserve them exactly; they are unrelated to review publishing and removing them can break email. The former matcher records (CNAME `match` to `apps.pion.dev` and TXT `_cf-custom-hostname.match`) are no longer needed and may be deleted; nothing on the site uses them. Do not replace the whole DNS zone with this partial list. No ordinary review requires a DNS change.
 
-In GitHub repository Settings, Pages, the custom domain is natewooding.com; the repo's CNAME file contains that name. The intended publishing Source is GitHub Actions. A legacy branch-source setting has previously been noted despite artifact deployments, so inspect actual settings if deployment breaks; do not switch hosting casually. Leave HTTPS enforcement enabled when available. Changing the matcher host requires the replacement host's own verification instructions, not blindly copying the current Pion TXT record. DNS and certificate changes can take time; retain the old working host until the replacement is verified.
+In GitHub repository Settings, Pages, the custom domain is natewooding.com; the repo's CNAME file contains that name. The intended publishing Source is GitHub Actions. A legacy branch-source setting has previously been noted despite artifact deployments, so inspect actual settings if deployment breaks; do not switch hosting casually. Leave HTTPS enforcement enabled when available. DNS and certificate changes can take time.
 
 ### Copy-paste prompt for an LLM without Pion
 
@@ -171,10 +148,8 @@ Get my approval before any live content change unless this task explicitly
 authorizes that exact publication. No spending or brand/social outreach.
 
 Commit approved files, verify the GitHub deploy job and live URLs, and
-report what actually succeeded and any remaining blocker. The matcher is
-separate: its coconut-match repo currently lives on Pion, not this GitHub
-repo. Do not pretend to update it without its exported source and hosting
-access. Explain that limitation and the separate data export needed.
+report what actually succeeded and any remaining blocker. The old
+matcher (match.natewooding.com) is retired; do not export to it or link it.
 ```
 
 ---
@@ -301,7 +276,7 @@ All of these must be present or the build fails:
 | `date` | string | **`YYYY-MM-DD`, quoted.** Not a TOML date literal. Drives ordering (newest first) and the "Month Year" line. |
 | `size` | string | As printed on the container, e.g. `"16.9 fl oz (500 mL)"`. |
 | `style` | string | `"Still"` or `"Sparkling"`. |
-| `pasteurized` | bool | **Optional.** Omit when unknown (loads as None; matcher JSON null). Known `false` alone puts it on the unpasteurized ranking; unknown enters neither category. Reviews show Pasteurization unknown, comparison table Unknown, CSV an empty cell (known values remain yes/no). |
+| `pasteurized` | bool | **Optional.** Omit when unknown (loads as None). Known `false` alone puts it on the unpasteurized ranking; unknown enters neither category. Reviews show Pasteurization unknown, comparison table Unknown, CSV an empty cell (known values remain yes/no). |
 | `added_sugar` | bool | `false` puts it on the no-added-sugar ranking. |
 | `organic` | bool | `true` puts it on the organic ranking. |
 | `fair_trade` | bool | Shown as a tag; no page of its own yet. |
@@ -519,8 +494,7 @@ entries to be worth publishing — fair trade was left out at four.
 - **Rolling back.** `git revert <commit>` and push. The next build republishes
   the previous state.
 
-- **Main site works but matcher is stale.** Check that the current site checkout was re-exported and the separate coconut-match deployment succeeded. A main-site deploy cannot update it.
 - **IndexNow job is red but deploy is green.** The search notification failed after publishing. Verify the live site and retry the notification; do not treat it as proof the pages failed to deploy.
-- **Domain or HTTPS fails.** Check GitHub Pages status/custom domain and the existing Squarespace records. For matcher-only failure, check the Pion route/certificate. Do not delete email or verification records or change nameservers as a first fix.
+- **Domain or HTTPS fails.** Check GitHub Pages status/custom domain and the existing Squarespace records. Do not delete email or verification records or change nameservers as a first fix.
 - **Google shows no fresh data.** Check the selected property, date range and tag setting; allow reporting time. Search indexing and analytics are different systems.
-- **Rollback after a bad review.** Revert only the offending source commit, rebuild, test, preview and push; if matcher data changed, re-export and deploy it too. Reverting the main repo does not roll back the matcher.
+- **Rollback after a bad review.** Revert only the offending source commit, rebuild, test, preview and push.
