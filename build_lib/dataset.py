@@ -23,7 +23,7 @@ def csv_text(reviews) -> str:
         flags = [r.pasteurized, r.added_sugar, r.organic, r.fair_trade, r.pulp]
         w.writerow(
             [r.slug, r.brand, r.product, r.date, r.origin, r.size, r.style]
-            + ["yes" if f else "no" for f in flags]
+            + ["" if f is None else "yes" if f else "no" for f in flags]
             + [r.scores[k] for k in CRITERIA + ["overall"]]
             + [f"https://natewooding.com/reviews/{r.slug}.html"]
         )

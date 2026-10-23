@@ -115,7 +115,10 @@ every score and tag, no prices) and the statistics on `coconut-water-data.html`:
 average/lowest/highest per criterion, each criterion's correlation with overall,
 and averages by country of origin. It states patterns in the scores and never
 explains them. `origin` is optional; reviews without it are counted and left out
-of the origin table rather than guessed.
+of the origin table rather than guessed. `pasteurized` is also optional:
+omitting it means unknown, shown as "Pasteurization unknown" on reviews and
+"Unknown" in the comparison table. CSV uses an empty pasteurized cell for
+unknown, `yes`/`no` for known values. Unknown enters neither pasteurization category.
 
 To add one: append a spec to `PAGES`, add the filename to `PUBLISH_FILES` in
 build.py, and add a `<url>` line to `templates/sitemap.xml`. Intro text must be

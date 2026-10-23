@@ -41,7 +41,7 @@ class FilteredSubsetTest(unittest.TestCase):
     def test_unpasteurized_page_holds_only_unpasteurized_reviews(self):
         spec = next(s for s in filters.PAGES if s["slug"] == "unpasteurized-coconut-water")
         subset = filters.page_subset(spec, self.reviews)
-        self.assertTrue(all(not r.pasteurized for r in subset))
+        self.assertTrue(all(r.pasteurized is False for r in subset))
 
     def test_intro_counts_match_the_data(self):
         """The leading number in each intro is generated, never typed by hand."""

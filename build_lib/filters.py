@@ -124,7 +124,7 @@ PAGES = [
             "score, and how they placed against the pasteurized ones."
         ),
         "ld_name": "Unpasteurized coconut waters I have bought and scored, ranked",
-        "predicate": lambda r: not r.pasteurized,
+        "predicate": lambda r: r.pasteurized is False,
         "intro": unpasteurized_intro,
     },
     _origin_page("Thailand", "Thai"),

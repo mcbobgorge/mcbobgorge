@@ -16,7 +16,9 @@ You don't need to touch any HTML. Follow these steps:
    - `date` is the review's publish date, `YYYY-MM-DD`.
    - The `scores` line takes numbers from 0 to 10.
    - Booleans (`pasteurized`, `added_sugar`, `organic`, `fair_trade`, `pulp`)
-     are `true` or `false`, lowercase, no quotes.
+     are `true` or `false`, lowercase, no quotes. `pasteurized` is optional:
+     omit it if unknown. Unknown is never unpasteurized and does not enter
+     either category; the table shows Unknown and CSV leaves its cell blank.
 
 3. **Write the review** under `## Notes` and `## Verdict`. Separate
    paragraphs with a blank line. You can use a plain HTML link if you want
@@ -148,6 +150,7 @@ That block is the tidy version. These all work too:
 - Scores with no punctuation, on their own line, in any order:
   `taste 7, sweetness 5, body 6, refreshment 8, ethics 4, overall 6.5`
 - Yes/no written as yes, no, y, n, true or false
+- `Pasteurized: unknown`, or omit the line: both omit the optional TOML field
 
 What it will *not* do is guess. A bare `16.9oz` with no `Size:` label in front
 of it is an error, not an assumption — a wrong size on a published review is

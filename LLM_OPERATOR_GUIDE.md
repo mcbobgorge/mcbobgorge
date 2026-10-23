@@ -28,7 +28,7 @@ Product: [product]
 Date tasted: [YYYY-MM-DD]
 Size: [size on container]
 Still or sparkling: [Still or Sparkling]
-Pasteurized: [yes/no]
+Pasteurized: [yes/no/unknown, or omit if unknown]
 Added sugar: [yes/no]
 Organic: [yes/no]
 Fair trade: [yes/no]
@@ -40,7 +40,8 @@ Notes: [your full notes]
 Verdict: [your full verdict]
 ```
 
-Put the scores on one line for the intake script. All six are out of ten. Overall is your score, not their average. Unknown required fields need clarification; origin is optional. The operator must preserve your prose, check the image and factual tags, build/test/preview, publish, re-export the matcher and verify both live sites. No assistant may invent tasting notes or scores.
+Put the scores on one line for the intake script. All six are out of ten. Overall is your score, not their average. Unknown required fields need clarification; origin and pasteurized are optional.
+Omit pasteurized when unknown; never set false to mean unknown. The operator must preserve your prose, check the image and factual tags, build/test/preview, publish, re-export the matcher and verify both live sites. No assistant may invent tasting notes or scores.
 
 ### Publish in the GitHub browser
 
@@ -286,7 +287,7 @@ The closing paragraph of the review page.
 
 All of these must be present or the build fails:
 `brand`, `product`, `listing_name`, `table_name`, `date`, `size`, `style`,
-`pasteurized`, `added_sugar`, `organic`, `fair_trade`, `pulp`, `image`,
+`added_sugar`, `organic`, `fair_trade`, `pulp`, `image`,
 `description`, `scores`.
 
 ### Field reference
@@ -300,7 +301,7 @@ All of these must be present or the build fails:
 | `date` | string | **`YYYY-MM-DD`, quoted.** Not a TOML date literal. Drives ordering (newest first) and the "Month Year" line. |
 | `size` | string | As printed on the container, e.g. `"16.9 fl oz (500 mL)"`. |
 | `style` | string | `"Still"` or `"Sparkling"`. |
-| `pasteurized` | bool | `false` puts it on the unpasteurized ranking. |
+| `pasteurized` | bool | **Optional.** Omit when unknown (loads as None; matcher JSON null). Known `false` alone puts it on the unpasteurized ranking; unknown enters neither category. Reviews show Pasteurization unknown, comparison table Unknown, CSV an empty cell (known values remain yes/no). |
 | `added_sugar` | bool | `false` puts it on the no-added-sugar ranking. |
 | `organic` | bool | `true` puts it on the organic ranking. |
 | `fair_trade` | bool | Shown as a tag; no page of its own yet. |
@@ -336,7 +337,7 @@ Give an assistant this, along with his raw submission.
 > then `## Notes`, then `## Verdict`. No commentary, no code fence.
 >
 > Required front matter fields, in this order: brand, product, listing_name,
-> table_name, date, size, style, pasteurized, added_sugar, organic, fair_trade,
+> table_name, date, size, style, added_sugar, organic, fair_trade,
 > pulp, extra_tags, image, description, scores.
 >
 > Rules:
@@ -348,7 +349,8 @@ Give an assistant this, along with his raw submission.
 > - `date` must be `"YYYY-MM-DD"` as a quoted string.
 > - All six scores are required and must be between 0 and 10. `overall` is his
 >   own number, not an average — never compute it.
-> - Booleans are bare `true`/`false`, not strings.
+> - Booleans are bare `true`/`false`, not strings. `pasteurized` is optional:
+>   include only if known; omit for unknown, never substitute false.
 > - `image` must be `"reviews/img/<slug>.jpg"` using the slug below.
 > - `description` is one or two factual sentences for listings and previews, at
 >   least 50 characters. Base it only on what he wrote.

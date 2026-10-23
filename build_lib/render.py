@@ -14,15 +14,19 @@ def _tpl(name: str) -> Template:
     return Template((TEMPLATES / name).read_text(encoding="utf-8"))
 
 
-def yn(b: bool) -> str:
-    return "Yes" if b else "No"
+def yn(b: bool | None) -> str:
+    return "Unknown" if b is None else "Yes" if b else "No"
+
+
+def pasteurization_label(b: bool | None) -> str:
+    return "Pasteurization unknown" if b is None else "Pasteurized" if b else "Unpasteurized"
 
 
 def meta_line(r) -> str:
     parts = [r.month_year, r.size, r.style]
     if r.origin:
         parts.append(r.origin)
-    parts.append("Pasteurized" if r.pasteurized else "Unpasteurized")
+    parts.append(pasteurization_label(r.pasteurized))
     parts.append("Added Sugar" if r.added_sugar else "No Added Sugar")
     if r.pulp:
         parts.append("Pulp")
@@ -35,7 +39,7 @@ def meta_line(r) -> str:
 
 def listing_meta_line(r) -> str:
     parts = [r.month_year, r.style]
-    parts.append("Pasteurized" if r.pasteurized else "Unpasteurized")
+    parts.append(pasteurization_label(r.pasteurized))
     parts.append("Added Sugar" if r.added_sugar else "No Added Sugar")
     if r.pulp:
         parts.append("Pulp")
@@ -55,7 +59,7 @@ def tags_attr(r) -> str:
         tags.append("fair-trade")
     if not r.added_sugar:
         tags.append("no-sugar")
-    if r.pasteurized:
+    if r.pasteurized is True:
         tags.append("pasteurized")
     if r.pulp:
         tags.append("pulp")

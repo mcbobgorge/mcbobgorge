@@ -8,7 +8,7 @@ from pathlib import Path
 
 REQUIRED_FIELDS = [
     "brand", "product", "listing_name", "table_name", "date", "size",
-    "style", "pasteurized", "added_sugar", "organic", "fair_trade", "pulp",
+    "style", "added_sugar", "organic", "fair_trade", "pulp",
     "image", "description", "scores",
 ]
 SCORE_KEYS = ["taste", "sweetness", "body", "refreshment", "ethics", "overall"]
@@ -29,7 +29,7 @@ class Review:
     date: str
     size: str
     style: str
-    pasteurized: bool
+    pasteurized: bool | None
     added_sugar: bool
     organic: bool
     fair_trade: bool
@@ -82,6 +82,8 @@ def load_review(path: Path, require_image: bool = True) -> Review:
     missing = [f for f in REQUIRED_FIELDS if f not in front]
     if missing:
         raise ValidationError(f"{slug}: missing required field(s): {', '.join(missing)}")
+    if "pasteurized" in front and not isinstance(front["pasteurized"], bool):
+        raise ValidationError(f"{slug}: pasteurized must be true or false; omit if unknown")
     scores = front["scores"]
     for key in SCORE_KEYS:
         if key not in scores:
@@ -107,7 +109,7 @@ def load_review(path: Path, require_image: bool = True) -> Review:
         date=front["date"],
         size=front["size"],
         style=front["style"],
-        pasteurized=front["pasteurized"],
+        pasteurized=front.get("pasteurized"),
         added_sugar=front["added_sugar"],
         organic=front["organic"],
         fair_trade=front["fair_trade"],

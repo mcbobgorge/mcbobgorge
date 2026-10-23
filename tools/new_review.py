@@ -309,7 +309,10 @@ def generate_review_content(data, slug, listing_name, table_name):
         key = field.replace(" ", "_")
         normalized_field = normalize_label(field)
         value = data.get(normalized_field, "")
-        bool_data[key] = normalize_bool(value)
+        if field == "pasteurized" and value.strip().lower() in ("", "unknown"):
+            bool_data[key] = None
+        else:
+            bool_data[key] = normalize_bool(value)
 
     # Get sections
     notes = data.get("notes", "").strip()
@@ -347,6 +350,8 @@ def generate_review_content(data, slug, listing_name, table_name):
         )
 
     origin_line = f'origin = "{origin}"\n' if origin else ""
+    pasteurized_line = (f'pasteurized = {bool_data["pasteurized"]}\n'
+                        if bool_data["pasteurized"] is not None else "")
     toml_content = f'''+++
 brand = "{brand}"
 product = "{product}"
@@ -355,8 +360,7 @@ table_name = "{table_name}"
 date = "{date_str}"
 size = "{size}"
 style = "{style}"
-{origin_line}pasteurized = {bool_data["pasteurized"]}
-added_sugar = {bool_data["added_sugar"]}
+{origin_line}{pasteurized_line}added_sugar = {bool_data["added_sugar"]}
 organic = {bool_data["organic"]}
 fair_trade = {bool_data["fair_trade"]}
 pulp = {bool_data["pulp"]}

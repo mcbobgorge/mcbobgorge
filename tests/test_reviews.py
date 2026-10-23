@@ -62,6 +62,15 @@ class ReviewLoadingTests(unittest.TestCase):
         self.assertEqual(r.scores["overall"], 5)
         self.assertEqual(r.notes, "Some notes.")
 
+    def test_missing_pasteurization_is_unknown(self):
+        r = load_review(self.write("unknown", GOOD.replace("pasteurized = true\n", "")))
+        self.assertIsNone(r.pasteurized)
+
+    def test_pasteurization_rejects_non_boolean(self):
+        for value in ('"unknown"', '0', '1'):
+            with self.subTest(value=value), self.assertRaisesRegex(ValidationError, "pasteurized"):
+                load_review(self.write("invalid", GOOD.replace("pasteurized = true", f"pasteurized = {value}")))
+
     def test_missing_field_raises(self):
         bad = GOOD.replace('brand = "TestBrand"\n', "")
         p = self.write("bad", bad)

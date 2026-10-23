@@ -7,6 +7,7 @@ date = "2026-01-01"
 size = "16.9 fl oz (500 mL)"
 style = "Still"
 origin = "Thailand"
+# Optional: omit pasteurized if unknown (never use false for unknown).
 pasteurized = true
 added_sugar = false
 organic = true
