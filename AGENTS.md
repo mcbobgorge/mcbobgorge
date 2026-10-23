@@ -2,7 +2,8 @@
 
 Read README.md, LLM_OPERATOR_GUIDE.md and PUBLISHING.md before editing.
 Nate alone supplies notes, verdicts and scores; preserve his prose and never
-infer missing facts. No prices, affiliates, invented flavours or design changes.
+infer missing facts. Do not add prices, affiliates or invented flavours.
+Design changes require owner approval.
 
 ## Layout and conventions
 
