@@ -14,7 +14,7 @@ Design changes require owner approval.
 - `tools/new_review.py`: email intake; `tools/check_site.py`: output checks.
 - `tests/`: unittest behaviour tests. No new dependency for ordinary site work.
 - `pasteurized`: optional boolean, missing means unknown (`None`). Only explicit
-  false qualifies as unpasteurized. CSV unknown is blank; matcher JSON is null.
+  false qualifies as unpasteurized. CSV unknown is blank.
 
 ## Run and verify
 
@@ -33,8 +33,8 @@ as `_site` (ignored). Preserve other operators' changes.
 
 ## Deployment
 
-Only publish with explicit owner approval. Push to `main` in
+Nate has authorized publishing complete reviews he supplies straight away;
+other live changes (design, structure) need his approval. Push to `main` in
 `mcbobgorge/mcbobgorge` triggers GitHub Actions Pages deployment; verify the job
-and live pages. Matcher is separate (`~/coconut-match`): after main publication,
-export approved data, run its tests/check/build, then deploy separately. Never
-export unpublished drafts. See LLM_OPERATOR_GUIDE.md for operations and rollback.
+and live pages. The old matcher (match.natewooding.com) is retired: do not
+export to it or link it. See LLM_OPERATOR_GUIDE.md for operations and rollback.
