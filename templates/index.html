@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nate Wooding — Coconut Water Reviews</title>
-  <meta name="description" content="Nate Wooding's personal site: every coconut water he has bought and scored himself, rated on taste, sweetness, body, refreshment and ethics, and ranked best to worst.">
+  <title>Nate Wooding</title>
+  <meta name="description" content="Nate Wooding's personal site: posts about whatever he is thinking about, plus every coconut water he has bought and scored himself, ranked best to worst.">
   <link rel="canonical" href="https://natewooding.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
   <link rel="alternate" type="application/rss+xml" title="Nate Wooding" href="https://natewooding.com/feed.xml">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Nate Wooding">
-  <meta property="og:description" content="Every coconut water Nate Wooding has bought and scored himself, rated on taste, sweetness, body, refreshment and ethics, and ranked best to worst.">
+  <meta property="og:description" content="Posts about whatever Nate Wooding is thinking about, plus every coconut water he has bought and scored himself, ranked best to worst.">
   <meta property="og:url" content="https://natewooding.com/">
   <meta property="og:site_name" content="Nate Wooding">
   <meta property="og:image" content="https://natewooding.com/wooding-pond.jpg">
@@ -23,21 +23,24 @@
     "@type": "WebSite",
     "name": "Nate Wooding",
     "url": "https://natewooding.com/",
-    "description": "Every coconut water Nate Wooding has bought and scored himself, rated on taste, sweetness, body, refreshment and ethics, and ranked best to worst."
+    "description": "Posts about whatever Nate Wooding is thinking about, plus every coconut water he has bought and scored himself, ranked best to worst."
   }
   </script>
 </head>
 <body>
   <h1>Nate Wooding</h1>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="best-coconut-water.html">Best Coconut Water</a>
-    <a href="coconut-water.html">All Reviews</a>
+    <a href="index.html" class="on">Blog</a>
     <a href="about.html">About</a>
+    <a href="best-coconut-water.html">Coconut Water</a>
   </nav>
-  <p>This is my website. Right now it has coconut water reviews on it.</p>
-  <p>Start here: <a href="best-coconut-water.html">every coconut water I have reviewed</a>, ranked best to worst.</p>
-  <p class="donate-note">These coconuts are grown in habitats threatened by palm oil deforestation. If you find this site useful, consider <a href="https://www.ran.org/donate/" target="_blank" rel="noopener">donating to the Rainforest Action Network</a>.</p>
+  <p>This is my website.</p>
+
+  <div class="post-list">
+$post_items
+  </div>
+
+  <p class="cw-pointer">I also review coconut water. Start here: <a href="best-coconut-water.html">every coconut water I have reviewed</a>, ranked best to worst.</p>
   <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
 <script>
   var u='nate',d='natewooding.com';
