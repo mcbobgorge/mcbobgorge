@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$title — Nate Wooding</title>
+  <meta name="description" content="$description">
+  <link rel="canonical" href="https://natewooding.com/blog/$slug.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="alternate" type="application/rss+xml" title="Nate Wooding" href="https://natewooding.com/feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="$title">
+  <meta property="og:description" content="$description">
+  <meta property="og:url" content="https://natewooding.com/blog/$slug.html">
+  <meta property="og:image" content="https://natewooding.com/$image">
+  <meta property="og:site_name" content="Nate Wooding">
+  <meta property="article:published_time" content="$date">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": $ld_headline,
+    "description": $ld_description,
+    "url": "https://natewooding.com/blog/$slug.html",
+    "image": "https://natewooding.com/$image",
+    "datePublished": "$date",
+    "author": {
+      "@type": "Person",
+      "name": "Nate Wooding",
+      "url": "https://natewooding.com/about.html"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="masthead" href="../index.html">Nate Wooding</a>
+  <nav>
+    <a href="../index.html" class="on">Blog</a>
+    <a href="../about.html">About</a>
+    <a href="../best-coconut-water.html">Coconut Water</a>
+  </nav>
+
+  <article>
+  <h1 class="page-title">$title</h1>
+  <p class="item-meta">$long_date</p>
+
+  <div class="post-body">
+$body
+  </div>
+  </article>
+
+  <p class="post-end"><a href="../index.html">More posts</a></p>
+  <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
+<script>
+  var u='nate',d='natewooding.com';
+  document.getElementById('contact-link').innerHTML='<a href="mailto:'+u+'@'+d+'">Contact</a>';
+</script>
+</body>
+</html>

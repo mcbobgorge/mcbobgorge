@@ -5,7 +5,7 @@ assistant — Claude, ChatGPT, a local model, or a human with a terminal — wit
 dependency on the agent that built the main site. The main-site source is in GitHub;
 the separate matcher source and local helper currently live outside that repo, as explained below.
 
-Updated October 22, 2026. Start with the quick operating instructions below; the later sections are the technical reference.
+Updated October 27, 2026. Start with the quick operating instructions below; the later sections are the technical reference.
 
 Repo: `mcbobgorge/mcbobgorge` · default branch `main` · live at https://natewooding.com
 
@@ -56,9 +56,23 @@ No terminal is needed for the main site. Log into GitHub as a repo owner or coll
 
 Upload the photo first to avoid a review build failing while its photo is missing. An image-only commit does not add a review. Do not rename an existing review slug: it changes a live link.
 
+### Publish a blog post
+
+The homepage is Nate's blog: posts on anything (Los Angeles, mountaineering, whatever he is thinking about), not coconut water. He sends the text and any photos; the operator only formats them. The same rule as reviews applies, harder: **every word is Nate's.** Do not write an intro, title, summary, caption, heading or closing line he did not write, do not "tighten" his prose, and do not fix anything beyond obvious typos without asking. If he gave no title, ask for one.
+
+1. Pick the slug from his title: lowercase words with hyphens, e.g. `climbing-mount-whitney`. It becomes `https://natewooding.com/blog/<slug>.html` and must never change once published (posts get shared on Reddit; a renamed slug breaks every shared link).
+2. Copy `content/posts/_template.md` to `content/posts/<slug>.md`. Fill `title` and `date` (the day it goes up, `YYYY-MM-DD`). `description` is optional: use it only for a one- or two-sentence summary Nate wrote himself; leave it out and the opening words of the post are used for search results and the Reddit preview.
+3. Paste his text as the body: a blank line between paragraphs; a single line break inside a paragraph is kept as a line break. Use `## ` for headings he wrote, `- ` for lists, `> ` for quotes, `**bold**`, `*italic*` and `[text](https://link)`. A block of raw HTML (e.g. a YouTube embed `<iframe>`) is passed through.
+4. Photos: save each as JPEG in `blog/img/`, named `<slug>-1.jpg`, `<slug>-2.jpg`, in the order he gave them. **Resize first**: about 1600px on the long side, quality around 80, so each file is under 1 MB (the build refuses anything bigger, because a Reddit spike multiplies every byte). `sips -Z 1600 in.jpg --out blog/img/<slug>-1.jpg` on a Mac, or `convert in.jpg -resize 1600x1600\> -quality 80 blog/img/<slug>-1.jpg` with ImageMagick. Strip location data if he has not said it is fine to share (`convert ... -strip`).
+5. Put each photo on its own line where he wants it: `![what the photo shows](img/<slug>-1.jpg "caption")`. The alt text may be a plain factual description of the photo for screen readers; the caption is optional and must be his words. Image-heavy posts are just a run of these lines between paragraphs. The first photo becomes the share-preview image unless `image = "blog/img/..."` names another.
+6. Build, test, check and preview exactly as for a review (`python3 build.py --out _site`, the unit tests, `tools/check_site.py _site`, then look at the homepage and `blog/<slug>.html` on a phone-width window too).
+7. Publishing a post Nate sent and asked to be published is authorized the same way a complete review is. Commit `content/posts/<slug>.md`, `blog/img/<slug>-*.jpg` and the regenerated files, push to `main`, and check the live page. To take a post down, delete its source file and photos and rebuild; the build removes its page.
+
+The post appears at the top of the homepage, in the RSS feed and in the sitemap automatically. There are no comments and no email list, by Nate's choice; his social links are on the About page.
+
 ### Live pages and what updates them
 
-- Home: https://natewooding.com/
+- Home and blog (every post, newest first): https://natewooding.com/ ; posts live at https://natewooding.com/blog/<slug>.html
 - All Reviews, filters and comparison table: https://natewooding.com/coconut-water.html
 - Full ranking, highest overall score first: https://natewooding.com/best-coconut-water.html
 - Organic ranking: https://natewooding.com/best-organic-coconut-water.html
@@ -188,6 +202,9 @@ no Node, no dependencies beyond the Python standard library (3.11+; GitHub uses 
 content/reviews/<slug>.md   one file per review: TOML front matter + Notes + Verdict
 content/site.toml           site title, url, description, intro copy, GA4 id
 reviews/img/<slug>.jpg      one photo per review (committed to the repo)
+content/posts/<slug>.md     one file per blog post: TOML front matter + Markdown body
+blog/img/<slug>-N.jpg       blog photos, resized to under 1 MB
+build_lib/posts.py          loads and validates posts; the small Markdown renderer
 build.py                    the entry point; regenerates all HTML
 build_lib/reviews.py        loads and VALIDATES the data files
 build_lib/render.py         turns reviews into HTML using templates/
@@ -483,8 +500,13 @@ product.
 - no frameworks, no build tooling, no JavaScript beyond a ~15-line sort control
   and the contact-link assembler
 - no gradients, no hero sections, no decorative emoji, no uppercase micro-labels
-- the nav is four items: Home, Best Coconut Water, All Reviews, About. Resist
-  adding more; other pages are reached by links in the body.
+- the nav is three tabs: Blog (the homepage), About, Coconut Water (the full
+  ranking). Every coconut water page also carries one small second row: Best
+  Coconut Water, All Reviews, Rating Guide, Data. Resist adding more; other
+  pages are reached by links in the body. The tab label "Blog" may be renamed
+  by Nate; change the label only, never the `blog/` URLs.
+- blog posts use the same fonts and colours, with a narrower 680px text column
+  and slightly larger body text for reading
 
 Analytics: GA4, id in `content/site.toml` as `ga_measurement_id`. Leave it empty
 and no tag is emitted anywhere. That is the off switch.

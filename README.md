@@ -13,6 +13,10 @@ required.
   scores, tags, image, etc.) plus `## Notes` / `## Verdict` body text.
   This is the only thing you normally edit.
 - `content/reviews/_template.md` — copy this to start a new review.
+- `content/posts/*.md` — one file per blog post (Nate's words only):
+  `title` and `date` in TOML front matter, then the body in a small Markdown
+  subset. Copy `content/posts/_template.md`; photos go in `blog/img/`. See
+  "Publish a blog post" in LLM_OPERATOR_GUIDE.md.
 - `content/site.toml` — site-wide settings. `ga_measurement_id` holds the
   Google Analytics 4 ID (e.g. `G-ABC1234XYZ`); leave it empty and the site
   ships with no analytics at all. When set, `build.py` injects one async
@@ -36,9 +40,11 @@ required.
     to their brand page, and `coconut-water.html` lists them under "By Brand".
     Note that brands are grouped on the exact `brand` string, so
     `Zico` and `Zico Pure` currently count as two different brands.
-  - `feed.xml` — RSS, newest first
+  - `index.html` — the homepage, which is the blog: every post, newest first
+  - `blog/<slug>.html` — one page per post
+  - `feed.xml` — RSS of reviews and posts together, newest first
   - `sitemap.xml`
-  - `index.html`, `about.html`, `style.css` — copied from `templates/`
+  - `about.html`, `style.css` — from `templates/`
 - `tools/new_review.py` — converts a plain-text intake block (email format)
   into a review data file. Validates the result and refuses to overwrite
   existing files. See "If you email the review to Woody" in PUBLISHING.md.

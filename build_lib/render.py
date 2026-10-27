@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 import datetime
+import html
 import json
 import re
 from pathlib import Path
 from string import Template
 
 TEMPLATES = Path(__file__).resolve().parent.parent / "templates"
+
+import posts as posts_lib  # noqa: E402
 
 
 def _tpl(name: str) -> Template:
@@ -180,22 +183,32 @@ def _pub_date(date_str: str) -> str:
     return dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
 
 
-def render_feed(reviews) -> str:
+def render_feed(reviews, posts=()) -> str:
+    """Reviews and blog posts together, newest first."""
     item_tpl = _tpl("feed_item.xml")
-    ordered = sorted(reviews, key=lambda r: (r.date, r.order), reverse=True)
-    items = "".join(
-        item_tpl.substitute(
+    entries = [
+        ((r.date, 0, r.order or 0), dict(
             title=esc(f"{r.listing_name} ({fmt_overall(r.scores['overall'])}/10)"),
-            slug=r.slug,
+            path=f"reviews/{r.slug}.html",
             pub_date=_pub_date(r.date),
             description=esc(r.description),
-        )
-        for r in ordered
-    )
+        ))
+        for r in reviews
+    ] + [
+        ((p.date, 1, p.slug), dict(
+            title=html.escape(p.title, quote=False),
+            path=f"blog/{p.slug}.html",
+            pub_date=_pub_date(p.date),
+            description=html.escape(posts_lib.summary(p), quote=False),
+        ))
+        for p in posts
+    ]
+    entries.sort(key=lambda e: e[0], reverse=True)
+    items = "".join(item_tpl.substitute(**fields) for _, fields in entries)
     return _tpl("feed.xml").substitute(items=items)
 
 
-def render_sitemap(reviews) -> str:
+def render_sitemap(reviews, posts=()) -> str:
     url_tpl = _tpl("sitemap_url.xml")
     ordered = sorted(reviews, key=lambda r: (r.date, r.order or 0))
     urls = "".join(url_tpl.substitute(slug=r.slug, date=r.date) for r in ordered)
@@ -204,7 +217,9 @@ def render_sitemap(reviews) -> str:
         brand_tpl.substitute(brand_slug=brand_slug(b))
         for b in brands_with_multiple(reviews)
     )
-    return _tpl("sitemap.xml").substitute(urls=urls + brand_urls)
+    post_tpl = _tpl("sitemap_post.xml")
+    post_urls = "".join(post_tpl.substitute(slug=p.slug, date=p.date) for p in posts)
+    return _tpl("sitemap.xml").substitute(urls=urls + brand_urls + post_urls)
 
 
 def rank_context(r, ranked) -> str:
@@ -461,3 +476,33 @@ def render_data_page(reviews) -> str:
         origin_rows=orig,
         origin_note=esc(note),
     )
+
+
+def render_post_page(p) -> str:
+    description = posts_lib.summary(p)
+    return _tpl("post.html").substitute(
+        title=html.escape(p.title),
+        description=html.escape(description),
+        ld_headline=json.dumps(p.title),
+        ld_description=json.dumps(description),
+        slug=p.slug,
+        date=p.date,
+        long_date=p.long_date,
+        image=p.image or "wooding-pond.jpg",
+        body=posts_lib.body_html(p.body),
+    )
+
+
+def render_home_page(posts) -> str:
+    """The homepage is the blog: every post, newest first."""
+    item_tpl = _tpl("post_item.html")
+    items = "".join(
+        item_tpl.substitute(
+            slug=p.slug,
+            title=html.escape(p.title, quote=False),
+            long_date=p.long_date,
+            summary=html.escape(posts_lib.summary(p), quote=False),
+        )
+        for p in posts
+    )
+    return _tpl("index.html").substitute(post_items=items or '    <p class="item-meta">No posts yet.</p>')

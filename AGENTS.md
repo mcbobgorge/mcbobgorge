@@ -9,6 +9,8 @@ Design changes require owner approval.
 
 - `content/reviews/*.md`: TOML front matter plus Notes / Verdict; `_template.md`
   is excluded. Add JPEG photos to `reviews/img/`. Never rename existing slugs.
+- `content/posts/*.md`: blog posts, TOML front matter plus Markdown body; Nate's
+  words only. Photos in `blog/img/`, resized under 1 MB. Homepage is the blog.
 - `build_lib/`: standard-library-only Python loading, validation and rendering.
 - `templates/`: plain string.Template HTML/XML. Edit sources, not generated pages.
 - `tools/new_review.py`: email intake; `tools/check_site.py`: output checks.
