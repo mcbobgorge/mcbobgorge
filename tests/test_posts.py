@@ -93,6 +93,20 @@ class BodyTest(unittest.TestCase):
         self.assertIn('src="img/b.jpg" alt="B" loading="lazy">', out)
         self.assertIn('<iframe src="x"></iframe>', out)
 
+    def test_footnotes(self):
+        out = posts.body_html("One.[^1] Two.[^2]\n\nAgain.[^1]\n\n[^1]: First *source*.\n[^2]: Second.")
+        self.assertIn('<a href="#fn-1" id="fnref-1">1</a>', out)
+        self.assertIn('<a href="#fn-1" id="fnref-1-2">1</a>', out)
+        self.assertIn('<li id="fn-1" value="1">First <em>source</em>.', out)
+        self.assertNotIn("[^", out)
+        self.assertTrue(out.endswith("</ol></section>"))
+        self.assertEqual(posts.plain_text("Hi.[^1]\n\n[^1]: Src."), "Hi.")
+
+    def test_subtitle_is_the_fallback_summary(self):
+        p = posts.Post("s", "T", "2026-01-02", "Body words.", subtitle="The dek.")
+        self.assertEqual(posts.summary(p), "The dek.")
+        self.assertIn('<p class="post-subtitle">The dek.</p>', render.render_post_page(p))
+
     def test_summary_uses_the_posts_own_words(self):
         p = posts.Post("s", "T", "2026-01-02", "## Head\n\n![x](img/x.jpg)\n\n" + "word " * 60)
         s = posts.summary(p)

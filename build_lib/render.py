@@ -488,6 +488,7 @@ def render_post_page(p) -> str:
         slug=p.slug,
         date=p.date,
         long_date=p.long_date,
+        subtitle_html=f'  <p class="post-subtitle">{html.escape(p.subtitle, quote=False)}</p>\n' if p.subtitle else "",
         image=p.image or "wooding-pond.jpg",
         body=posts_lib.body_html(p.body),
     )

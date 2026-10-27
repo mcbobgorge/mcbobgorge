@@ -15,11 +15,13 @@ from pathlib import Path
 from reviews import ValidationError
 
 REQUIRED_FIELDS = ["title", "date"]
-OPTIONAL_FIELDS = ["description", "image"]
+OPTIONAL_FIELDS = ["subtitle", "description", "image"]
 SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 # Posts get shared on Reddit; a phone photo straight off the camera is 3-5 MB.
 MAX_IMAGE_BYTES = 1_000_000
 IMAGE_LINE = re.compile(r'^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$')
+FOOTNOTE_DEF = re.compile(r"^\[\^([\w-]+)\]:\s*(.*)$")
+FOOTNOTE_REF = re.compile(r"\[\^([\w-]+)\]")
 
 
 @dataclass
@@ -28,6 +30,7 @@ class Post:
     title: str
     date: str
     body: str
+    subtitle: str = ""  # a one-line dek under the title, only if Nate wrote one
     description: str = ""
     image: str = ""  # path relative to the repo root, used for the share preview
 
@@ -93,6 +96,7 @@ def load_post(path: Path, root: Path) -> Post:
         title=front["title"],
         date=date,
         body=body,
+        subtitle=front.get("subtitle", ""),
         description=front.get("description", ""),
         image=front.get("image") or (images[0] if images else ""),
     )
@@ -141,7 +145,47 @@ def body_html(body: str) -> str:
     ---                               a horizontal rule
     <...>                             raw HTML, passed through (e.g. a video embed)
     anything else                     a paragraph; **bold**, *italic*, [link](url)
+    text[^1] ... [^1]: the note        footnotes, numbered in order and listed at the end
     """
+    body, notes = _split_footnotes(body)
+    out = _blocks(body)
+    if notes:
+        out.append(_footnotes_html(body, notes))
+    return "\n".join(out)
+
+
+def _split_footnotes(body: str) -> tuple[str, dict]:
+    notes, kept = {}, []
+    for line in body.splitlines():
+        m = FOOTNOTE_DEF.match(line.strip())
+        if m:
+            notes[m.group(1)] = m.group(2).strip()
+        else:
+            kept.append(line)
+    return "\n".join(kept), notes
+
+
+def _ref(m: re.Match, seen: dict) -> str:
+    key = m.group(1)
+    seen[key] = seen.get(key, 0) + 1
+    rid = f"fnref-{key}" + (f"-{seen[key]}" if seen[key] > 1 else "")
+    return f'<sup class="fnref"><a href="#fn-{key}" id="{rid}">{key}</a></sup>'
+
+
+def _footnotes_html(body: str, notes: dict) -> str:
+    used = list(dict.fromkeys(FOOTNOTE_REF.findall(body)))
+    order = used + [k for k in notes if k not in used]
+    items = "".join(
+        f'<li id="fn-{k}" value="{k}">{_inline(notes[k])} '
+        f'<a href="#fnref-{k}" class="fnback" aria-label="Back to the text">&#8617;</a></li>'
+        if k in used else f'<li id="fn-{k}" value="{k}">{_inline(notes[k])}</li>'
+        for k in order if k in notes
+    )
+    return f'<section class="footnotes"><ol>{items}</ol></section>'
+
+
+def _blocks(body: str) -> list[str]:
+    _seen: dict = {}
     blocks = re.split(r"\n\s*\n", body.strip())
     out = []
     first_image = True
@@ -169,10 +213,10 @@ def body_html(body: str) -> str:
             out.append(f"<ol>{items}</ol>")
         elif all(l.lstrip().startswith(">") for l in lines):
             inner = "\n".join(re.sub(r"^\s*>\s?", "", l) for l in lines)
-            out.append(f"<blockquote>{body_html(inner)}</blockquote>")
+            out.append("<blockquote>" + "\n".join(_blocks(inner)) + "</blockquote>")
         else:
             out.append("<p>" + "<br>\n".join(_inline(l.strip()) for l in lines) + "</p>")
-    return "\n".join(out)
+    return [FOOTNOTE_REF.sub(lambda m: _ref(m, _seen), b) for b in out]
 
 
 def plain_text(body: str) -> str:
@@ -182,16 +226,19 @@ def plain_text(body: str) -> str:
         first = block.strip()
         if first.startswith(("<", "#", "!", "---")):
             continue
-        text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", block)
+        if FOOTNOTE_DEF.match(first):
+            continue
+        text = FOOTNOTE_REF.sub("", block)
+        text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
         text = re.sub(r"[*>]|^\s*(?:-|\d+[.)])\s+", "", text, flags=re.M)
         words.extend(text.split())
     return " ".join(words)
 
 
 def summary(post: Post, limit: int = 155) -> str:
-    """The front-matter description, or the opening words of the post itself."""
-    if post.description:
-        return post.description
+    """The description, else the subtitle, else the opening words of the post itself."""
+    if post.description or post.subtitle:
+        return post.description or post.subtitle
     text = plain_text(post.body)
     if len(text) <= limit:
         return text

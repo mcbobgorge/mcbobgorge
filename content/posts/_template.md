@@ -3,6 +3,8 @@
 # The file name becomes the URL: natewooding.com/blog/<slug>.html. Never rename it once published.
 title = "The post's title, exactly as Nate wrote it"
 date = "2026-10-27"
+# Optional. A one-line subtitle shown under the title, only if Nate wrote one.
+# subtitle = ""
 # Optional. One or two sentences for search results and Reddit/social previews.
 # Use Nate's own words; if he gave none, leave this out and the opening of the post is used.
 # description = ""
@@ -15,3 +17,7 @@ Nate's words go here, one paragraph per block, with a blank line between paragra
 ## A heading, if he used one
 
 ![What the photo shows](img/<slug>-1.jpg "An optional caption, in Nate's words")
+
+A sentence that cites a source.[^1]
+
+[^1]: The source, exactly as Nate wrote it. Footnotes are numbered and listed at the end.
