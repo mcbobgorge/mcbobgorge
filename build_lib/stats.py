@@ -419,7 +419,7 @@ def extremes(reviews, k):
     return hi, pick(hi), lo, pick(lo)
 
 
-def _who(items, limit=3) -> str:
+def _who(items, limit=2) -> str:
     shown = ", ".join(link(r) for r in items[:limit])
     more = len(items) - limit
     return shown + (f" and {more} more" if more > 0 else "")

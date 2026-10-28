@@ -488,8 +488,7 @@ def render_stats_page(reviews) -> str:
         ),
         og_image=by_score(reviews)[0].image,
         intro=esc(
-            f"Everything below is calculated from my scores for the {n} coconut waters I have reviewed, "
-            "and updates automatically as I add more."
+            f"From my scores for {n} coconut waters; updates with each new review."
         ),
         headline=stats.render_headline(reviews),
         histogram=stats.render_histogram(reviews),

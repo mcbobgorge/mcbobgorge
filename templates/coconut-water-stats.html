@@ -34,45 +34,42 @@
   </nav>
 
   <h1 class="page-title">Coconut Water Statistics</h1>
-  <p>$intro</p>
-  <p class="chart-note">Hover over (or tap) any dot, bar or shaded cell to see which coconut waters it stands for.</p>
+  <p class="chart-note">$intro Tap any dot or cell for names.</p>
 
 $headline
 
-  <h2>How the Overall Scores Fall</h2>
+  <h2>Overall Scores</h2>
 $histogram
 
-  <h2>How Often Each Score Is Given</h2>
-  <p>How many coconut waters received each score, 1 to 10, on each criterion. Darker cells are more common.</p>
+  <h2>Score Frequency</h2>
 $count_table
 
-  <h2>Each Criterion Against the Overall Score</h2>
-  <p>One dot per coconut water (larger where several share the same pair of scores), with a dashed best-fit line. r is the correlation: 1 means the two always rise together, 0 no relationship, negative that they tend to move in opposite directions. Overall is my own score for the drink as a whole, <a href="rating-guide.html">not an average</a>; on the sweetness scale 7&ndash;10 means the drink is too sweet.</p>
+  <h2>Criteria vs. Overall</h2>
+  <p class="chart-note">r = correlation (&minus;1 to +1).</p>
 $scatters
 
-  <h2>How the Criteria Move Together</h2>
-  <p>The correlation between every pair of scores. Darker means a stronger relationship; the sign says which way.</p>
+  <h2>Correlations</h2>
 $matrix
 
-  <h2>Overall Score by Tag</h2>
-  <p>Each dot is one coconut water&rsquo;s overall score on a 0&ndash;10 line; the bar marks the group average.</p>
+  <h2>By Tag</h2>
+  <p class="chart-note">Dots are reviews; the bar is the average.</p>
 $tag_table
 
-  <h2>Overall Score by Country of Origin</h2>
+  <h2>By Origin</h2>
 $origin_table
 
-  <h2>Brands With More Than One Review</h2>
+  <h2>By Brand</h2>
 $brand_table
 
-  <h2>Scores Over Time</h2>
-  <p>Every overall score by the date I tasted it. The grey line is the running average of everything scored up to that date.</p>
+  <h2>Over Time</h2>
+  <p class="chart-note">Line is the running average.</p>
 $timeline
 $month_table
 
-  <h2>Highest and Lowest on Each Criterion</h2>
+  <h2>Highs and Lows</h2>
 $extremes
 
-  <p>These figures are recalculated from the reviews every time the site is rebuilt. The raw numbers: <a href="coconut-water-data.html">the data</a> and <a href="data/ratings.csv">ratings.csv</a>. How the scores work: <a href="rating-guide.html">the rating guide</a>. The full ranking: <a href="best-coconut-water.html">the best coconut water</a>.</p>
+  <p class="chart-note"><a href="coconut-water-data.html">Data</a> &middot; <a href="data/ratings.csv">ratings.csv</a> &middot; <a href="rating-guide.html">Rating guide</a></p>
 
   <p class="donate-note">These coconuts are grown in habitats threatened by palm oil deforestation. If you find this site useful, consider <a href="https://www.ran.org/donate/" target="_blank" rel="noopener">donating to the Rainforest Action Network</a>.</p>
   <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
