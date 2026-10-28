@@ -14,13 +14,13 @@ So why does this development pattern persist when Los Angeles plainly needs more
 
 You might assume it comes down to zoning, and that is partially true. Zoning does determine where apartments can be proposed, how much can be built, and which projects require exceptions. But zoning permission alone is not enough. A project can comply with the applicable zoning and still enter a long and costly discretionary approval process.
 
-The City’s own Housing Element identified potential capacity for 230,947 housing units in its existing site inventory, with no zoning changes required.[^2] The current zoning map contains substantial **theoretical** capacity, and yet actual housing production remains painfully slow.
+The City’s own Housing Element identified potential capacity for 230,947 housing units in its existing site inventory, with no zoning changes required.[^2] The current zoning map contains substantial theoretical capacity, and yet actual housing production remains painfully slow.
 
-Consider what happens when a developer tries to build a six-story, **80-unit** apartment building in the City of Los Angeles.
+Consider what happens when a developer tries to build a six-story, 80-unit apartment building in the City of Los Angeles.
 
 First, the developer needs to secure a suitable parcel and arrange financing. Once the developer controls the site, carrying costs begin to kick in and stack up: interest, taxes, insurance, architects, consultants, attorneys, and the basic cost of dumping a bunch of capital into a project that is not yet producing income. Delays can arise for all sorts of reasons, including contractor problems, financing complications, and material shortages. But the approval process can create its own delays long before construction begins.
 
-Under the Los Angeles Municipal Code, a residential project with 50 or more dwelling units generally requires Site Plan Review. Think of this as one additional step, even if the zoning otherwise allows the building to be constructed. There are exceptions, including for certain affordable-housing projects. Site Plan Review **requires** a discretionary decision by the mayor-appointed Director of Planning. The Director may require a hearing when a project may significantly affect neighboring properties, and the resulting determination may be appealed. And that is before getting into the California Environmental Quality Act, or CEQA, which can add another layer of review.[^3]
+Under the Los Angeles Municipal Code, a residential project with 50 or more dwelling units generally requires Site Plan Review. Think of this as one additional step, even if the zoning otherwise allows the building to be constructed. There are exceptions, including for certain affordable-housing projects. Site Plan Review requires a discretionary decision by the mayor-appointed Director of Planning. The Director may require a hearing when a project may significantly affect neighboring properties, and the resulting determination may be appealed. And that is before getting into the California Environmental Quality Act, or CEQA, which can add another layer of review.[^3]
 
 Not every Site Plan Review case reaches the City Planning Commission (CPC). But once a project enters discretionary review, it becomes more vulnerable to hearings, appeals, public opposition, and the simple passage of time.
 
