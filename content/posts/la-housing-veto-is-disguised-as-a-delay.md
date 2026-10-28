@@ -8,7 +8,7 @@ Los Angeles is arguably ground zero for America’s housing crisis. Housing affo
 
 None of this is likely surprising to anyone interested in becoming a homeowner in LA. If you drive around much of the Los Angeles metro area, you see mostly detached single-family homes outside a handful of neighborhoods. Within the City of Los Angeles, the prevailing pattern is familiar: commercial corridors and larger apartment buildings along arterial streets such as Wilshire, La Brea, Ventura, and Fairfax, surrounded by residential neighborhoods with a mix of detached homes and small multifamily buildings.
 
-![View from the hills near the Getty Center: detached houses among trees in the foreground, clusters of high-rises and downtown Los Angeles in the distance](img/la-housing-veto-is-disguised-as-a-delay-1.jpg)
+![View from the hills near the Getty Center: detached houses among trees in the foreground, clusters of high-rises and downtown Los Angeles in the distance](img/la-housing-veto-is-disguised-as-a-delay-1.jpg "Looking Southeast from the Getty; single family housing in the foreground with pockets of density further out")
 
 Much of that small multifamily stock is old, and in many places it is visibly rundown. Yet relatively little new multifamily construction appears outside the main arterial corridors.
 
