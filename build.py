@@ -61,6 +61,7 @@ PUBLISH_FILES = [
     "CNAME",
     "deb40f8399261227a16024fc1038b027.txt",
     "coconut-water-data.html",
+    "coconut-water-stats.html",
     "coconut-water-scores.csv",
 ] + [f"{spec['slug']}.html" for spec in filters.PAGES]
 
@@ -137,6 +138,7 @@ def main() -> int:
         (ROOT / f"{spec['slug']}.html").write_text(page, encoding="utf-8")
 
     (ROOT / "coconut-water-data.html").write_text(render.render_data_page(reviews), encoding="utf-8")
+    (ROOT / "coconut-water-stats.html").write_text(render.render_stats_page(reviews), encoding="utf-8")
     (ROOT / "coconut-water-scores.csv").write_text(dataset.csv_text(reviews), encoding="utf-8")
     (ROOT / "data").mkdir(exist_ok=True)
     (ROOT / "data" / "ratings.csv").write_text(dataset.csv_text(reviews), encoding="utf-8")
@@ -160,7 +162,7 @@ def main() -> int:
 
     tag = render.analytics_snippet(site_config().get("ga_measurement_id", ""))
     if tag:
-        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html", "coconut-water-data.html", "rating-guide.html"]
+        names = ["index.html", "about.html", "coconut-water.html", "best-coconut-water.html", "404.html", "coconut-water-data.html", "coconut-water-stats.html", "rating-guide.html"]
         names += [f"{spec['slug']}.html" for spec in filters.PAGES]
         pages = [ROOT / n for n in names]
         pages += sorted(OUT_REVIEWS.glob("*.html")) + sorted(OUT_BRANDS.glob("*.html"))

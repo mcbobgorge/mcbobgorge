@@ -478,6 +478,33 @@ def render_data_page(reviews) -> str:
     )
 
 
+def render_stats_page(reviews) -> str:
+    import stats
+    n = len(reviews)
+    return _tpl("coconut-water-stats.html").substitute(
+        description=esc(
+            f"Statistics, charts and tables from the {n} coconut waters I have bought and scored: "
+            "score distributions, correlations, and averages by tag, origin, brand and month."
+        ),
+        og_image=by_score(reviews)[0].image,
+        intro=esc(
+            f"Everything below is calculated from my scores for the {n} coconut waters I have reviewed, "
+            "and updates automatically as I add more."
+        ),
+        headline=stats.render_headline(reviews),
+        histogram=stats.render_histogram(reviews),
+        count_table=stats.render_count_table(reviews),
+        scatters=stats.render_scatters(reviews),
+        matrix=stats.render_matrix(reviews),
+        tag_table=stats.render_group_table(stats.tag_groups(reviews), "Tag", sections=True),
+        origin_table=stats.render_group_table(stats.origin_groups(reviews), "Country"),
+        brand_table=stats.render_group_table(stats.brand_groups(reviews), "Brand"),
+        timeline=stats.render_timeline(reviews),
+        month_table=stats.render_month_table(reviews),
+        extremes=stats.render_extremes(reviews),
+    )
+
+
 def render_post_page(p) -> str:
     description = posts_lib.summary(p)
     return _tpl("post.html").substitute(

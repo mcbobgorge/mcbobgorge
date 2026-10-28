@@ -149,3 +149,27 @@ sup.fnref a { text-decoration: none; padding: 0 1px; }
 .post-body .footnotes li:target { background: #f5f5f5; }
 a.fnback { text-decoration: none; color: #666; }
 .post-end { margin-top: 40px; font-size: 0.85rem; }
+
+/* Statistics page: build-time SVG charts and summary tiles */
+.chart-note { font-size: 0.78rem; color: #666; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #ddd; margin-top: 20px; }
+.stat { padding: 12px 8px 12px 0; border-bottom: 1px solid #ddd; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.35rem; }
+.stat-label { font-size: 0.72rem; color: #666; margin-top: 2px; }
+svg.chart { display: block; width: 100%; height: auto; margin: 8px 0 4px; }
+svg.chart circle:hover, svg.chart rect:hover, svg.strip circle:hover { fill-opacity: 1; }
+.panels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 16px; margin-top: 12px; }
+.panel figcaption { font-size: 0.78rem; color: #444; }
+.panel svg.chart { max-width: 260px; }
+table.heat-table td.heat { font-size: 0.75rem; min-width: 30px; }
+table.groups tr.group-head td { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.85rem; padding-top: 16px; border-bottom: 1px solid #111; }
+table.groups td.strip-col, table.groups th.strip-col { padding-top: 2px; padding-bottom: 2px; }
+svg.strip { display: block; width: 260px; height: auto; }
+span.bar { display: inline-block; height: 9px; background: #111; vertical-align: middle; margin-right: 4px; }
+@media (max-width: 600px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .panels { grid-template-columns: repeat(2, 1fr); }
+  svg.strip { width: 180px; }
+}
+svg.chart.hist { max-width: 600px; }
+td.nowrap { white-space: nowrap; }
