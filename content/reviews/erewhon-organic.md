@@ -6,9 +6,10 @@ table_name = "Erewhon Organic"
 date = "2026-10-22"
 size = "16 fl oz"
 style = "Still"
+origin = "Thailand"
+pasteurized = false
 added_sugar = false
 organic = true
-# Pasteurization unknown; omit rather than infer.
 fair_trade = false
 pulp = false
 extra_tags = []
