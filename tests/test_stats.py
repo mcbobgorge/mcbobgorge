@@ -14,7 +14,7 @@ class StatsPageTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.reviews = load_all(ROOT / "content" / "reviews")
-        cls.page = render.render_stats_page(cls.reviews)
+        cls.page = render.render_data_page(cls.reviews)
 
     def test_every_review_lands_in_exactly_one_histogram_bin(self):
         bins = stats.overall_bins(self.reviews)

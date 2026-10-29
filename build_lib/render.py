@@ -445,46 +445,12 @@ def render_about_page() -> str:
 
 
 def render_data_page(reviews) -> str:
-    import dataset
-    crit = "".join(
-        f"      <tr><td>{k.capitalize()}</td><td>{avg:.2f}</td><td>{fmt_score(lo)}</td>"
-        f"<td>{fmt_score(hi)}</td><td>{'&mdash;' if c is None else f'{c:+.2f}'}</td></tr>\n"
-        for k, avg, lo, hi, c in dataset.criterion_rows(reviews)
-    )
-    orig = "".join(
-        f"      <tr><td>{esc(country)}</td><td>{n}</td><td>{avg:.2f}</td>"
-        f'<td><a href="reviews/{best.slug}.html">{esc(best.table_name)}</a> '
-        f"({fmt_overall(best.scores['overall'])})</td></tr>\n"
-        for country, n, avg, best in dataset.origin_rows(reviews)
-    )
-    missing = sum(1 for r in reviews if not r.origin)
-    note = "Origin is recorded where my review or the brand itself names it."
-    if missing:
-        note += f" {missing} of the {len(reviews)} reviews do not have one yet and are left out of this table."
+    import stats
     n = len(reviews)
     return _tpl("coconut-water-data.html").substitute(
         description=esc(
-            f"Every score from the {n} coconut waters I have bought and scored, as a "
-            "downloadable spreadsheet, with averages by criterion and by country of origin."
-        ),
-        og_image=by_score(reviews)[0].image,
-        intro=esc(
-            f"Every score from the {n} coconut waters I have bought and scored, in one place: "
-            "six criteria each, out of 10, plus the tags on every review."
-        ),
-        criterion_rows=crit,
-        origin_rows=orig,
-        origin_note=esc(note),
-    )
-
-
-def render_stats_page(reviews) -> str:
-    import stats
-    n = len(reviews)
-    return _tpl("coconut-water-stats.html").substitute(
-        description=esc(
-            f"Statistics, charts and tables from the {n} coconut waters I have bought and scored: "
-            "score distributions, correlations, and averages by tag, origin, brand and month."
+            f"Every score from the {n} coconut waters I have bought and scored, as a downloadable "
+            "spreadsheet, with charts: distributions, correlations, and averages by tag, origin, brand and month."
         ),
         og_image=by_score(reviews)[0].image,
         intro=esc(
