@@ -445,36 +445,28 @@ def render_about_page() -> str:
 
 
 def render_data_page(reviews) -> str:
-    import dataset
-    crit = "".join(
-        f"      <tr><td>{k.capitalize()}</td><td>{avg:.2f}</td><td>{fmt_score(lo)}</td>"
-        f"<td>{fmt_score(hi)}</td><td>{'&mdash;' if c is None else f'{c:+.2f}'}</td></tr>\n"
-        for k, avg, lo, hi, c in dataset.criterion_rows(reviews)
-    )
-    orig = "".join(
-        f"      <tr><td>{esc(country)}</td><td>{n}</td><td>{avg:.2f}</td>"
-        f'<td><a href="reviews/{best.slug}.html">{esc(best.table_name)}</a> '
-        f"({fmt_overall(best.scores['overall'])})</td></tr>\n"
-        for country, n, avg, best in dataset.origin_rows(reviews)
-    )
-    missing = sum(1 for r in reviews if not r.origin)
-    note = "Origin is recorded where my review or the brand itself names it."
-    if missing:
-        note += f" {missing} of the {len(reviews)} reviews do not have one yet and are left out of this table."
+    import stats
     n = len(reviews)
     return _tpl("coconut-water-data.html").substitute(
         description=esc(
-            f"Every score from the {n} coconut waters I have bought and scored, as a "
-            "downloadable spreadsheet, with averages by criterion and by country of origin."
+            f"Every score from the {n} coconut waters I have bought and scored, as a downloadable "
+            "spreadsheet, with charts: distributions, correlations, and averages by tag, origin, brand and month."
         ),
         og_image=by_score(reviews)[0].image,
         intro=esc(
-            f"Every score from the {n} coconut waters I have bought and scored, in one place: "
-            "six criteria each, out of 10, plus the tags on every review."
+            f"From my scores for {n} coconut waters; updates with each new review."
         ),
-        criterion_rows=crit,
-        origin_rows=orig,
-        origin_note=esc(note),
+        headline=stats.render_headline(reviews),
+        histogram=stats.render_histogram(reviews),
+        count_table=stats.render_count_table(reviews),
+        scatters=stats.render_scatters(reviews),
+        matrix=stats.render_matrix(reviews),
+        tag_table=stats.render_group_table(stats.tag_groups(reviews), "Tag", sections=True),
+        origin_table=stats.render_group_table(stats.origin_groups(reviews), "Country"),
+        brand_table=stats.render_group_table(stats.brand_groups(reviews), "Brand"),
+        timeline=stats.render_timeline(reviews),
+        month_table=stats.render_month_table(reviews),
+        extremes=stats.render_extremes(reviews),
     )
 
 

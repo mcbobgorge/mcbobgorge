@@ -29,38 +29,48 @@
     <a href="best-coconut-water.html">Best Coconut Water</a>
     <a href="coconut-water.html">All Reviews</a>
     <a href="rating-guide.html">Rating Guide</a>
-    <a href="coconut-water-data.html">Data</a>
+    <a href="coconut-water-data.html" class="on">Data</a>
   </nav>
 
   <h1 class="page-title">Coconut Water Ratings Data</h1>
-  <p>$intro</p>
-  <p>Download: <a href="data/ratings.csv">ratings.csv</a> &middot; one row per coconut water, every score and tag. Stable URL: natewooding.com/data/ratings.csv.</p>
+  <p class="chart-note">$intro Tap any dot or cell for names.</p>
 
-  <h2>By Criterion</h2>
-  <div class="table-wrap">
-  <table class="compare">
-    <thead>
-      <tr><th>Criterion</th><th>Average</th><th>Lowest</th><th>Highest</th><th>Tracks overall</th></tr>
-    </thead>
-    <tbody>
-$criterion_rows    </tbody>
-  </table>
-  </div>
-  <p style="margin-top:20px;">The last column is the correlation with the overall score. 1 would mean the two always rise together, 0 that there is no relationship, and a negative number that they tend to move in opposite directions. Read sweetness with <a href="rating-guide.html">the rating guide</a> in mind: on that scale 7&ndash;10 means &ldquo;the drink is too sweet &mdash; the sweetness detracts from the flavor.&rdquo;</p>
+  <p>Download: <a href="data/ratings.csv">ratings.csv</a> &middot; every score and tag, one row per coconut water.</p>
 
-  <h2>By Country of Origin</h2>
-  <div class="table-wrap">
-  <table class="compare">
-    <thead>
-      <tr><th>Country</th><th>Reviews</th><th>Average overall</th><th>Highest scored</th></tr>
-    </thead>
-    <tbody>
-$origin_rows    </tbody>
-  </table>
-  </div>
-  <p style="margin-top:20px;">$origin_note</p>
+$headline
 
-  <p>Every review in full: <a href="coconut-water.html">all reviews</a>. How the scores work: <a href="rating-guide.html">the rating guide</a>. The full ranking: <a href="best-coconut-water.html">the best coconut water</a>.</p>
+  <h2>Overall Scores</h2>
+$histogram
+
+  <h2>Score Frequency</h2>
+$count_table
+
+  <h2>Criteria vs. Overall</h2>
+  <p class="chart-note">r = correlation (&minus;1 to +1).</p>
+$scatters
+
+  <h2>Correlations</h2>
+$matrix
+
+  <h2>By Tag</h2>
+  <p class="chart-note">Dots are reviews; the bar is the average.</p>
+$tag_table
+
+  <h2>By Origin</h2>
+$origin_table
+
+  <h2>By Brand</h2>
+$brand_table
+
+  <h2>Over Time</h2>
+  <p class="chart-note">Line is the running average.</p>
+$timeline
+$month_table
+
+  <h2>Highs and Lows</h2>
+$extremes
+
+  <p class="chart-note"><a href="rating-guide.html">Rating guide</a> &middot; <a href="best-coconut-water.html">Full ranking</a></p>
 
   <p class="donate-note">These coconuts are grown in habitats threatened by palm oil deforestation. If you find this site useful, consider <a href="https://www.ran.org/donate/" target="_blank" rel="noopener">donating to the Rainforest Action Network</a>.</p>
   <footer>natewooding.com &middot; <a href="/feed.xml">RSS</a> &middot; <span id="contact-link"></span> &middot; <a href="https://www.instagram.com/natewooding" target="_blank">Instagram</a></footer>
