@@ -486,8 +486,8 @@ def render_post_page(p) -> str:
     )
 
 
-def render_home_page(posts) -> str:
-    """The homepage is the blog: every post, newest first."""
+def render_blog_index(posts) -> str:
+    """The blog index at /blog/: every post, newest first."""
     item_tpl = _tpl("post_item.html")
     items = "".join(
         item_tpl.substitute(
@@ -498,4 +498,4 @@ def render_home_page(posts) -> str:
         )
         for p in posts
     )
-    return _tpl("index.html").substitute(post_items=items or '    <p class="item-meta">No posts yet.</p>')
+    return _tpl("blog.html").substitute(post_items=items or '    <p class="item-meta">No posts yet.</p>')

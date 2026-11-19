@@ -58,21 +58,22 @@ Upload the photo first to avoid a review build failing while its photo is missin
 
 ### Publish a blog post
 
-The homepage is Nate's blog: posts on anything (Los Angeles, mountaineering, whatever he is thinking about), not coconut water. He sends the text and any photos; the operator only formats them. The same rule as reviews applies, harder: **every word is Nate's.** Do not write an intro, title, summary, caption, heading or closing line he did not write, do not "tighten" his prose, and do not fix anything beyond obvious typos without asking. If he gave no title, ask for one.
+The blog (https://natewooding.com/blog/, the Blog tab) is Nate's: posts on anything (Los Angeles, mountaineering, whatever he is thinking about), not coconut water. He sends the text and any photos; the operator only formats them. The same rule as reviews applies, harder: **every word is Nate's.** Do not write an intro, title, summary, caption, heading or closing line he did not write, do not "tighten" his prose, and do not fix anything beyond obvious typos without asking. If he gave no title, ask for one.
 
 1. Pick the slug from his title: lowercase words with hyphens, e.g. `climbing-mount-whitney`. It becomes `https://natewooding.com/blog/<slug>.html` and must never change once published (posts get shared on Reddit; a renamed slug breaks every shared link).
 2. Copy `content/posts/_template.md` to `content/posts/<slug>.md`. Fill `title` and `date` (the day it goes up, `YYYY-MM-DD`). `description` is optional: use it only for a one- or two-sentence summary Nate wrote himself; leave it out and the opening words of the post are used for search results and the Reddit preview.
 3. Paste his text as the body: a blank line between paragraphs; a single line break inside a paragraph is kept as a line break. Use `## ` for headings he wrote, `- ` for lists, `> ` for quotes, `**bold**`, `*italic*` and `[text](https://link)`. A block of raw HTML (e.g. a YouTube embed `<iframe>`) is passed through. Footnotes: `text[^1]` in the body and `[^1]: the source` lines at the end become numbered, clickable notes. If he wrote a subtitle (a one-line dek under the title), put it in `subtitle`; it also serves as the preview text when there is no `description`.
 4. Photos: save each as JPEG in `blog/img/`, named `<slug>-1.jpg`, `<slug>-2.jpg`, in the order he gave them. **Resize first**: about 1600px on the long side, quality around 80, so each file is under 1 MB (the build refuses anything bigger, because a Reddit spike multiplies every byte). `sips -Z 1600 in.jpg --out blog/img/<slug>-1.jpg` on a Mac, or `convert in.jpg -resize 1600x1600\> -quality 80 blog/img/<slug>-1.jpg` with ImageMagick. Strip location data if he has not said it is fine to share (`convert ... -strip`).
 5. Put each photo on its own line where he wants it: `![what the photo shows](img/<slug>-1.jpg "caption")`. The alt text may be a plain factual description of the photo for screen readers; the caption is optional and must be his words. Image-heavy posts are just a run of these lines between paragraphs. The first photo becomes the share-preview image unless `image = "blog/img/..."` names another.
-6. Build, test, check and preview exactly as for a review (`python3 build.py --out _site`, the unit tests, `tools/check_site.py _site`, then look at the homepage and `blog/<slug>.html` on a phone-width window too).
+6. Build, test, check and preview exactly as for a review (`python3 build.py --out _site`, the unit tests, `tools/check_site.py _site`, then look at `blog/` and `blog/<slug>.html` on a phone-width window too).
 7. Publishing a post Nate sent and asked to be published is authorized the same way a complete review is. Commit `content/posts/<slug>.md`, `blog/img/<slug>-*.jpg` and the regenerated files, push to `main`, and check the live page. To take a post down, delete its source file and photos and rebuild; the build removes its page.
 
-The post appears at the top of the homepage, in the RSS feed and in the sitemap automatically. There are no comments and no email list, by Nate's choice; his social links are on the About page.
+The post appears at the top of the blog index (`blog/index.html`), in the RSS feed and in the sitemap automatically. There are no comments and no email list, by Nate's choice; his social links are on the About page.
 
 ### Live pages and what updates them
 
-- Home and blog (every post, newest first): https://natewooding.com/ ; posts live at https://natewooding.com/blog/<slug>.html
+- Home: https://natewooding.com/ shows the full ranking (the same page as best-coconut-water.html, whose canonical it carries; GitHub Pages cannot redirect). Since 2026-11-19, by Nate's request.
+- Blog (every post, newest first): https://natewooding.com/blog/ ; posts live at https://natewooding.com/blog/<slug>.html
 - All Reviews, filters and comparison table: https://natewooding.com/coconut-water.html
 - Full ranking, highest overall score first: https://natewooding.com/best-coconut-water.html
 - Organic ranking: https://natewooding.com/best-organic-coconut-water.html
@@ -500,8 +501,9 @@ product.
 - no frameworks, no build tooling, no JavaScript beyond a ~15-line sort control
   and the contact-link assembler
 - no gradients, no hero sections, no decorative emoji, no uppercase micro-labels
-- the nav is three tabs: Blog (the homepage), About, Coconut Water (the full
-  ranking). Every coconut water page also carries one small second row: Best
+- the homepage is the full ranking (`index.html` is a copy of
+  `best-coconut-water.html`, canonical to it). The nav is three tabs: Blog
+  (`blog/`), About, Coconut Water (the full ranking). Every coconut water page also carries one small second row: Best
   Coconut Water, All Reviews, Rating Guide, Data. Resist adding more; other
   pages are reached by links in the body. The tab label "Blog" may be renamed
   by Nate; change the label only, never the `blog/` URLs.

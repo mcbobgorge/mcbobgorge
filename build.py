@@ -3,7 +3,8 @@
 
 Run: python3 build.py
 Reads content/reviews/*.md and content/posts/*.md, writes reviews/<slug>.html,
-blog/<slug>.html, index.html (the blog), coconut-water.html, feed.xml,
+blog/<slug>.html, blog/index.html, index.html (the homepage: the best coconut
+water ranking, canonical to best-coconut-water.html), coconut-water.html, feed.xml,
 sitemap.xml, about.html, and copies style.css.
 Exits non-zero with a clear message if validation fails.
 """
@@ -86,8 +87,8 @@ def stage(out_dir: Path, reviews, brands, posts) -> None:
     for brand in brands:
         name = f"{render.brand_slug(brand)}.html"
         shutil.copy(OUT_BRANDS / name, out_dir / "brands" / name)
-    if posts:
-        (out_dir / "blog").mkdir()
+    (out_dir / "blog").mkdir()
+    shutil.copy(OUT_BLOG / "index.html", out_dir / "blog" / "index.html")
     for p in posts:
         shutil.copy(OUT_BLOG / f"{p.slug}.html", out_dir / "blog" / f"{p.slug}.html")
     if (OUT_BLOG / "img").exists():
@@ -121,9 +122,11 @@ def main() -> int:
         (OUT_BRANDS / f"{render.brand_slug(brand)}.html").write_text(page, encoding="utf-8")
 
     (ROOT / "coconut-water.html").write_text(render.render_listing_page(reviews, filters.narrower_links()), encoding="utf-8")
-    (ROOT / "best-coconut-water.html").write_text(
-        render.render_best_page(reviews, site_config()["best_page_intro"], filters.narrower_links()), encoding="utf-8"
-    )
+    best_page = render.render_best_page(reviews, site_config()["best_page_intro"], filters.narrower_links())
+    (ROOT / "best-coconut-water.html").write_text(best_page, encoding="utf-8")
+    # The homepage is the full ranking. It is the same page as best-coconut-water.html
+    # (same canonical), because GitHub Pages cannot send a server-side redirect.
+    (ROOT / "index.html").write_text(best_page, encoding="utf-8")
     (ROOT / "rating-guide.html").write_text(
         (TEMPLATES / "rating-guide.html").read_text(encoding="utf-8"), encoding="utf-8"
     )
@@ -142,19 +145,18 @@ def main() -> int:
     (ROOT / "data" / "ratings.csv").write_text(dataset.csv_text(reviews), encoding="utf-8")
 
     # Drop pages for posts that no longer have a source file, so they stop being served.
-    live = {f"{p.slug}.html" for p in posts}
+    live = {f"{p.slug}.html" for p in posts} | {"index.html"}
     for old in OUT_BLOG.glob("*.html") if OUT_BLOG.exists() else []:
         if old.name not in live:
             old.unlink()
-    if posts:
-        OUT_BLOG.mkdir(exist_ok=True)
+    OUT_BLOG.mkdir(exist_ok=True)
+    (OUT_BLOG / "index.html").write_text(render.render_blog_index(posts), encoding="utf-8")
     for p in posts:
         (OUT_BLOG / f"{p.slug}.html").write_text(render.render_post_page(p), encoding="utf-8")
 
     (ROOT / "feed.xml").write_text(render.render_feed(reviews, posts), encoding="utf-8")
     (ROOT / "sitemap.xml").write_text(render.render_sitemap(reviews, posts), encoding="utf-8")
 
-    (ROOT / "index.html").write_text(render.render_home_page(posts), encoding="utf-8")
     (ROOT / "about.html").write_text(render.render_about_page(), encoding="utf-8")
     shutil.copy(TEMPLATES / "style.css", ROOT / "style.css")
 

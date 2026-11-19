@@ -131,10 +131,11 @@ class SiteTest(unittest.TestCase):
     def test_no_posts_leaves_feed_unchanged(self):
         self.assertEqual(render.render_feed(self.reviews), render.render_feed(self.reviews, []))
 
-    def test_home_lists_posts_and_post_page_renders(self):
-        home = render.render_home_page([self.post])
-        self.assertIn('href="blog/a-walk.html">A Walk &amp; a Talk</a>', home)
-        self.assertIn("No posts yet", render.render_home_page([]))
+    def test_blog_index_lists_posts_and_post_page_renders(self):
+        index = render.render_blog_index([self.post])
+        self.assertIn('href="a-walk.html">A Walk &amp; a Talk</a>', index)
+        self.assertIn('<link rel="canonical" href="https://natewooding.com/blog/">', index)
+        self.assertIn("No posts yet", render.render_blog_index([]))
         page = render.render_post_page(self.post)
         self.assertIn('<h1 class="page-title">A Walk &amp; a Talk</h1>', page)
         self.assertIn("January 1, 2099", page)
@@ -142,11 +143,26 @@ class SiteTest(unittest.TestCase):
         self.assertIn("https://natewooding.com/wooding-pond.jpg", page)
 
     def test_every_page_has_the_three_tabs(self):
-        for name in ["index.html", "post.html", "about.html", "review.html", "best-coconut-water.html", "404.html"]:
+        for name in ["blog.html", "post.html", "about.html", "review.html", "best-coconut-water.html", "404.html"]:
             html = (ROOT / "templates" / name).read_text(encoding="utf-8")
             nav = html[html.index("<nav>"):html.index("</nav>")]
             labels = [part.split("<")[0] for part in nav.split(">")[2::2]]
             self.assertEqual(labels, ["Blog", "About", "Coconut Water"], name)
+
+    def test_blog_tab_points_at_the_blog_index(self):
+        for name in ["about.html", "best-coconut-water.html", "filtered-rank.html", "rating-guide.html", "coconut-water.html", "coconut-water-data.html"]:
+            html = (ROOT / "templates" / name).read_text(encoding="utf-8")
+            self.assertIn('<a href="blog/">Blog</a>', html, name)
+        for name in ["review.html", "brand.html"]:
+            html = (ROOT / "templates" / name).read_text(encoding="utf-8")
+            self.assertIn('<a href="../blog/">Blog</a>', html, name)
+
+    def test_homepage_is_the_ranking_with_its_canonical(self):
+        sitemap = (ROOT / "templates" / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertNotIn("<loc>https://natewooding.com/</loc>", sitemap)
+        self.assertIn("<loc>https://natewooding.com/blog/</loc>", sitemap)
+        best = (ROOT / "templates" / "best-coconut-water.html").read_text(encoding="utf-8")
+        self.assertIn('<link rel="canonical" href="https://natewooding.com/best-coconut-water.html">', best)
 
 
 if __name__ == "__main__":

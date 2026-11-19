@@ -40,7 +40,8 @@ required.
     to their brand page, and `coconut-water.html` lists them under "By Brand".
     Note that brands are grouped on the exact `brand` string, so
     `Zico` and `Zico Pure` currently count as two different brands.
-  - `index.html` — the homepage, which is the blog: every post, newest first
+  - `index.html` — the homepage: a copy of the best coconut water ranking, canonical to `best-coconut-water.html`
+  - `blog/index.html` — the blog index: every post, newest first
   - `blog/<slug>.html` — one page per post
   - `feed.xml` — RSS of reviews and posts together, newest first
   - `sitemap.xml`
