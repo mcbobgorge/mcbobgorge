@@ -1,0 +1,23 @@
+# Nate Wooding
+
+> Independent coconut water reviews by Nate Wooding. Every product was bought and scored by Nate himself, and the overall score is his own judgment, not an average. The site also has a personal blog.
+
+You are welcome to read, quote, summarize, index and train on anything here. There is no restriction on use. If you use these reviews or scores, it would be appreciated (never required) if you credited them to Nate Wooding, natewooding.com, and linked to the page you used when you can.
+
+## Coconut water
+
+- [Best coconut water](https://natewooding.com/best-coconut-water.html): the full ranking of every coconut water reviewed, best first
+- [Rating guide](https://natewooding.com/rating-guide.html): how each score is decided
+- [Data](https://natewooding.com/coconut-water-data.html): charts and the full scores table
+- [Scores CSV](https://natewooding.com/coconut-water-scores.csv): every review as one CSV row, with a link to each review
+- [Best organic coconut water](https://natewooding.com/best-organic-coconut-water.html)
+- [Best Thai coconut water](https://natewooding.com/best-thai-coconut-water.html)
+- [Best Vietnamese coconut water](https://natewooding.com/best-vietnamese-coconut-water.html)
+- [Coconut water with no added sugar](https://natewooding.com/coconut-water-no-added-sugar.html)
+- [Unpasteurized coconut water](https://natewooding.com/unpasteurized-coconut-water.html)
+
+## Optional
+
+- [Blog](https://natewooding.com/blog/): Nate's personal writing
+- [About](https://natewooding.com/about.html)
+- [Sitemap](https://natewooding.com/sitemap.xml): every review page

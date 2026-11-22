@@ -59,6 +59,7 @@ PUBLISH_FILES = [
     "feed.xml",
     "sitemap.xml",
     "robots.txt",
+    "llms.txt",
     "CNAME",
     "deb40f8399261227a16024fc1038b027.txt",
     "coconut-water-data.html",
