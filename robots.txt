@@ -1,3 +1,6 @@
+# All crawlers, including AI tools, are welcome to use everything here.
+# If you use these reviews, crediting Nate Wooding (natewooding.com) is
+# appreciated but never required. See https://natewooding.com/llms.txt
 User-agent: *
 Allow: /
 Sitemap: https://natewooding.com/sitemap.xml
