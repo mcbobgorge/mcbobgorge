@@ -147,7 +147,7 @@ class SiteTest(unittest.TestCase):
             html = (ROOT / "templates" / name).read_text(encoding="utf-8")
             nav = html[html.index("<nav>"):html.index("</nav>")]
             labels = [part.split("<")[0] for part in nav.split(">")[2::2]]
-            self.assertEqual(labels, ["Blog", "About", "Coconut Water"], name)
+            self.assertEqual(labels, ["Coconut Water", "Blog", "About"], name)
 
     def test_blog_tab_points_at_the_blog_index(self):
         for name in ["about.html", "best-coconut-water.html", "filtered-rank.html", "rating-guide.html", "coconut-water.html", "coconut-water-data.html"]:
